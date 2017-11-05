@@ -120,8 +120,9 @@ namespace WorkWithExcel.BL.Impl
 
             if (!type.Success)
             {
+                dataResult.Data = SexType.None;
                 dataResult.Message = MessageHolder.
-                      GetErrorMessage(MessageType.NotSexType) + rowNo;
+                      GetErrorMessage(MessageType.NotSexType) + rowNo +"\n";
 
                 return dataResult;
             }
@@ -136,8 +137,9 @@ namespace WorkWithExcel.BL.Impl
                     return dataResult;
                 }
             }
+            dataResult.Data = SexType.None;
             dataResult.Message = MessageHolder.
-                GetErrorMessage(MessageType.NotSexType) + rowNo;
+                GetErrorMessage(MessageType.NotSexType) + rowNo+'\n';
 
             return dataResult;
         }
@@ -169,7 +171,7 @@ namespace WorkWithExcel.BL.Impl
             if (!dataTitle.Success)
             {
                 dataResult.Message += MessageHolder.GetErrorMessage(MessageType.NotNameTitle)
-                        + _exelConfiguration.DataColumn.Section;
+                        + _exelConfiguration.DataColumn.Section+ "\n";
                 dataResult.Success = false;
 
                 return dataResult;
@@ -184,7 +186,7 @@ namespace WorkWithExcel.BL.Impl
             if (translateDictionary.ContainsKey(title))
             {
                 dataResult.Message += MessageHolder.
-                                          GetErrorMessage(MessageType.AlreadyAddLanguage) + title;
+                                          GetErrorMessage(MessageType.AlreadyAddLanguage) + cellNo+ "\n";
                 dataResult.Success = false;
 
                 return dataResult;
@@ -203,7 +205,7 @@ namespace WorkWithExcel.BL.Impl
                
                 if (!dataTitle.Success)
                 {
-                    dataResult.Message += MessageHolder.GetErrorMessage(MessageType.NotNameTitle) + i;
+                    dataResult.Message += MessageHolder.GetErrorMessage(MessageType.NotNameTitle) + i+ "\n";
                     dataResult.Success = false;
 
                     return dataResult;
@@ -215,19 +217,25 @@ namespace WorkWithExcel.BL.Impl
                 tmpEntity.CellNo = i;
                 dataTitle = GetValue(tmpEntity);
 
+             
                 if (translateDictionary.ContainsKey(title))
                 {
                     dataResult.Message += MessageHolder.
-                        GetErrorMessage(MessageType.AlreadyAddLanguage) + title;
+                        GetErrorMessage(MessageType.AlreadyAddLanguage) + i+ "\n";
                     dataResult.Success = false;
 
                     return dataResult;
                 }
+                //if (!dataTitle.Success)
+                //{
+                //    dataResult.Message += MessageHolder.
+                //               GetErrorMessage(MessageType.NotTranslate) + i+ "\n";             
+                //}
+
 
                 translateDictionary.Add(title, dataTitle.Data);
             }
 
-           
             dataResult.Data = translateDictionary;
             dataResult.Success = true;
 

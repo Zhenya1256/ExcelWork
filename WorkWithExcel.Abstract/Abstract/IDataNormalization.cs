@@ -10,8 +10,8 @@ namespace WorkWithExcel.Abstract.Abstract
 {
     public interface IDataNormalization
     {
-
-        IDataResult<IBaseExelEntety> Normalize(Dictionary<string, ITranslateEntity> translateEntities);
+        IDataResult<IBaseExelEntety> Normalize
+            (Dictionary<string, ITranslateEntity> translateEntities);
 
     }
 }

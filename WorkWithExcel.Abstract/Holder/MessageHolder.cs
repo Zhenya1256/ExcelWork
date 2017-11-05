@@ -23,7 +23,7 @@ namespace WorkWithExcel.Abstract.Holder
             _messagesDictionary.Add(MessageType.NotFormat, "Выберите файл с расширением xlsx");
             _messagesDictionary.Add(MessageType.NotSexType, "Пуста ячийка 'sex/пол' рядок -");
             _messagesDictionary.Add(MessageType.NotNameTitle, "Відсутня назва заголовка стовпчика -");
-            _messagesDictionary.Add(MessageType.NotTranslate, "Відсутній перевод рядка-");
+            _messagesDictionary.Add(MessageType.NotTranslate, "Відсутній перевод слова, рядка-");
             _messagesDictionary.Add(MessageType.AlreadyAddLanguage, "зустрічаються дві однакові мови - ");
             //NotTranslate
         }

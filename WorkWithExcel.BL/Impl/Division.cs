@@ -43,7 +43,9 @@ namespace WorkWithExcel.BL.Impl
             }
 
             IBaseExelEntety baseExelEntety = new BaseExelEntety();
-            Dictionary<ITranslateSectionEntity, ITranslateEntity> dictionary = 
+            Dictionary<ITranslateSectionEntity, ITranslateEntity> translateEntitys = 
+                new Dictionary<ITranslateSectionEntity, ITranslateEntity>();
+            Dictionary<ITranslateSectionEntity, ITranslateEntity> errortranslateEntitys =
                 new Dictionary<ITranslateSectionEntity, ITranslateEntity>();
             ExelConfiguration exelConfiguration = 
                 ConfigurationHolder.ApiConfiguration;
@@ -58,6 +60,8 @@ namespace WorkWithExcel.BL.Impl
                         for (int j = sheet.Dimension.Start.Row + 1; j <= sheet.Dimension.End.Row; j++)
                         {
                             // if (sheet.Cells[j, exelConfiguration.Section].Value == null) continue;
+
+                            bool success = true;
 
                             IExcelColor trackingHandler = new ExcelColor();
 
@@ -87,6 +91,7 @@ namespace WorkWithExcel.BL.Impl
                             if (!dataSexType.Success)
                             {
                                 dataResult.Message += dataSexType.Message;
+                                success = false;
                             }
                             else
                             {
@@ -97,9 +102,10 @@ namespace WorkWithExcel.BL.Impl
                             IDataResult<Dictionary<string, string>> dataTranslate =
                                 _validata.GetTranslateEntity(tmEntity);
 
-                            if (!dataTranslate.Success)
+                            if (!dataTranslate.Success || dataTranslate.Message != null)
                             {
                                 dataResult.Message += dataTranslate.Message;
+                                success = false;
                             }
                             else
                             {
@@ -113,21 +119,30 @@ namespace WorkWithExcel.BL.Impl
                             IDataResult<Dictionary<string, string>> dataSectionTranslate =
                                 _validata.GetTranslateEntity(tmEntity);
 
-                            if (!dataSectionTranslate.Success)
+                            if (!dataSectionTranslate.Success || dataSectionTranslate.Message!=null)
                             {
                                 dataResult.Message += dataSectionTranslate.Message;
+                                success = false;
                             }
                             else
                             {
                                 sectionEntity.TranslateSection = dataSectionTranslate.Data;
                             }
 
-                            dictionary.Add(sectionEntity,trackingHandler);
+                            if (success)
+                            {
+                                translateEntitys.Add(sectionEntity, trackingHandler);
+                            }
+                            else
+                            {
+                                errortranslateEntitys.Add(sectionEntity, trackingHandler);
+                            }
                         }     
                     }
                 }
             }
-            baseExelEntety.TranslateEntities = dictionary;
+            baseExelEntety.TranslateEntitys = translateEntitys;
+            baseExelEntety.ErrorTranslateEntitys = errortranslateEntitys;
             dataResult.Success = true;
             dataResult.Data = baseExelEntety;
 

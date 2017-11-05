@@ -24,7 +24,7 @@ namespace WorkWithExel
 
             IDataResult<IBaseExelEntety> dataResult = div.GetComponent(path);
 
-            foreach (var item in dataResult.Data.TranslateEntities)
+            foreach (var item in dataResult.Data.TranslateEntitys)
             {
                 int i = 0;
                 foreach (var section in item.Key.TranslateSection)

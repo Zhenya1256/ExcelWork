@@ -8,6 +8,7 @@ namespace WorkWithExcel.Abstract.Enums
 {
     public enum SexType
     {
+        None,
         Unisex,
         Ladies,
         Men

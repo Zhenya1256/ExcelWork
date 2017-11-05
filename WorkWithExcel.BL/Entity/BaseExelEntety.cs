@@ -10,6 +10,8 @@ namespace WorkWithExcel.BL.Entety
    public  class BaseExelEntety : IBaseExelEntety
     {
         public Dictionary<ITranslateSectionEntity, ITranslateEntity>
-            TranslateEntities { get; set; }
+            TranslateEntitys { get; set; }
+
+        public Dictionary<ITranslateSectionEntity, ITranslateEntity> ErrorTranslateEntitys { get; set; }
     }
 }

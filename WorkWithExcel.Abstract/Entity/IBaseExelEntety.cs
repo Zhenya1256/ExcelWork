@@ -4,6 +4,7 @@ namespace WorkWithExcel.Abstract.Entity
 {
    public interface IBaseExelEntety
    {
-       Dictionary<ITranslateSectionEntity, ITranslateEntity> TranslateEntities { get; set; }
-   }
+       Dictionary<ITranslateSectionEntity, ITranslateEntity> TranslateEntitys { get; set; }
+       Dictionary<ITranslateSectionEntity, ITranslateEntity> ErrorTranslateEntitys { get; set; }
+    }
 }
