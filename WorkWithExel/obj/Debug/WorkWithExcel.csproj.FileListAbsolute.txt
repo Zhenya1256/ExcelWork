@@ -33,3 +33,5 @@ C:\Users\Евгений\Desktop\WorkWithExel\WorkWithExel\obj\Debug\WorkWithExce
 C:\Users\Евгений\Desktop\WorkWithExel\WorkWithExel\obj\Debug\WorkWithExcel.csproj.CoreCompileInputs.cache
 C:\Users\Евгений\Desktop\WorkWithExel\WorkWithExel\obj\Debug\WorkWithExel.exe
 C:\Users\Евгений\Desktop\WorkWithExel\WorkWithExel\obj\Debug\WorkWithExel.pdb
+C:\Users\Евгений\Desktop\WorkWithExel\WorkWithExel\bin\Debug\WorkWithExcel.Model.dll
+C:\Users\Евгений\Desktop\WorkWithExel\WorkWithExel\bin\Debug\WorkWithExcel.Model.pdb

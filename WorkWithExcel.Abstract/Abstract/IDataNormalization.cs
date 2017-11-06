@@ -13,5 +13,7 @@ namespace WorkWithExcel.Abstract.Abstract
         IDataResult<IBaseExelEntety> Normalize
             (Dictionary<string, ITranslateEntity> translateEntities);
 
+        IDataResult<string> NormalizeString(string data);
+
     }
 }

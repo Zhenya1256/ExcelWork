@@ -54,18 +54,28 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Abstract\IDataNormalization.cs" />
+    <Compile Include="Abstract\IGetExcelData.cs" />
+    <Compile Include="Abstract\IGetExcelSheetCongSection.cs" />
     <Compile Include="Abstract\IValidata.cs" />
+    <Compile Include="Common\Config\Data.cs" />
     <Compile Include="Common\Config\DataColumn.cs" />
-    <Compile Include="Common\Config\DataRow.cs" />
-    <Compile Include="Common\Config\ExelConfiguration.cs" />
+    <Compile Include="Common\Config\DataColumnIndex.cs" />
+    <Compile Include="Common\Config\DataColumnName.cs" />
+    <Compile Include="Common\Config\DataRowIndex.cs" />
+    <Compile Include="Common\Config\ExcelConfiguration.cs" />
     <Compile Include="Common\IDataResult.cs" />
     <Compile Include="Common\IResult.cs" />
     <Compile Include="Entity\HelpEntity\IExcelWorksheetEntity.cs" />
     <Compile Include="Entity\IBaseExelEntety.cs" />
+    <Compile Include="Abstract\IDataSheetResulHolder.cs" />
     <Compile Include="Entity\IExcelColor.cs" />
     <Compile Include="Entity\ITranslateEntity.cs" />
     <Compile Include="Entity\ITranslateImgEntity.cs" />
     <Compile Include="Entity\ITranslateSectionEntity.cs" />
+    <Compile Include="Entity\ITranslationEntity.cs" />
+    <Compile Include="Entity\LoadItemEntity.cs" />
+    <Compile Include="Enums\ColumnType.cs" />
+    <Compile Include="Enums\ExcelDocumentType .cs" />
     <Compile Include="Enums\SexType.cs" />
     <Compile Include="Holder\ConfigurationHolder.cs" />
     <Compile Include="Holder\MessageHolder.cs" />

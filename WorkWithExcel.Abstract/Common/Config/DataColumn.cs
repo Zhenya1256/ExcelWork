@@ -6,16 +6,13 @@ using System.Threading.Tasks;
 
 namespace WorkWithExcel.Abstract.Common.Config
 {
-   public class DataColumn
+    public class DataColumn
     {
-        public int Index { get; set; }
-        public int Picture { get; set; }
-        public int PageNomer { get; set; }
-        public int Section { get; set; }
-        public int Sex { get; set; }
-        public int English { get; set; }
-        public int SectionChiness { get; set; }
-        public int Chinese { get; set; }
-
+        public Data Index { get; set; }
+        public Data Picture { get; set; }
+        public Data Page { get; set; }
+        public Data Section { get; set; }
+        public Data Sex { get; set; }
+        public Data Language { get; set; }
     }
 }

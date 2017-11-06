@@ -6,8 +6,9 @@ using System.Threading.Tasks;
 
 namespace WorkWithExcel.Abstract.Common.Config
 {
-   public class DataRow
+   public class Data
     {
-        public  int Title { get; set; }
+        public int Nomer { get; set; }
+        public  string Name { get; set; }
     }
 }

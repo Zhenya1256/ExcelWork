@@ -10,9 +10,9 @@ namespace WorkWithExcel.Abstract.Holder
 {
    public static  class ConfigurationHolder
    {
-       private static  ExelConfiguration _exelConfiguration;
+       private static  ExcelConfiguration _exelConfiguration;
 
-        public static ExelConfiguration ApiConfiguration
+        public static ExcelConfiguration ApiConfiguration
         {
             get
             {
@@ -25,7 +25,7 @@ namespace WorkWithExcel.Abstract.Holder
                         {
 
                             _exelConfiguration = Configuration.
-                                Load<ExelConfiguration>("ExelConfiguration");
+                                Load<ExcelConfiguration>("ExcelConfiguration");
                         }
                     }
                 }

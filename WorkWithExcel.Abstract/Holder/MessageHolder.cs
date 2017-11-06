@@ -25,6 +25,8 @@ namespace WorkWithExcel.Abstract.Holder
             _messagesDictionary.Add(MessageType.NotNameTitle, "Відсутня назва заголовка стовпчика -");
             _messagesDictionary.Add(MessageType.NotTranslate, "Відсутній перевод слова, рядка-");
             _messagesDictionary.Add(MessageType.AlreadyAddLanguage, "зустрічаються дві однакові мови - ");
+            _messagesDictionary.Add(MessageType.IsNullOrEmpty, "ви намагаєтеся нормалізовати пусту ячийку!");
+            _messagesDictionary.Add(MessageType.DocumentIsEmpty, "документ не має даних");
             //NotTranslate
         }
 

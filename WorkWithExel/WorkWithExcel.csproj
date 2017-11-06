@@ -35,6 +35,9 @@
     <Reference Include="Bender">
       <HintPath>..\..\..\..\Desktop\BrainRingGame\packages\Bender.3.0.1.0\lib\Bender.dll</HintPath>
     </Reference>
+    <Reference Include="EPPlus, Version=4.1.1.0, Culture=neutral, PublicKeyToken=ea159fdaa78159a1, processorArchitecture=MSIL">
+      <HintPath>..\packages\EPPlus.4.1.1\lib\net40\EPPlus.dll</HintPath>
+    </Reference>
     <Reference Include="Flexo">
       <HintPath>..\..\..\..\Desktop\BrainRingGame\packages\flexo.1.0.3.0\lib\Flexo.dll</HintPath>
     </Reference>
@@ -56,6 +59,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\WorkWithExcel.Abstract\WorkWithExcel.Abstract.csproj">
@@ -65,6 +69,10 @@
     <ProjectReference Include="..\WorkWithExcel.BL\WorkWithExcel.BL.csproj">
       <Project>{d83be374-b0d7-4f0b-af59-d5e46184c9da}</Project>
       <Name>WorkWithExcel.BL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WorkWithExcel.Model\WorkWithExcel.Model.csproj">
+      <Project>{3f34a6cc-e0dd-4768-8523-e9d6b1a49988}</Project>
+      <Name>WorkWithExcel.Model</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

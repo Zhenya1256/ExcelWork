@@ -7,6 +7,8 @@
         NotSexType,
         NotNameTitle,
         NotTranslate,
-        AlreadyAddLanguage
+        AlreadyAddLanguage,
+        IsNullOrEmpty,
+        DocumentIsEmpty
     }
 }

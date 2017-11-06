@@ -47,7 +47,7 @@ namespace WorkWithExcel.BL.Impl
                 new Dictionary<ITranslateSectionEntity, ITranslateEntity>();
             Dictionary<ITranslateSectionEntity, ITranslateEntity> errortranslateEntitys =
                 new Dictionary<ITranslateSectionEntity, ITranslateEntity>();
-            ExelConfiguration exelConfiguration = 
+            ExcelConfiguration exelConfiguration = 
                 ConfigurationHolder.ApiConfiguration;
 
             using (var file = File.Open(path, FileMode.Open))

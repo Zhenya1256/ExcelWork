@@ -21,7 +21,7 @@ namespace WorkWithExcel.BL.Impl
 {
     public class Validata : IValidata
     {
-        private readonly ExelConfiguration _exelConfiguration;
+        private readonly ExcelConfiguration _exelConfiguration;
 
         public Validata()
         {
@@ -126,7 +126,8 @@ namespace WorkWithExcel.BL.Impl
 
                 return dataResult;
             }
-
+            SexType typeSex;
+            Enum.TryParse(type.Data, out typeSex);
             foreach (var sexTypeValue in Enum.GetValues(typeof(SexType)))
             {
                 if (sexTypeValue.ToString().ToLower().Equals(type.Data.ToLower()))
