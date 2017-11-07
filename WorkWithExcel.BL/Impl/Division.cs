@@ -32,119 +32,119 @@ namespace WorkWithExcel.BL.Impl
             IDataResult<IBaseExelEntety> dataResult =
                 new DataResult<IBaseExelEntety>();
 
-            IResult result = _validata.ValidataExcel(path);
+            //IResult result = _validata.ValidataExcel(path);
 
-            if (!result.Success)
-            {
-                dataResult.Message = result.Message;
-                dataResult.Success = result.Success;
+            //if (!result.Success)
+            //{
+            //    dataResult.Message = result.Message;
+            //    dataResult.Success = result.Success;
 
-                return dataResult;
-            }
+            //    return dataResult;
+            //}
 
-            IBaseExelEntety baseExelEntety = new BaseExelEntety();
-            Dictionary<ITranslateSectionEntity, ITranslateEntity> translateEntitys = 
-                new Dictionary<ITranslateSectionEntity, ITranslateEntity>();
-            Dictionary<ITranslateSectionEntity, ITranslateEntity> errortranslateEntitys =
-                new Dictionary<ITranslateSectionEntity, ITranslateEntity>();
-            ExcelConfiguration exelConfiguration = 
-                ConfigurationHolder.ApiConfiguration;
+            //IBaseExelEntety baseExelEntety = new BaseExelEntety();
+            //Dictionary<ITranslateSectionEntity, IDataExcelEntity> translateEntitys = 
+            //    new Dictionary<ITranslateSectionEntity, IDataExcelEntity>();
+            //Dictionary<ITranslateSectionEntity, IDataExcelEntity> errortranslateEntitys =
+            //    new Dictionary<ITranslateSectionEntity, IDataExcelEntity>();
+            //ExcelConfiguration exelConfiguration = 
+            //    ConfigurationHolder.ApiConfiguration;
 
-            using (var file = File.Open(path, FileMode.Open))
-            {
-                using (var xls = new ExcelPackage(file))
-                {
-                    using (var sheet = xls.Workbook.Worksheets.FirstOrDefault())
-                    {
+            //using (var file = File.Open(path, FileMode.Open))
+            //{
+            //    using (var xls = new ExcelPackage(file))
+            //    {
+            //        using (var sheet = xls.Workbook.Worksheets.FirstOrDefault())
+            //        {
 
-                        for (int j = sheet.Dimension.Start.Row + 1; j <= sheet.Dimension.End.Row; j++)
-                        {
-                            // if (sheet.Cells[j, exelConfiguration.Section].Value == null) continue;
+            //            for (int j = sheet.Dimension.Start.Row + 1; j <= sheet.Dimension.End.Row; j++)
+            //            {
+            //                // if (sheet.Cells[j, exelConfiguration.Section].Value == null) continue;
 
-                            bool success = true;
+            //                bool success = true;
 
-                            IExcelColor trackingHandler = new ExcelColor();
+            //                IExcelColor trackingHandler = new ExcelColor();
 
-                            IExcelWorksheetEntity tmEntity = new ExcelWorksheetEntity();
-                            tmEntity.ExcelWorksheet = sheet;
-                            tmEntity.RowNo = j;
-                            tmEntity.CellNo = exelConfiguration.DataColumn.Index;
+            //                IExcelWorksheetEntity tmEntity = new ExcelWorksheetEntity();
+            //                tmEntity.ExcelWorksheet = sheet;
+            //                tmEntity.RowNo = j;
+            //                tmEntity.CellNo = exelConfiguration.DataColumn.Index;
 
-                            trackingHandler.Index  =_validata.GetValue(tmEntity).Data;
-                            tmEntity.CellNo = exelConfiguration.DataColumn.PageNomer;
-                            trackingHandler.PageNomer = _validata.GetValue(tmEntity).Data;
+            //                trackingHandler.Index  =_validata.GetValue(tmEntity).Data;
+            //                tmEntity.CellNo = exelConfiguration.DataColumn.PageNomer;
+            //                trackingHandler.PageNomer = _validata.GetValue(tmEntity).Data;
                             
-                            tmEntity.CellNo = exelConfiguration.DataColumn.Picture;
+            //                tmEntity.CellNo = exelConfiguration.DataColumn.Picture;
 
-                            IDataResult<IExcelColor> dataResultColor =
-                                _validata.GetColorValue(tmEntity);
+            //                IDataResult<IExcelColor> dataResultColor =
+            //                    _validata.GetColorValue(tmEntity);
 
-                            if (dataResultColor.Success)
-                            {
-                                trackingHandler.R = dataResultColor.Data.R;
-                                trackingHandler.B = dataResultColor.Data.B;
-                                trackingHandler.G = dataResultColor.Data.G;
-                            }
-                            tmEntity.CellNo = exelConfiguration.DataColumn.Sex;
-                            IDataResult<SexType> dataSexType = _validata.GetSexType(tmEntity);
+            //                if (dataResultColor.Success)
+            //                {
+            //                    trackingHandler.R = dataResultColor.Data.R;
+            //                    trackingHandler.B = dataResultColor.Data.B;
+            //                    trackingHandler.G = dataResultColor.Data.G;
+            //                }
+            //                tmEntity.CellNo = exelConfiguration.DataColumn.Sex;
+            //                IDataResult<SexType> dataSexType = _validata.GetSexType(tmEntity);
 
-                            if (!dataSexType.Success)
-                            {
-                                dataResult.Message += dataSexType.Message;
-                                success = false;
-                            }
-                            else
-                            {
-                                trackingHandler.SexType = dataSexType.Data;
-                            }
-                            tmEntity.CellNo = exelConfiguration.DataColumn.English;
+            //                if (!dataSexType.Success)
+            //                {
+            //                    dataResult.Message += dataSexType.Message;
+            //                    success = false;
+            //                }
+            //                else
+            //                {
+            //                    trackingHandler.SexType = dataSexType.Data;
+            //                }
+            //                tmEntity.CellNo = exelConfiguration.DataColumn.English;
 
-                            IDataResult<Dictionary<string, string>> dataTranslate =
-                                _validata.GetTranslateEntity(tmEntity);
+            //                IDataResult<Dictionary<string, string>> dataTranslate =
+            //                    _validata.GetTranslateEntity(tmEntity);
 
-                            if (!dataTranslate.Success || dataTranslate.Message != null)
-                            {
-                                dataResult.Message += dataTranslate.Message;
-                                success = false;
-                            }
-                            else
-                            {
-                                trackingHandler.TranslateDictionary = dataTranslate.Data;
-                            }
+            //                if (!dataTranslate.Success || dataTranslate.Message != null)
+            //                {
+            //                    dataResult.Message += dataTranslate.Message;
+            //                    success = false;
+            //                }
+            //                else
+            //                {
+            //                    trackingHandler.TranslateDictionary = dataTranslate.Data;
+            //                }
 
-                            ITranslateSectionEntity sectionEntity = new TranslateSectionEntity();
+            //                ITranslateSectionEntity sectionEntity = new TranslateSectionEntity();
 
-                            tmEntity.CellNo = exelConfiguration.DataColumn.SectionChiness;
+            //                tmEntity.CellNo = exelConfiguration.DataColumn.SectionChiness;
 
-                            IDataResult<Dictionary<string, string>> dataSectionTranslate =
-                                _validata.GetTranslateEntity(tmEntity);
+            //                IDataResult<Dictionary<string, string>> dataSectionTranslate =
+            //                    _validata.GetTranslateEntity(tmEntity);
 
-                            if (!dataSectionTranslate.Success || dataSectionTranslate.Message!=null)
-                            {
-                                dataResult.Message += dataSectionTranslate.Message;
-                                success = false;
-                            }
-                            else
-                            {
-                                sectionEntity.TranslateSection = dataSectionTranslate.Data;
-                            }
+            //                if (!dataSectionTranslate.Success || dataSectionTranslate.Message!=null)
+            //                {
+            //                    dataResult.Message += dataSectionTranslate.Message;
+            //                    success = false;
+            //                }
+            //                else
+            //                {
+            //                    sectionEntity.TranslateSection = dataSectionTranslate.Data;
+            //                }
 
-                            if (success)
-                            {
-                                translateEntitys.Add(sectionEntity, trackingHandler);
-                            }
-                            else
-                            {
-                                errortranslateEntitys.Add(sectionEntity, trackingHandler);
-                            }
-                        }     
-                    }
-                }
-            }
-            baseExelEntety.TranslateEntitys = translateEntitys;
-            baseExelEntety.ErrorTranslateEntitys = errortranslateEntitys;
-            dataResult.Success = true;
-            dataResult.Data = baseExelEntety;
+            //                if (success)
+            //                {
+            //                    translateEntitys.Add(sectionEntity, trackingHandler);
+            //                }
+            //                else
+            //                {
+            //                    errortranslateEntitys.Add(sectionEntity, trackingHandler);
+            //                }
+            //            }     
+            //        }
+            //    }
+            //}
+            //baseExelEntety.TranslateEntitys = translateEntitys;
+            //baseExelEntety.ErrorTranslateEntitys = errortranslateEntitys;
+            //dataResult.Success = true;
+            //dataResult.Data = baseExelEntety;
 
             return dataResult;
         }     

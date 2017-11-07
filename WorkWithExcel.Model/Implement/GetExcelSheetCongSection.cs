@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
+using Microsoft.SqlServer.Server;
 using OfficeOpenXml;
 using WorkWithExcel.Abstract.Abstract;
 using WorkWithExcel.Abstract.Common;
@@ -30,164 +27,163 @@ namespace WorkWithExcel.Model.Implement
             _excelConfiguration = ConfigurationHolder.ApiConfiguration;
         }
 
-
-        public IResult GetConfig(ExcelWorksheet excelWorksheet)
+        public IResult GetExcelConfig(ExcelWorksheet excelWorksheet)
         {
-            IResult result = new Result() { Success = false };
-            DataColumn dataColumnIndex = _excelConfiguration.DataColumn;
+            IResult result = new Result() {Success = false};
+            List<IResult> results = new List<IResult>();
+
             IExcelWorksheetEntity tmpEntity = new ExcelWorksheetEntity();
             tmpEntity.ExcelWorksheet = excelWorksheet;
             tmpEntity.RowNo = _excelConfiguration.DataRowIndex.Title;
-            List<IResult> results = new List<IResult>();
+            //
+            Data data = _excelConfiguration.DataColumn.Index;
+            tmpEntity.CellNo = data.Nomer;
+            results.Add(HelpGetConfig(data, tmpEntity));
+            //
+            data = _excelConfiguration.DataColumn.Page;
+            tmpEntity.CellNo = data.Nomer;
+            results.Add(HelpGetConfig(data, tmpEntity));
+            //
+            data = _excelConfiguration.DataColumn.Language;
+            tmpEntity.CellNo = data.Nomer;
+            results.Add(HelpGetConfig(data, tmpEntity));
+            //
+            data = _excelConfiguration.DataColumn.Picture;
+            tmpEntity.CellNo = data.Nomer;
+            results.Add(HelpGetConfig(data, tmpEntity));
+            //
+            data = _excelConfiguration.DataColumn.Sex;
+            tmpEntity.CellNo = data.Nomer;
+            results.Add(HelpGetConfig(data, tmpEntity));
+            //
+            data = _excelConfiguration.DataColumn.Section;
+            tmpEntity.CellNo = data.Nomer;
+            results.Add(HelpGetConfig(data, tmpEntity));
 
-            foreach (var valueProperty in dataColumnIndex.GetType().GetProperties())
-            {
-                Data data = (Data) valueProperty.GetValue(dataColumnIndex, null);
-                tmpEntity.CellNo = data.Nomer;
 
-                IDataResult<string> tmpDataResultValue = _getExcelData.GetValue(tmpEntity);
-
-                //if (!tmpDataResultValue.Success)
-                //{
-                //    result.Message = tmpDataResultValue.Message;
-
-                //    return result;
-                //}
-
-                string nameTitle = tmpDataResultValue.Data;
-                IDataResult<string> resulrNormalizeString = 
-                    _dataNormalization.NormalizeString(nameTitle);
-
-                //if (!resulrNormalizeString.Success)
-                //{
-                //    result.Message = resulrNormalizeString.Message;
-
-                //    return result;
-                //}
-
-                nameTitle = resulrNormalizeString.Data;
-
-                string congiTitle = _dataNormalization.NormalizeString(data.Name).Data;
-                IResult tmptResult = new Result();
-
-                if (congiTitle.Equals(nameTitle))
-                {
-                    tmptResult.Success = true;                 
-                    results.Add(tmptResult);
-                }
-                else
-                {
-                    tmptResult.Success = false;
-                    results.Add(tmptResult);
-                }
-
-            }
-
-            result.Success = !results.Any(p => p.Success== false);
+            result.Success = !results.Any(p => p.Success == false);
 
             return result;
         }
 
-        public IDataResult<ExcelConfiguration> GenerationConfig(ExcelWorksheet excelWorksheet)
+        private IResult HelpGetConfig
+            (Data data,  IExcelWorksheetEntity tmpEntity)
         {
-            IResult getConResult = GetConfig(excelWorksheet);
-            IDataResult < ExcelConfiguration > dataResult = 
-                new DataResult<ExcelConfiguration>();
+            IResult result = new Result() {Success = false};
+            IDataResult<string> tmpDataResultValue = 
+                _getExcelData.GetValue(tmpEntity);
+            string nameTitle = tmpDataResultValue.Data;
+            nameTitle =
+                _dataNormalization.NormalizeString(nameTitle).Data;
+            string congiTitle = 
+                _dataNormalization.NormalizeString(data.Name).Data;
 
-            if (getConResult.Success)
+            if (congiTitle.Equals(nameTitle))
             {
-                dataResult.Success = true;
-                dataResult.Data = _excelConfiguration;
-
-                return dataResult;
+                result.Success = true;
             }
+
+            return result;
+        }
+
+        public IDataResult<ExcelConfiguration>
+            GenerationExcelConfig(ExcelWorksheet excelWorksheet)
+        {
+            IDataResult<ExcelConfiguration> dataResult =
+                new DataResult<ExcelConfiguration>();
+            ExcelConfiguration excelConfiguration = new ExcelConfiguration();
+            excelConfiguration.DataColumn = new DataColumn();
+          
 
             IExcelWorksheetEntity tmpEntity = new ExcelWorksheetEntity();
             tmpEntity.ExcelWorksheet = excelWorksheet;
             tmpEntity.RowNo = _excelConfiguration.DataRowIndex.Title;
-            DataColumn dataColumn = _excelConfiguration.DataColumn;
-            ExcelConfiguration excelConfiguration = new ExcelConfiguration();
-            excelConfiguration.DataColumn = new DataColumn();
+            //
+            List<IDataResult<Data>> dataResults = new List<IDataResult<Data>>();
             
-            foreach (var valueProperty in dataColumn.GetType().GetProperties())
+            int endColumn = excelWorksheet.Dimension.End.Column;
+            //
+            Data data = _excelConfiguration.DataColumn.Index;
+            IDataResult<Data> tmResultHelper = HelperGeneration(data, tmpEntity, endColumn);
+            dataResults.Add(tmResultHelper);
+            excelConfiguration.DataColumn.Index = tmResultHelper.Data;
+            //
+             data = _excelConfiguration.DataColumn.Language;
+             tmResultHelper = HelperGeneration(data, tmpEntity, endColumn);
+            dataResults.Add(tmResultHelper);
+            excelConfiguration.DataColumn.Language = tmResultHelper.Data;
+            //
+            data = _excelConfiguration.DataColumn.Page;
+            tmResultHelper = HelperGeneration(data, tmpEntity, endColumn);
+            dataResults.Add(tmResultHelper);
+            excelConfiguration.DataColumn.Page = tmResultHelper.Data;
+            //
+            data = _excelConfiguration.DataColumn.Picture;
+            tmResultHelper = HelperGeneration(data, tmpEntity, endColumn);
+            dataResults.Add(tmResultHelper);
+            excelConfiguration.DataColumn.Picture = tmResultHelper.Data;
+            //
+            data = _excelConfiguration.DataColumn.Section;
+            tmResultHelper = HelperGeneration(data, tmpEntity, endColumn);
+            dataResults.Add(tmResultHelper);
+            excelConfiguration.DataColumn.Section = tmResultHelper.Data;
+            //
+            data = _excelConfiguration.DataColumn.Sex;
+            tmResultHelper = HelperGeneration(data, tmpEntity, endColumn);
+            dataResults.Add(tmResultHelper);
+            excelConfiguration.DataColumn.Sex = tmResultHelper.Data;
+
+            if (dataResults.Any(p => p.Success == false))
             {
-                Data confiData = (Data) valueProperty.GetValue(dataColumn, null);
-                string confiName = confiData.Name;
-                confiName = _dataNormalization.NormalizeString(confiName).Data;
-                bool genration = false;
+                dataResult.Success = false;
+                dataResult.Message= MessageHolder.
+                    GetErrorMessage(MessageType.IsNullOrEmpty);
 
-                foreach (var valueNomer in dataColumn.GetType().GetProperties())
-                {
-                    Data confiDataNomer = (Data)valueNomer.GetValue(dataColumn, null);
-                    int nomer = confiDataNomer.Nomer;
-
-                    tmpEntity.CellNo = nomer;
-
-
-                    IDataResult<string> tmpDataResultValue = _getExcelData.GetValue(tmpEntity);
-
-                    if (!tmpDataResultValue.Success)
-                    {
-                        dataResult.Message = tmpDataResultValue.Message;
-                        dataResult.Success = false;
-
-                        return dataResult;
-                    }
-
-                    string nameTitle = tmpDataResultValue.Data;
-                    string resulrNormalizeString =
-                        _dataNormalization.NormalizeString(nameTitle).Data;
-
-                    if (resulrNormalizeString.Equals(confiName))
-                    {
-                        // string str = dataColumn.Index.ToString();
-
-                        switch (valueProperty.Name)
-                        {
-                            case "Index":
-                                excelConfiguration.DataColumn.Index = new Data();
-                                excelConfiguration.DataColumn.Index.Name = resulrNormalizeString;
-                                excelConfiguration.DataColumn.Index.Nomer = nomer;
-                                break;
-                            case "Picture":
-                                excelConfiguration.DataColumn.Picture = new Data();
-                                excelConfiguration.DataColumn.Picture.Name = resulrNormalizeString;
-                                excelConfiguration.DataColumn.Picture.Nomer = nomer;
-                                break;
-                            case "Page":
-                                excelConfiguration.DataColumn.Page = new Data();
-                                excelConfiguration.DataColumn.Page.Name = resulrNormalizeString;
-                                excelConfiguration.DataColumn.Page.Nomer = nomer;
-                                break;
-                            case "Section":
-                                excelConfiguration.DataColumn.Section = new Data();
-                                excelConfiguration.DataColumn.Section.Name = resulrNormalizeString;
-                                excelConfiguration.DataColumn.Section.Nomer = nomer;
-                                break;
-                            case "Sex":
-                                excelConfiguration.DataColumn.Sex = new Data();
-                                excelConfiguration.DataColumn.Sex.Name = resulrNormalizeString;
-                                excelConfiguration.DataColumn.Sex.Nomer = nomer;
-                                break;
-                            case "Language":
-                                excelConfiguration.DataColumn.Language = new Data();
-                                excelConfiguration.DataColumn.Language.Name = resulrNormalizeString;
-                                excelConfiguration.DataColumn.Language.Nomer = nomer;
-                                break;
-                        }
-
-                        genration = true;
-                    }
-                }
-
-                if (!genration)
-                {
-                    dataResult.Success = false;
-                    dataResult.Message = MessageHolder.GetErrorMessage(MessageType.IsNullOrEmpty);
-                }
+                return dataResult;
             }
+            excelConfiguration.DataRowIndex = _excelConfiguration.DataRowIndex;
+            dataResult.Data = excelConfiguration;
             dataResult.Success = true;
-           dataResult.Data = excelConfiguration;
+
+            return dataResult;
+        }
+
+        private IDataResult<Data> HelperGeneration
+            (Data data, IExcelWorksheetEntity tmpEntity, int endColumn)
+        {
+            IDataResult<Data> dataResult = 
+                new DataResult<Data>() {Success = false};
+            string nameTitle = data.Name;
+            nameTitle =
+                _dataNormalization.NormalizeString(nameTitle).Data;
+
+            for (int i = 1; i <= endColumn; i++)
+            {
+                tmpEntity.CellNo = i;
+                IDataResult<string> tmpDataResultValue =
+                    _getExcelData.GetValue(tmpEntity);
+
+                if (!tmpDataResultValue.Success)
+                {
+                    continue;
+                }
+
+                string nameExcelTitle = tmpDataResultValue.Data;
+                nameExcelTitle = _dataNormalization.NormalizeString(nameExcelTitle).Data;
+                nameTitle =
+                    _dataNormalization.NormalizeString(nameTitle).Data;
+
+
+                if (nameExcelTitle.Equals(nameTitle))
+                {
+                    data.Nomer = i;
+                    dataResult.Success = true;
+                    dataResult.Data = data;
+
+                    return dataResult;
+                }
+
+            }
 
             return dataResult;
         }

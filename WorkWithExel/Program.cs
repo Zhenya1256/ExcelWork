@@ -22,12 +22,8 @@ namespace WorkWithExel
         {
             string path = "exp.xlsx";
 
-            IGetExcelSheetCongSection section = new GetExcelSheetCongSection();
-            section.
-            foreach (var item in section.GetType().GetMethods())
-            {
-                Console.WriteLine(item.Name);
-            }
+            IExcelDocumentProccesor excelDocument = new ExcelDocumentProccesor();
+            excelDocument.Processor(path);
             //section.GetType().GetProperties()
 
             //using (var file = File.Open(path, FileMode.Open))

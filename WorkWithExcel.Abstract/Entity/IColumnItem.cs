@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using WorkWithExcel.Abstract.Enums;
 
 namespace WorkWithExcel.Abstract.Entity
 {
-    public interface IExcelColor : IDataExcelEntity
+    public interface IColumnItem
     {
-        int R { get; set; }
-        int G { get; set; }
-        int B { get; set; }
+        ColumnType ColumnType { get; set; }
+        string Value { get; set; }
     }
 }

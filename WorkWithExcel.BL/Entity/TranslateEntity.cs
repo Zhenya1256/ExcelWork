@@ -9,7 +9,7 @@ using WorkWithExcel.Abstract.Enums;
 
 namespace WorkWithExcel.BL.Entity
 {
-   public class TranslateEntity : ITranslateEntity
+   public class TranslateEntity : IDataExcelEntity
     {
         public string Index { get; set; }
         public string PageNomer { get; set; }

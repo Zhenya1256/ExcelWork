@@ -19,239 +19,244 @@ using WorkWithExcel.BL.Entity.HelperEntity;
 
 namespace WorkWithExcel.BL.Impl
 {
-    public class Validata : IValidata
+    public class Validata 
     {
-        private readonly ExcelConfiguration _exelConfiguration;
+        //private readonly ExcelConfiguration _exelConfiguration;
 
-        public Validata()
-        {
-            _exelConfiguration =
-                ConfigurationHolder.ApiConfiguration;
-        }
+        //public Validata()
+        //{
+        //    _exelConfiguration =
+        //        ConfigurationHolder.ApiConfiguration;
+        //}
 
-        public IResult ValidataExcel(string path)
-        {
-            IResult result = new Result() { Success = false };
-            if (string.IsNullOrEmpty(path))
-            {
-                result.Message = MessageHolder.
-                    GetErrorMessage(MessageType.FileIsempty);
+        //public IResult ValidataExcel(string path)
+        //{
+        //    IResult result = new Result() { Success = false };
+        //    if (string.IsNullOrEmpty(path))
+        //    {
+        //        result.Message = MessageHolder.
+        //            GetErrorMessage(MessageType.FileIsempty);
 
-                return result;
-            }
+        //        return result;
+        //    }
 
-            if (Path.GetExtension(path) != ".xlsx")
-            {
-                result.Message = MessageHolder.
-                    GetErrorMessage(MessageType.NotFormat);
+        //    if (Path.GetExtension(path) != ".xlsx")
+        //    {
+        //        result.Message = MessageHolder.
+        //            GetErrorMessage(MessageType.NotFormat);
 
-                return result;
-            }
+        //        return result;
+        //    }
 
-            result.Success = true;
+        //    result.Success = true;
 
-            return result;
-        }
+        //    return result;
+        //}
 
-        public IDataResult<string> GetValue(IExcelWorksheetEntity excelWorksheetEntity)
-        {
-            string result = string.Empty;
-            IDataResult<string> dataResult =
-                new DataResult<string>() { Success = false };
+        //public IResult ValidataExcelPath(string path)
+        //{
+        //    throw new NotImplementedException();
+        //}
 
-            int rowNo = excelWorksheetEntity.RowNo;
-            int cellNo = excelWorksheetEntity.CellNo;
+        //public IDataResult<string> GetValue(IExcelWorksheetEntity excelWorksheetEntity)
+        //{
+        //    string result = string.Empty;
+        //    IDataResult<string> dataResult =
+        //        new DataResult<string>() { Success = false };
 
-            if (excelWorksheetEntity.ExcelWorksheet.Cells[rowNo, cellNo].Value != null)
-            {
-                result = excelWorksheetEntity.ExcelWorksheet
-                    .Cells[rowNo, cellNo].Value.ToString();
+        //    int rowNo = excelWorksheetEntity.RowNo;
+        //    int cellNo = excelWorksheetEntity.CellNo;
 
-                result = RemoveEmpty(result);
+        //    if (excelWorksheetEntity.ExcelWorksheet.Cells[rowNo, cellNo].Value != null)
+        //    {
+        //        result = excelWorksheetEntity.ExcelWorksheet
+        //            .Cells[rowNo, cellNo].Value.ToString();
 
-                dataResult.Success = true;
-                dataResult.Data = result;
+        //        result = RemoveEmpty(result);
 
-                return dataResult;
-            }
+        //        dataResult.Success = true;
+        //        dataResult.Data = result;
 
-            return dataResult;
-        }
+        //        return dataResult;
+        //    }
 
-        public IDataResult<IExcelColor> GetColorValue(IExcelWorksheetEntity excelWorksheetEntity)
-        {
-            IDataResult<IExcelColor> dataResult =
-                new DataResult<IExcelColor>() {Success = false};
-            IExcelColor excelColor = new ExcelColor();
+        //    return dataResult;
+        //}
 
-            int rowNo = excelWorksheetEntity.RowNo;
-            int cellNo = excelWorksheetEntity.CellNo;
+        //public IDataResult<IExcelColor> GetColorValue(IExcelWorksheetEntity excelWorksheetEntity)
+        //{
+        //    IDataResult<IExcelColor> dataResult =
+        //        new DataResult<IExcelColor>() {Success = false};
+        //    IExcelColor excelColor = new ExcelColor();
+
+        //    int rowNo = excelWorksheetEntity.RowNo;
+        //    int cellNo = excelWorksheetEntity.CellNo;
            
-            string colorName = excelWorksheetEntity.ExcelWorksheet.
-                Cells[rowNo, cellNo].Style.Fill.BackgroundColor.Rgb;
+        //    string colorName = excelWorksheetEntity.ExcelWorksheet.
+        //        Cells[rowNo, cellNo].Style.Fill.BackgroundColor.Rgb;
 
-            if (string.IsNullOrEmpty(colorName))
-            {
-                dataResult.Success = false;
+        //    if (string.IsNullOrEmpty(colorName))
+        //    {
+        //        dataResult.Success = false;
 
-                return dataResult;
-            }
+        //        return dataResult;
+        //    }
 
          
-            Color color = ColorTranslator.FromHtml("#"+colorName);
-            excelColor.R = color.R;
-            excelColor.G = color.G;
-            excelColor.B = color.B;
+        //    Color color = ColorTranslator.FromHtml("#"+colorName);
+        //    excelColor.R = color.R;
+        //    excelColor.G = color.G;
+        //    excelColor.B = color.B;
 
-            dataResult.Success = true;
-            dataResult.Data = excelColor;
+        //    dataResult.Success = true;
+        //    dataResult.Data = excelColor;
 
-            return dataResult;
-        }
+        //    return dataResult;
+        //}
 
-        public IDataResult<SexType> GetSexType(IExcelWorksheetEntity excelWorksheetEntity)
-        {
-            int rowNo = excelWorksheetEntity.RowNo;
+        //public IDataResult<SexType> GetSexType(IExcelWorksheetEntity excelWorksheetEntity)
+        //{
+        //    int rowNo = excelWorksheetEntity.RowNo;
 
-            IDataResult<string> type = GetValue(excelWorksheetEntity);
+        //    IDataResult<string> type = GetValue(excelWorksheetEntity);
 
-            IDataResult<SexType> dataResult =
-                new DataResult<SexType>() { Success = false };
+        //    IDataResult<SexType> dataResult =
+        //        new DataResult<SexType>() { Success = false };
 
-            if (!type.Success)
-            {
-                dataResult.Data = SexType.None;
-                dataResult.Message = MessageHolder.
-                      GetErrorMessage(MessageType.NotSexType) + rowNo +"\n";
+        //    if (!type.Success)
+        //    {
+        //        dataResult.Data = SexType.None;
+        //        dataResult.Message = MessageHolder.
+        //              GetErrorMessage(MessageType.NotSexType) + rowNo +"\n";
 
-                return dataResult;
-            }
-            SexType typeSex;
-            Enum.TryParse(type.Data, out typeSex);
-            foreach (var sexTypeValue in Enum.GetValues(typeof(SexType)))
-            {
-                if (sexTypeValue.ToString().ToLower().Equals(type.Data.ToLower()))
-                {
-                    dataResult.Success = true;
-                    dataResult.Data = (SexType)sexTypeValue;
+        //        return dataResult;
+        //    }
+        //    SexType typeSex;
+        //    Enum.TryParse(type.Data, out typeSex);
+        //    foreach (var sexTypeValue in Enum.GetValues(typeof(SexType)))
+        //    {
+        //        if (sexTypeValue.ToString().ToLower().Equals(type.Data.ToLower()))
+        //        {
+        //            dataResult.Success = true;
+        //            dataResult.Data = (SexType)sexTypeValue;
 
-                    return dataResult;
-                }
-            }
-            dataResult.Data = SexType.None;
-            dataResult.Message = MessageHolder.
-                GetErrorMessage(MessageType.NotSexType) + rowNo+'\n';
+        //            return dataResult;
+        //        }
+        //    }
+        //    dataResult.Data = SexType.None;
+        //    dataResult.Message = MessageHolder.
+        //        GetErrorMessage(MessageType.NotSexType) + rowNo+'\n';
 
-            return dataResult;
-        }
+        //    return dataResult;
+        //}
 
-        public IDataResult<Dictionary<string,string>>
-            GetTranslateEntity(IExcelWorksheetEntity excelWorksheetEntity)
-        {
-            int rowNo = excelWorksheetEntity.RowNo;
-            int cellNo = excelWorksheetEntity.CellNo;
-            ExcelWorksheet sheet = excelWorksheetEntity.ExcelWorksheet;
+        //public IDataResult<Dictionary<string,string>>
+        //    GetTranslateEntity(IExcelWorksheetEntity excelWorksheetEntity)
+        //{
+        //    int rowNo = excelWorksheetEntity.RowNo;
+        //    int cellNo = excelWorksheetEntity.CellNo;
+        //    ExcelWorksheet sheet = excelWorksheetEntity.ExcelWorksheet;
 
-            IDataResult<Dictionary<string, string>> dataResult =
-                new DataResult<Dictionary<string, string>>() { Success = false };
+        //    IDataResult<Dictionary<string, string>> dataResult =
+        //        new DataResult<Dictionary<string, string>>() { Success = false };
 
-            Dictionary<string, string> translateDictionary =
-                new Dictionary<string, string>();
+        //    Dictionary<string, string> translateDictionary =
+        //        new Dictionary<string, string>();
 
-            int endCoumn = sheet.Dimension.End.Column;
+        //    int endCoumn = sheet.Dimension.End.Column;
 
-            if (_exelConfiguration.DataColumn.SectionChiness == cellNo)
-            {
-                endCoumn--;
-            IExcelWorksheetEntity tmpEntity = new ExcelWorksheetEntity();
-            tmpEntity.RowNo = _exelConfiguration.DataRow.Title;
-            tmpEntity.CellNo = _exelConfiguration.DataColumn.Section;
-                tmpEntity.ExcelWorksheet = sheet;
-            IDataResult<string> dataTitle = GetValue(tmpEntity);
+        //    if (_exelConfiguration.DataColumn.SectionChiness == cellNo)
+        //    {
+        //        endCoumn--;
+        //    IExcelWorksheetEntity tmpEntity = new ExcelWorksheetEntity();
+        //    tmpEntity.RowNo = _exelConfiguration.DataRow.Title;
+        //    tmpEntity.CellNo = _exelConfiguration.DataColumn.Section;
+        //        tmpEntity.ExcelWorksheet = sheet;
+        //    IDataResult<string> dataTitle = GetValue(tmpEntity);
 
-            if (!dataTitle.Success)
-            {
-                dataResult.Message += MessageHolder.GetErrorMessage(MessageType.NotNameTitle)
-                        + _exelConfiguration.DataColumn.Section+ "\n";
-                dataResult.Success = false;
+        //    if (!dataTitle.Success)
+        //    {
+        //        dataResult.Message += MessageHolder.GetErrorMessage(MessageType.NotNameTitle)
+        //                + _exelConfiguration.DataColumn.Section+ "\n";
+        //        dataResult.Success = false;
 
-                return dataResult;
-            }
+        //        return dataResult;
+        //    }
 
-            string title = dataTitle.Data;
+        //    string title = dataTitle.Data;
 
-            tmpEntity.RowNo = rowNo;
-            tmpEntity.CellNo = _exelConfiguration.DataColumn.Section;
-            dataTitle = GetValue(tmpEntity);
+        //    tmpEntity.RowNo = rowNo;
+        //    tmpEntity.CellNo = _exelConfiguration.DataColumn.Section;
+        //    dataTitle = GetValue(tmpEntity);
 
-            if (translateDictionary.ContainsKey(title))
-            {
-                dataResult.Message += MessageHolder.
-                                          GetErrorMessage(MessageType.AlreadyAddLanguage) + cellNo+ "\n";
-                dataResult.Success = false;
+        //    if (translateDictionary.ContainsKey(title))
+        //    {
+        //        dataResult.Message += MessageHolder.
+        //                                  GetErrorMessage(MessageType.AlreadyAddLanguage) + cellNo+ "\n";
+        //        dataResult.Success = false;
 
-                return dataResult;
-            }
+        //        return dataResult;
+        //    }
 
-            translateDictionary.Add(title, dataTitle.Data);
-        }
+        //    translateDictionary.Add(title, dataTitle.Data);
+        //}
 
-            for (int i = cellNo; i <= endCoumn; i = i + 2)
-            {
-                IExcelWorksheetEntity tmpEntity = new ExcelWorksheetEntity();
-                tmpEntity.RowNo = _exelConfiguration.DataRow.Title;
-                tmpEntity.CellNo = i;
-                tmpEntity.ExcelWorksheet = sheet;
-                IDataResult<string> dataTitle = GetValue(tmpEntity);
+        //    for (int i = cellNo; i <= endCoumn; i = i + 2)
+        //    {
+        //        IExcelWorksheetEntity tmpEntity = new ExcelWorksheetEntity();
+        //        tmpEntity.RowNo = _exelConfiguration.DataRow.Title;
+        //        tmpEntity.CellNo = i;
+        //        tmpEntity.ExcelWorksheet = sheet;
+        //        IDataResult<string> dataTitle = GetValue(tmpEntity);
                
-                if (!dataTitle.Success)
-                {
-                    dataResult.Message += MessageHolder.GetErrorMessage(MessageType.NotNameTitle) + i+ "\n";
-                    dataResult.Success = false;
+        //        if (!dataTitle.Success)
+        //        {
+        //            dataResult.Message += MessageHolder.GetErrorMessage(MessageType.NotNameTitle) + i+ "\n";
+        //            dataResult.Success = false;
 
-                    return dataResult;
-                }
+        //            return dataResult;
+        //        }
 
-                string title = dataTitle.Data;
+        //        string title = dataTitle.Data;
 
-                tmpEntity.RowNo = rowNo;
-                tmpEntity.CellNo = i;
-                dataTitle = GetValue(tmpEntity);
+        //        tmpEntity.RowNo = rowNo;
+        //        tmpEntity.CellNo = i;
+        //        dataTitle = GetValue(tmpEntity);
 
              
-                if (translateDictionary.ContainsKey(title))
-                {
-                    dataResult.Message += MessageHolder.
-                        GetErrorMessage(MessageType.AlreadyAddLanguage) + i+ "\n";
-                    dataResult.Success = false;
+        //        if (translateDictionary.ContainsKey(title))
+        //        {
+        //            dataResult.Message += MessageHolder.
+        //                GetErrorMessage(MessageType.AlreadyAddLanguage) + i+ "\n";
+        //            dataResult.Success = false;
 
-                    return dataResult;
-                }
-                //if (!dataTitle.Success)
-                //{
-                //    dataResult.Message += MessageHolder.
-                //               GetErrorMessage(MessageType.NotTranslate) + i+ "\n";             
-                //}
+        //            return dataResult;
+        //        }
+        //        //if (!dataTitle.Success)
+        //        //{
+        //        //    dataResult.Message += MessageHolder.
+        //        //               GetErrorMessage(MessageType.NotTranslate) + i+ "\n";             
+        //        //}
 
 
-                translateDictionary.Add(title, dataTitle.Data);
-            }
+        //        translateDictionary.Add(title, dataTitle.Data);
+        //    }
 
-            dataResult.Data = translateDictionary;
-            dataResult.Success = true;
+        //    dataResult.Data = translateDictionary;
+        //    dataResult.Success = true;
 
-            return dataResult;
-        }
+        //    return dataResult;
+        //}
 
-        private string RemoveEmpty(string title)
-        {
+        //private string RemoveEmpty(string title)
+        //{
 
-            while (title.Contains(" "))
-            {
-                title = title.Replace(" ", "");
-            }
+        //    while (title.Contains(" "))
+        //    {
+        //        title = title.Replace(" ", "");
+        //    }
 
-            return title;
-        }
+        //    return title;
+        //}
     }
 }

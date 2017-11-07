@@ -5,9 +5,11 @@ namespace WorkWithExcel.Model.Entity
 {
    public  class BaseExelEntety : IBaseExelEntety
     {
-        public Dictionary<ITranslateSectionEntity, ITranslateEntity>
+        public Dictionary<ITranslateSectionEntity, IDataExcelEntity>
             TranslateEntitys { get; set; }
 
-        public Dictionary<ITranslateSectionEntity, ITranslateEntity> ErrorTranslateEntitys { get; set; }
+        public Dictionary<ITranslateSectionEntity, IDataExcelEntity> ErrorTranslateEntitys { get; set; }
+        public IDictionary<string, List<ITranslationEntity>> SectionTranslates { get; set; }
+        public IDictionary<string, List<ITranslationEntity>> WordTranslates { get; set; }
     }
 }

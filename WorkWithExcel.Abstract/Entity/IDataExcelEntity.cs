@@ -8,11 +8,11 @@ using WorkWithExcel.Abstract.Enums;
 
 namespace WorkWithExcel.Abstract.Entity
 {
-    public interface ITranslateEntity
+    public interface IDataExcelEntity
     {
         string Index { get; set; }
         string PageNomer { get; set; }
         SexType SexType { get; set; }
-        Dictionary<string, string> TranslateDictionary { get; set; }
+        
     }
 }

@@ -11,10 +11,9 @@ namespace WorkWithExcel.Abstract.Abstract
 {
     public interface IGetExcelSheetCongSection
     {
-        IResult GetConfig
-            (ExcelWorksheet excelWorksheet);
-        IDataResult<ExcelConfiguration> GenerationConfig
-            (ExcelWorksheet excelWorksheet);
+        IResult GetExcelConfig(ExcelWorksheet excelWorksheet);
 
+        IDataResult<ExcelConfiguration>
+            GenerationExcelConfig(ExcelWorksheet excelWorksheet);
     }
 }

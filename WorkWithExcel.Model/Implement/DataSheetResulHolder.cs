@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using OfficeOpenXml;
 using WorkWithExcel.Abstract.Abstract;
 using WorkWithExcel.Abstract.Common;
+using WorkWithExcel.Abstract.Entity;
 
 namespace WorkWithExcel.Model.Implement
 {
@@ -25,5 +26,8 @@ namespace WorkWithExcel.Model.Implement
         {
             throw new NotImplementedException();
         }
+
+        public List<IDataSheet> DataSheets { get; set; }
+     
     }
 }

@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using OfficeOpenXml;
 using WorkWithExcel.Abstract.Common;
 using WorkWithExcel.Abstract.Entity;
 using WorkWithExcel.Abstract.Entity.HelpEntity;
@@ -14,7 +15,13 @@ namespace WorkWithExcel.Abstract.Abstract
    public interface IValidata
    {
        IResult ValidataExcel(string path);
-       IDataResult<string> GetValue(IExcelWorksheetEntity excelWorksheetEntity);
+        //
+       IResult ValidataExcelPath(string path);
+
+       IResult VolidateExcel
+           (ExcelWorksheet excelWorksheet);
+            //
+        IDataResult<string> GetValue(IExcelWorksheetEntity excelWorksheetEntity);
        IDataResult<SexType> GetSexType(IExcelWorksheetEntity excelWorksheetEntity);
 
        IDataResult<Dictionary<string, string>>

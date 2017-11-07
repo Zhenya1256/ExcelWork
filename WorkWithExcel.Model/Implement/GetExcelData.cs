@@ -16,7 +16,6 @@ namespace WorkWithExcel.Model.Implement
     {
         public IDataResult<string> GetValue(IExcelWorksheetEntity excelWorksheet)
         {
-            string result = string.Empty;
             IDataResult<string> dataResult =
                 new DataResult<string>() { Success = false };
 
@@ -25,7 +24,7 @@ namespace WorkWithExcel.Model.Implement
 
             if (excelWorksheet.ExcelWorksheet.Cells[rowNo, cellNo].Value != null)
             {
-                result = excelWorksheet.ExcelWorksheet
+                string result = excelWorksheet.ExcelWorksheet
                     .Cells[rowNo, cellNo].Value.ToString();
                 dataResult.Success = true;
                 dataResult.Data = result;
@@ -34,7 +33,7 @@ namespace WorkWithExcel.Model.Implement
             }
 
             dataResult.Message = 
-                MessageHolder.GetErrorMessage(MessageType.IsNullOrEmpty);
+                MessageHolder.GetErrorMessage(MessageType.IsNullOrEmpty)+"("+ rowNo+"|"+ cellNo + ")";
 
             return dataResult;
         }

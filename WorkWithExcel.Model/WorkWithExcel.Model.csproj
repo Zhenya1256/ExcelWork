@@ -46,15 +46,21 @@
     <Compile Include="Common\DataResult.cs" />
     <Compile Include="Common\Result.cs" />
     <Compile Include="Entity\BaseExelEntety.cs" />
+    <Compile Include="Entity\ColumnItem.cs" />
+    <Compile Include="Entity\DataSheet.cs" />
     <Compile Include="Entity\ExcelColor.cs" />
     <Compile Include="Entity\HelperEntity\ExcelWorksheetEntity.cs" />
+    <Compile Include="Entity\RowItem.cs" />
+    <Compile Include="Entity\RowItemError.cs" />
     <Compile Include="Entity\TranslateEntity.cs" />
     <Compile Include="Entity\TranslateSectionEntity.cs" />
     <Compile Include="Implement\DataNormalization.cs" />
     <Compile Include="Implement\DataSheetResulHolder.cs" />
+    <Compile Include="Implement\ExcelDocumentProccesor.cs" />
     <Compile Include="Implement\GetExcelData.cs" />
     <Compile Include="Implement\GetExcelSheetCongSection.cs" />
-    <Compile Include="Implement\Valedata.cs" />
+    <Compile Include="Implement\Parser.cs" />
+    <Compile Include="Implement\Validata.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

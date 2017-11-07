@@ -13,6 +13,8 @@ namespace WorkWithExcel.Abstract.Enums
         Picture,
         Section,
         Sex,
-        Language
+        Language,
+        SectionTransfer,
+        WorldSection
     }
 }
