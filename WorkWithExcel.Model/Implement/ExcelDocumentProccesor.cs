@@ -70,6 +70,7 @@ namespace WorkWithExcel.Model.Implement
                                 dataResult.Message += isDataResult.Message;
                                 success = false;
                             }
+
                             string tmpSheetName = _dataNormalization.NormalizeString(sheetName).Data;
                             string configName = _excelConfiguration.NamePage.Section;
                             configName = _dataNormalization.NormalizeString(configName).Data;
@@ -77,12 +78,13 @@ namespace WorkWithExcel.Model.Implement
 
                             if (tmpSheetName.Equals(configName))
                             {
-                                resultDataSheet = HelpProcessor(sheet, success, ExcelDocumentType.Section);
+                                resultDataSheet = HelpProcessor
+                                    (sheet, success, ExcelDocumentType.Section);
                             }
                             else
                             {
                                 IResult resultConfig = _excelSheetCongSection.GetExcelConfig(sheet);
-
+                   
                                 if (!resultConfig.Success)
                                 {
                                     IDataResult<ExcelConfiguration> excelDataResult =
@@ -117,7 +119,8 @@ namespace WorkWithExcel.Model.Implement
             return dataResult;
         }
 
-        private IDataResult<IDataSheet> HelpProcessor(ExcelWorksheet sheet, bool success, ExcelDocumentType type)
+        private IDataResult<IDataSheet> HelpProcessor
+            (ExcelWorksheet sheet, bool success, ExcelDocumentType type)
         {
             IDataResult<IDataSheet> dataResult =
                 new DataResult<IDataSheet>() { Success = false };
@@ -126,7 +129,7 @@ namespace WorkWithExcel.Model.Implement
             List<IRowItem> rowItems = new List<IRowItem>();
             List<IRowItemError> errorRowItems = new List<IRowItemError>();
             IBaseExelEntety baseExelEntety = new BaseExelEntety();
-            baseExelEntety.SectionTranslates = new Dictionary<IDataExcelEntity, List<ITranslationEntity>>();
+            baseExelEntety.SectionTranslates = new Dictionary<ITranslationEntity, List<ITranslationEntity>>();
             baseExelEntety.WordTranslates = new Dictionary<IDataExcelEntity, List<ITranslationEntity>>();
             dataSheet.NameTable = sheet.Name;
 
@@ -159,8 +162,8 @@ namespace WorkWithExcel.Model.Implement
                     //  }
                 }
 
-                IDataResult<Dictionary<IDataExcelEntity, List<ITranslationEntity>>> normalizeSectionResult =
-                    _dataNormalization.NormaliseTranslite(rowItems, ColumnType.SectionTransfer);
+                IDataResult<Dictionary<ITranslationEntity, List<ITranslationEntity>>> normalizeSectionResult =
+                    _dataNormalization.NormaliseTransliteSection(rowItems);
 
                 if (normalizeSectionResult.Success)
                 {
@@ -168,7 +171,7 @@ namespace WorkWithExcel.Model.Implement
                 }
 
                 IDataResult<Dictionary<IDataExcelEntity, List<ITranslationEntity>>> normalizeWprdResult =
-                    _dataNormalization.NormaliseTranslite(rowItems, ColumnType.WorldSection);
+                    _dataNormalization.NormaliseTransliteWord(rowItems);
 
                 if (normalizeWprdResult.Success)
                 {

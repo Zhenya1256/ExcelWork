@@ -8,11 +8,13 @@ using WorkWithExcel.Abstract.Enums;
 
 namespace WorkWithExcel.Abstract.Entity
 {
-    public interface IDataExcelEntity:IExcelColor,ITranslationEntity,ITranslateImgEntity
+    public interface IDataExcelEntity:ITranslationEntity,ITranslateImgEntity
     {
         string Index { get; set; }
         string PageNomer { get; set; }
         SexType SexType { get; set; }
-        
+        IExcelColor ExcelColor { get; set; }
+
+
     }
 }

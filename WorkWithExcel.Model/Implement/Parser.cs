@@ -84,28 +84,40 @@ namespace WorkWithExcel.Model.Implement
             if (column == excelConfiguration.DataColumn.Picture.Nomer)
             {
                 columnItem.ColumnType = ColumnType.Picture;
-              
+                IDataResult<string> colorNameResult =
+                    _getExcelData.GetColorValue(excelWorksheet);
+
+                if (colorNameResult.Success)
+                {
+                    columnItem.Value = colorNameResult.Data;
+                }
+
             }
             else if (column == excelConfiguration.DataColumn.Index.Nomer)
             {
                 columnItem.ColumnType = ColumnType.Index;
+                columnItem.Value = resultValue.Data;
             }
      
             else if (column == excelConfiguration.DataColumn.Page.Nomer)
             {
                 columnItem.ColumnType = ColumnType.Page;
+                columnItem.Value = resultValue.Data;
             }
             else if (column == excelConfiguration.DataColumn.Sex.Nomer)
             {
                 columnItem.ColumnType = ColumnType.Sex;
+                columnItem.Value = resultValue.Data;
             }
             else if (column == excelConfiguration.DataColumn.Section.Nomer)
             {
                 columnItem.ColumnType = ColumnType.Section;
+                columnItem.Value = resultValue.Data;
             }
             else if (column == excelConfiguration.DataColumn.Language.Nomer)
             {
                 columnItem.ColumnType = ColumnType.Language;
+                columnItem.Value = resultValue.Data;
             }
             else
             {
@@ -129,9 +141,11 @@ namespace WorkWithExcel.Model.Implement
                 {
                     columnItem.ColumnType = ColumnType.WorldSection;
                 }
+
+                columnItem.Value = resultValue.Data;
             }
 
-            columnItem.Value = resultValue.Data;
+         
             columnItem.NameTitle = nameTitle;
             dataResult.Data = columnItem;
             dataResult.Success = true;

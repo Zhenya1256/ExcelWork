@@ -15,8 +15,12 @@ namespace WorkWithExcel.Abstract.Abstract
             (Dictionary<string, IDataExcelEntity> translateEntities);
 
         IDataResult<string> NormalizeString(string data);
-        IDataResult<Dictionary<IDataExcelEntity, List<ITranslationEntity>>> 
-            NormaliseTranslite(List<IRowItem> listRowItems, ColumnType type);
+
+         IDataResult<Dictionary<IDataExcelEntity, List<ITranslationEntity>>>
+            NormaliseTransliteWord(List<IRowItem> listRowItems);
+
+        IDataResult<Dictionary<ITranslationEntity, List<ITranslationEntity>>>
+            NormaliseTransliteSection(List<IRowItem> listRowItems);
 
     }
 }

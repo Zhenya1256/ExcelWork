@@ -22,6 +22,16 @@ namespace WorkWithExcel.BL.Impl
             throw new NotImplementedException();
         }
 
+        public IDataResult<Dictionary<IDataExcelEntity, List<ITranslationEntity>>> NormaliseTransliteWord(List<IRowItem> listRowItems)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IDataResult<Dictionary<ITranslationEntity, List<ITranslationEntity>>> NormaliseTransliteSection(List<IRowItem> listRowItems)
+        {
+            throw new NotImplementedException();
+        }
+
         public IDataResult<Dictionary<IDataExcelEntity, List<ITranslationEntity>>> NormaliseTranslite(List<IRowItem> listRowItems, ColumnType type)
         {
             throw new NotImplementedException();

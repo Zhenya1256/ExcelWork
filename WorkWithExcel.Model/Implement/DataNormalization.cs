@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using WorkWithExcel.Abstract.Abstract;
 using WorkWithExcel.Abstract.Common;
 using WorkWithExcel.Abstract.Entity;
@@ -43,64 +42,69 @@ namespace WorkWithExcel.Model.Implement
         }
 
         public IDataResult<Dictionary<IDataExcelEntity, List<ITranslationEntity>>>
-            NormaliseTranslite(List<IRowItem> listRowItems, ColumnType type)
+            NormaliseTransliteWord(List<IRowItem> listRowItems)
         {
-            Dictionary<IDataExcelEntity, List<ITranslationEntity>> transltionDictionary =
-                new Dictionary<IDataExcelEntity, List<ITranslationEntity>>();
+            Dictionary<IDataExcelEntity, List<ITranslationEntity>> transltionDictionary;
             IDataResult<Dictionary<IDataExcelEntity, List<ITranslationEntity>>> resultTranslations =
                 new DataResult<Dictionary<IDataExcelEntity, List<ITranslationEntity>>>();
 
-            switch (type)
+            IDataResult<Dictionary<IDataExcelEntity, List<ITranslationEntity>>> dataResultSection =
+                HelperNormaliseTransliteWord(listRowItems);
+
+            if (!dataResultSection.Success)
             {
-                case ColumnType.WorldSection:
-                    IDataResult<Dictionary<IDataExcelEntity, List<ITranslationEntity>>> dataResultSection =
-                        HelperNormaliseTransliteWord(listRowItems);
+                resultTranslations.Message = dataResultSection.Message;
+                resultTranslations.Success = false;
 
-                    if (!dataResultSection.Success)
-                    {
-                        resultTranslations.Message = dataResultSection.Message;
-                        resultTranslations.Success = false;
-
-                        return resultTranslations;
-                    }
-
-                    transltionDictionary = dataResultSection.Data;
-
-                    break;
-                case ColumnType.SectionTransfer:
-                    IDataResult<Dictionary<IDataExcelEntity, List<ITranslationEntity>>> dataResultWord =
-                        HelperNormaliseTransliteSection(listRowItems);
-
-                    if (!dataResultWord.Success)
-                    {
-                        resultTranslations.Message = dataResultWord.Message;
-                        resultTranslations.Success = false;
-
-                        return resultTranslations;
-                    }
-
-                    transltionDictionary = dataResultWord.Data;
-                    break;
+                return resultTranslations;
             }
+
+            transltionDictionary = dataResultSection.Data;
+
             resultTranslations.Success = true;
             resultTranslations.Data = transltionDictionary;
 
             return resultTranslations;
         }
 
-        private IDataResult<Dictionary<IDataExcelEntity, List<ITranslationEntity>>>
+        public IDataResult<Dictionary<ITranslationEntity, List<ITranslationEntity>>>
+            NormaliseTransliteSection(List<IRowItem> listRowItems)
+        {
+            Dictionary<ITranslationEntity, List<ITranslationEntity>> transltionDictionary;
+            IDataResult<Dictionary<ITranslationEntity, List<ITranslationEntity>>> resultTranslations =
+                new DataResult<Dictionary<ITranslationEntity, List<ITranslationEntity>>>();
+            IDataResult<Dictionary<ITranslationEntity, List<ITranslationEntity>>> dataResultWord =
+                HelperNormaliseTransliteSection(listRowItems);
+
+            if (!dataResultWord.Success)
+            {
+                resultTranslations.Message = dataResultWord.Message;
+                resultTranslations.Success = false;
+
+                return resultTranslations;
+            }
+
+            transltionDictionary = dataResultWord.Data;
+
+            resultTranslations.Success = true;
+            resultTranslations.Data = transltionDictionary;
+
+            return resultTranslations;
+        }
+
+        private IDataResult<Dictionary<ITranslationEntity, List<ITranslationEntity>>>
             HelperNormaliseTransliteSection(List<IRowItem> listRowItems)
         {
-            Dictionary<IDataExcelEntity, List<ITranslationEntity>> sections =
-                 new Dictionary<IDataExcelEntity, List<ITranslationEntity>>();
+            Dictionary<ITranslationEntity, List<ITranslationEntity>> sections =
+                 new Dictionary<ITranslationEntity, List<ITranslationEntity>>();
 
-            IDataResult<Dictionary<IDataExcelEntity, List<ITranslationEntity>>> dataResult =
-                new DataResult<Dictionary<IDataExcelEntity, List<ITranslationEntity>>>();
+            IDataResult<Dictionary<ITranslationEntity, List<ITranslationEntity>>> dataResult =
+                new DataResult<Dictionary<ITranslationEntity, List<ITranslationEntity>>>();
 
             foreach (var rowItem in listRowItems)
             {
                 List<ITranslationEntity> translationEntities = new List<ITranslationEntity>();
-                IDataExcelEntity translationKey = new DataExcelEntity();
+                ITranslationEntity translationKey = new TranslationEntity();
 
                 foreach (var columnItem in rowItem.ColumnItems)
                 {
@@ -110,36 +114,12 @@ namespace WorkWithExcel.Model.Implement
                             translationKey.Value = columnItem.Value;
                             translationKey.NameTitle = columnItem.NameTitle;
                             break;
-                        case ColumnType.Index:
-                            translationKey.Index = columnItem.Value;
-                            break;
-                        case ColumnType.Page:
-                            translationKey.PageNomer = columnItem.Value;
-                            break;
-                        case ColumnType.Picture:
-                            //TODO color
-                            translationKey.PathImage = columnItem.Value;
-                            break;
-                        case ColumnType.Sex:
 
-                            if (columnItem.Value != null)
-                            {
-                                foreach (var sexTypeValue in Enum.GetValues(typeof(SexType)))
-                                {
-                                    if (sexTypeValue.ToString().ToLower().Equals(columnItem.Value.ToLower()))
-                                    {
-                                        translationKey.SexType = (SexType)sexTypeValue;
-                                        break;
-                                    }
-                                }
-                            }
-
-                            break;
                         case ColumnType.SectionTransfer:
                             ITranslationEntity tmpEntity = new TranslationEntity();
                             tmpEntity.NameTitle = columnItem.NameTitle;
                             tmpEntity.Value = columnItem.Value;
-                            
+
 
                             translationEntities.Add(tmpEntity);
                             break;
@@ -171,45 +151,55 @@ namespace WorkWithExcel.Model.Implement
 
                 foreach (var columnItem in rowItem.ColumnItems)
                 {
-                    if (columnItem.ColumnType == ColumnType.Language)
+                    switch (columnItem.ColumnType)
                     {
-                        translationKey.Value = columnItem.Value;
-                        translationKey.NameTitle = columnItem.NameTitle;
-                    }
-                    if (columnItem.ColumnType == ColumnType.Index)
-                    {
-                        translationKey.Index = columnItem.Value;
-                    }
-                    if (columnItem.ColumnType == ColumnType.Page)
-                    {
-                        translationKey.PageNomer = columnItem.Value;
-                    }
-                    if (columnItem.ColumnType == ColumnType.Picture)
-                    {
-                        //TODO color
-                        translationKey.PathImage = columnItem.Value;
-                    }
-                    if (columnItem.ColumnType == ColumnType.Sex)
-                    {
-                        if (columnItem.Value != null)
-                        {
-                            foreach (var sexTypeValue in Enum.GetValues(typeof(SexType)))
+                        case ColumnType.Language:
+                            translationKey.Value = columnItem.Value;
+                            translationKey.NameTitle = columnItem.NameTitle;
+                            break;
+                        case ColumnType.Index:
+                            translationKey.Index = columnItem.Value;
+                            break;
+                        case ColumnType.Page:
+                            translationKey.PageNomer = columnItem.Value;
+                            break;
+                        case ColumnType.Picture:
+                            IExcelColor excelColor = new ExcelColor();
+
+                            if (!string.IsNullOrEmpty(columnItem.Value))
                             {
-                                if (sexTypeValue.ToString().ToLower().Equals(columnItem.Value.ToLower()))
+                                Color color = ColorTranslator.FromHtml("#" + columnItem.Value);
+                                excelColor.R = color.R;
+                                excelColor.G = color.G;
+                                excelColor.B = color.B;
+                                translationKey.ExcelColor = excelColor;
+                            }
+                            else
+                            {
+                                translationKey.PathImage = columnItem.Value;
+                            }
+                            break;
+                        case ColumnType.Sex:
+
+                            if (columnItem.Value != null)
+                            {
+                                foreach (var sexTypeValue in Enum.GetValues(typeof(SexType)))
                                 {
-                                    translationKey.SexType = (SexType)sexTypeValue;
-                                    break;
+                                    if (sexTypeValue.ToString().ToLower().Equals(columnItem.Value.ToLower()))
+                                    {
+                                        translationKey.SexType = (SexType)sexTypeValue;
+                                        break;
+                                    }
                                 }
                             }
-                        }
-                    }
-                    if (columnItem.ColumnType == ColumnType.WorldSection)
-                    {
-                        ITranslationEntity tmpEntity = new TranslationEntity();
-                        tmpEntity.NameTitle = columnItem.NameTitle;
-                        tmpEntity.Value = columnItem.Value;
+                            break;
+                        case ColumnType.WorldSection:
+                            ITranslationEntity tmpEntity = new TranslationEntity();
+                            tmpEntity.NameTitle = columnItem.NameTitle;
+                            tmpEntity.Value = columnItem.Value;
+                            translationEntities.Add(tmpEntity);
 
-                        translationEntities.Add(tmpEntity);
+                            break;
                     }
                 }
 
