@@ -12,5 +12,6 @@ namespace WorkWithExcel.Model.Entity
     {
         public ColumnType ColumnType { get; set; }
         public string Value { get; set; }
+        public string NameTitle { get; set; }
     }
 }

@@ -7,9 +7,9 @@ using WorkWithExcel.Abstract.Enums;
 
 namespace WorkWithExcel.Abstract.Entity
 {
-    public interface IColumnItem
+    public interface IColumnItem : ITranslationEntity
     {
         ColumnType ColumnType { get; set; }
-        string Value { get; set; }
     }
+
 }

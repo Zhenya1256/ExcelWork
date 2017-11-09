@@ -8,5 +8,6 @@ namespace WorkWithExcel.Abstract.Entity
 {
    public interface ITranslateImgEntity
     {
+        string PathImage { get; set; }
     }
 }

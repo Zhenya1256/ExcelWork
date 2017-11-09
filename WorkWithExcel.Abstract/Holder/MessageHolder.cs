@@ -27,6 +27,9 @@ namespace WorkWithExcel.Abstract.Holder
             _messagesDictionary.Add(MessageType.AlreadyAddLanguage, "зустрічаються дві однакові мови - ");
             _messagesDictionary.Add(MessageType.IsNullOrEmpty, "ви намагаєтеся записвти пусту ячийку!");
             _messagesDictionary.Add(MessageType.DocumentIsEmpty, "документ не має даних");
+            _messagesDictionary.Add(MessageType.NotIsTitle, String.Format("сторінку Excel не з читано, оскільки " +
+                                                            "не хватає заголовків, чи вони не вірно названі такі як: (" ));
+            _messagesDictionary.Add(MessageType.NamePage, "ошибки сторінки ");
             //NotTranslate
         }
 

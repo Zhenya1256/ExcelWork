@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Microsoft.SqlServer.Server;
+using System.Text;
 using OfficeOpenXml;
 using WorkWithExcel.Abstract.Abstract;
 using WorkWithExcel.Abstract.Common;
@@ -29,7 +29,7 @@ namespace WorkWithExcel.Model.Implement
 
         public IResult GetExcelConfig(ExcelWorksheet excelWorksheet)
         {
-            IResult result = new Result() {Success = false};
+            IResult result = new Result() { Success = false };
             List<IResult> results = new List<IResult>();
 
             IExcelWorksheetEntity tmpEntity = new ExcelWorksheetEntity();
@@ -67,15 +67,15 @@ namespace WorkWithExcel.Model.Implement
         }
 
         private IResult HelpGetConfig
-            (Data data,  IExcelWorksheetEntity tmpEntity)
+            (Data data, IExcelWorksheetEntity tmpEntity)
         {
-            IResult result = new Result() {Success = false};
-            IDataResult<string> tmpDataResultValue = 
+            IResult result = new Result() { Success = false };
+            IDataResult<string> tmpDataResultValue =
                 _getExcelData.GetValue(tmpEntity);
             string nameTitle = tmpDataResultValue.Data;
             nameTitle =
                 _dataNormalization.NormalizeString(nameTitle).Data;
-            string congiTitle = 
+            string congiTitle =
                 _dataNormalization.NormalizeString(data.Name).Data;
 
             if (congiTitle.Equals(nameTitle))
@@ -93,51 +93,88 @@ namespace WorkWithExcel.Model.Implement
                 new DataResult<ExcelConfiguration>();
             ExcelConfiguration excelConfiguration = new ExcelConfiguration();
             excelConfiguration.DataColumn = new DataColumn();
-          
+
 
             IExcelWorksheetEntity tmpEntity = new ExcelWorksheetEntity();
             tmpEntity.ExcelWorksheet = excelWorksheet;
             tmpEntity.RowNo = _excelConfiguration.DataRowIndex.Title;
             //
             List<IDataResult<Data>> dataResults = new List<IDataResult<Data>>();
-            
+
             int endColumn = excelWorksheet.Dimension.End.Column;
             //
+            StringBuilder messegeBuilder= new StringBuilder();
             Data data = _excelConfiguration.DataColumn.Index;
             IDataResult<Data> tmResultHelper = HelperGeneration(data, tmpEntity, endColumn);
+
+            if (!tmResultHelper.Success)
+            {
+                messegeBuilder.Append(data.Name + " ");
+            }
+
             dataResults.Add(tmResultHelper);
             excelConfiguration.DataColumn.Index = tmResultHelper.Data;
             //
-             data = _excelConfiguration.DataColumn.Language;
-             tmResultHelper = HelperGeneration(data, tmpEntity, endColumn);
+            data = _excelConfiguration.DataColumn.Language;
+            tmResultHelper = HelperGeneration(data, tmpEntity, endColumn);
+
+            if (!tmResultHelper.Success)
+            {
+                messegeBuilder.Append(data.Name + " ");
+            }
+
             dataResults.Add(tmResultHelper);
             excelConfiguration.DataColumn.Language = tmResultHelper.Data;
             //
             data = _excelConfiguration.DataColumn.Page;
             tmResultHelper = HelperGeneration(data, tmpEntity, endColumn);
+
+            if (!tmResultHelper.Success)
+            {
+                messegeBuilder.Append(data.Name + " ");
+            }
+
             dataResults.Add(tmResultHelper);
             excelConfiguration.DataColumn.Page = tmResultHelper.Data;
             //
             data = _excelConfiguration.DataColumn.Picture;
             tmResultHelper = HelperGeneration(data, tmpEntity, endColumn);
+
+            if (!tmResultHelper.Success)
+            {
+                messegeBuilder.Append(data.Name + " ");
+            }
+
             dataResults.Add(tmResultHelper);
             excelConfiguration.DataColumn.Picture = tmResultHelper.Data;
             //
             data = _excelConfiguration.DataColumn.Section;
             tmResultHelper = HelperGeneration(data, tmpEntity, endColumn);
+
+            if (!tmResultHelper.Success)
+            {
+                messegeBuilder.Append(data.Name + " ");
+            }
+
             dataResults.Add(tmResultHelper);
             excelConfiguration.DataColumn.Section = tmResultHelper.Data;
             //
             data = _excelConfiguration.DataColumn.Sex;
             tmResultHelper = HelperGeneration(data, tmpEntity, endColumn);
+
+            if (!tmResultHelper.Success)
+            {
+                messegeBuilder.Append(data.Name + " ");
+            }
+
             dataResults.Add(tmResultHelper);
             excelConfiguration.DataColumn.Sex = tmResultHelper.Data;
 
-            if (dataResults.Any(p => p.Success == false))
+            if (dataResults.Any(p =>p.Success == false))
             {
                 dataResult.Success = false;
-                dataResult.Message= MessageHolder.
-                    GetErrorMessage(MessageType.IsNullOrEmpty);
+                dataResult.Message = MessageHolder.
+                    GetErrorMessage(MessageType.NotIsTitle)+" "+ messegeBuilder+")";
 
                 return dataResult;
             }
@@ -151,8 +188,8 @@ namespace WorkWithExcel.Model.Implement
         private IDataResult<Data> HelperGeneration
             (Data data, IExcelWorksheetEntity tmpEntity, int endColumn)
         {
-            IDataResult<Data> dataResult = 
-                new DataResult<Data>() {Success = false};
+            IDataResult<Data> dataResult =
+                new DataResult<Data>() { Success = false };
             string nameTitle = data.Name;
             nameTitle =
                 _dataNormalization.NormalizeString(nameTitle).Data;

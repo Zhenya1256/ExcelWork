@@ -1,15 +1,11 @@
-﻿using System;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using OfficeOpenXml;
 using WorkWithExcel.Abstract.Abstract;
 using WorkWithExcel.Abstract.Common;
 using WorkWithExcel.Abstract.Common.Config;
 using WorkWithExcel.Abstract.Entity;
+using WorkWithExcel.Abstract.Enums;
 using WorkWithExcel.Abstract.Holder;
 using WorkWithExcel.Model.Common;
 using WorkWithExcel.Model.Entity;
@@ -21,13 +17,17 @@ namespace WorkWithExcel.Model.Implement
         private readonly IValidata _validata;
         private readonly IGetExcelSheetCongSection _excelSheetCongSection;
         private readonly IParser _parser;
+        private readonly IDataNormalization _dataNormalization;
         private ExcelConfiguration _excelConfiguration;
+        private readonly IParser _parserSection;
 
         public ExcelDocumentProccesor()
         {
             _validata = new Validata();
             _parser = new Parser();
+            _dataNormalization = new DataNormalization();
             _excelSheetCongSection = new GetExcelSheetCongSection();
+            _parserSection = new ParserSectionPage();
             _excelConfiguration = ConfigurationHolder.ApiConfiguration;
         }
 
@@ -57,34 +57,51 @@ namespace WorkWithExcel.Model.Implement
                         using (var sheet = worksheet)
                         {
                             _parser.RowCount = sheet.Dimension.End.Row;
+                            _parserSection.RowCount = sheet.Dimension.End.Row;
+                            string sheetName = sheet.Name;
 
                             IResult isDataResult = _validata.VolidateExcel(sheet);
+                            bool success = true;
+                            dataResult.Message += MessageHolder.
+                                GetErrorMessage(MessageType.NamePage) + sheetName + "\n";
 
                             if (!isDataResult.Success)
                             {
-                                dataResult.Message = isDataResult.Message;
-
-                                return dataResult;
+                                dataResult.Message += isDataResult.Message;
+                                success = false;
                             }
+                            string tmpSheetName = _dataNormalization.NormalizeString(sheetName).Data;
+                            string configName = _excelConfiguration.NamePage.Section;
+                            configName = _dataNormalization.NormalizeString(configName).Data;
+                            IDataResult<IDataSheet> resultDataSheet;
 
-                            IResult resultConfig = _excelSheetCongSection.GetExcelConfig(sheet);
-
-                            if (!resultConfig.Success)
+                            if (tmpSheetName.Equals(configName))
                             {
-                                IDataResult<ExcelConfiguration> excelDataResult =
-                                    _excelSheetCongSection.GenerationExcelConfig(sheet);
+                                resultDataSheet = HelpProcessor(sheet, success, ExcelDocumentType.Section);
+                            }
+                            else
+                            {
+                                IResult resultConfig = _excelSheetCongSection.GetExcelConfig(sheet);
 
-                                if (!excelDataResult.Success)
+                                if (!resultConfig.Success)
                                 {
-                                    dataResult.Message = excelDataResult.Message;
+                                    IDataResult<ExcelConfiguration> excelDataResult =
+                                        _excelSheetCongSection.GenerationExcelConfig(sheet);
 
-                                    return dataResult;
+                                    if (!excelDataResult.Success)
+                                    {
+                                        dataResult.Message += excelDataResult.Message + "імя: " + sheetName;
+                                        success = false;
+                                    }
+
+                                    _excelConfiguration = excelDataResult.Data;
                                 }
 
-                                _excelConfiguration = excelDataResult.Data;
+                                resultDataSheet = HelpProcessor(sheet, success, ExcelDocumentType.None);
                             }
 
-                            IDataResult<IDataSheet> resultDataSheet = HelpProcessor(sheet);
+                            dataResult.Message += resultDataSheet.Message;
+                            dataResult.Message += "\n";
 
                             dataSheets.Add(resultDataSheet.Data);
                         }
@@ -93,41 +110,72 @@ namespace WorkWithExcel.Model.Implement
             }
 
             dataResult.Success = true;
+
             dataSheetResulHolder.DataSheets = dataSheets;
             dataResult.Data = dataSheetResulHolder;
 
             return dataResult;
         }
 
-        private IDataResult<IDataSheet> HelpProcessor(ExcelWorksheet sheet)
+        private IDataResult<IDataSheet> HelpProcessor(ExcelWorksheet sheet, bool success, ExcelDocumentType type)
         {
             IDataResult<IDataSheet> dataResult =
-                new DataResult<IDataSheet>() {Success = false};
-            
+                new DataResult<IDataSheet>() { Success = false };
+
             IDataSheet dataSheet = new DataSheet();
             List<IRowItem> rowItems = new List<IRowItem>();
             List<IRowItemError> errorRowItems = new List<IRowItemError>();
             IBaseExelEntety baseExelEntety = new BaseExelEntety();
-            baseExelEntety.SectionTranslates = new Dictionary<string, List<ITranslationEntity>>();
-            baseExelEntety.WordTranslates = new Dictionary<string, List<ITranslationEntity>>();
+            baseExelEntety.SectionTranslates = new Dictionary<IDataExcelEntity, List<ITranslationEntity>>();
+            baseExelEntety.WordTranslates = new Dictionary<IDataExcelEntity, List<ITranslationEntity>>();
+            dataSheet.NameTable = sheet.Name;
 
-            for (int j = sheet.Dimension.Start.Row + 1; j <= sheet.Dimension.End.Row; j++)
+            if (success)
             {
-                IDataResult<IRowItem> rowParserResult = _parser.RowParser(sheet, j, _excelConfiguration);
+                for (int j = sheet.Dimension.Start.Row + 1; j <= sheet.Dimension.End.Row; j++)
+                {
+                    IDataResult<IRowItem> rowParserResult = new DataResult<IRowItem>();
+                    switch (type)
+                    {
+                        case ExcelDocumentType.None:
+                            rowParserResult = _parser.RowParser(sheet, j, _excelConfiguration);
+                            break;
+                        case ExcelDocumentType.Section:
+                            rowParserResult = _parserSection.RowParser(sheet, j, _excelConfiguration);
+                            break;
+                    }
 
-                if (rowParserResult.Message != null)
-                {
-                    IRowItemError error = new RowItemError();
-                    error.ColumnItems = rowParserResult.Data.ColumnItems;
-                    errorRowItems.Add(error);
-                }
-                else
-                {
+                    if (rowParserResult.Message != null)
+                    {
+                        IRowItemError error = new RowItemError();
+                        error.ColumnItems = rowParserResult.Data.ColumnItems;
+                        dataResult.Message += rowParserResult.Message;
+                        error.RowNmomer = j;
+                        errorRowItems.Add(error);
+                    }
+                    //  else
+                    //   {
                     rowItems.Add(rowParserResult.Data);
+                    //  }
+                }
+
+                IDataResult<Dictionary<IDataExcelEntity, List<ITranslationEntity>>> normalizeSectionResult =
+                    _dataNormalization.NormaliseTranslite(rowItems, ColumnType.SectionTransfer);
+
+                if (normalizeSectionResult.Success)
+                {
+                    baseExelEntety.SectionTranslates = normalizeSectionResult.Data;
+                }
+
+                IDataResult<Dictionary<IDataExcelEntity, List<ITranslationEntity>>> normalizeWprdResult =
+                    _dataNormalization.NormaliseTranslite(rowItems, ColumnType.WorldSection);
+
+                if (normalizeWprdResult.Success)
+                {
+                    baseExelEntety.WordTranslates = normalizeWprdResult.Data;
                 }
             }
 
-            dataSheet.NameTable = sheet.Name;
             dataSheet.BaseExelEntety = baseExelEntety;
             dataSheet.RowItemErrors = errorRowItems;
             dataSheet.RowItems = rowItems;
@@ -136,5 +184,6 @@ namespace WorkWithExcel.Model.Implement
 
             return dataResult;
         }
+
     }
 }

@@ -31,7 +31,7 @@ namespace WorkWithExcel.Model.Implement
                 new DataResult<IRowItem>() { Success = false };
             IRowItem rowItem = new RowItem();
 
-            List<IColumnItem> columnItems = new List<IColumnItem>();
+            List<IColumnItem> columnItems = new List<IColumnItem>();      
 
             for (int j = excelWorksheet.Dimension.Start.Column;
                 j <excelWorksheet.Dimension.End.Column;
@@ -46,9 +46,12 @@ namespace WorkWithExcel.Model.Implement
                     ColumnParser(tmpEntity, excelConfiguration);
                 dataResult.Message += getDataResult.Message;
 
-               columnItems.Add(getDataResult.Data);
-
+                if (getDataResult.Success)
+                {
+                    columnItems.Add(getDataResult.Data);
+                }
             }
+
             rowItem.ColumnItems = columnItems;
             dataResult.Data = rowItem;
             dataResult.Success = true;
@@ -63,18 +66,25 @@ namespace WorkWithExcel.Model.Implement
                 new DataResult<IColumnItem>() {Success = false};
 
             IColumnItem columnItem = new ColumnItem();
-            int row = excelWorksheet.RowNo;
             int column = excelWorksheet.CellNo;
             IDataResult<string> resultValue = _getExcelData.GetValue(excelWorksheet);
+            int nomertitle = excelConfiguration.DataRowIndex.Title;
 
             if (!resultValue.Success)
             {
                 dataResult.Message = resultValue.Message;
             }
 
+            IExcelWorksheetEntity tmpExcel = new ExcelWorksheetEntity();
+            tmpExcel.RowNo = nomertitle;
+            tmpExcel.ExcelWorksheet = excelWorksheet.ExcelWorksheet;
+            tmpExcel.CellNo = column;
+            string nameTitle = _getExcelData.GetValue(tmpExcel).Data;
+
             if (column == excelConfiguration.DataColumn.Picture.Nomer)
             {
                 columnItem.ColumnType = ColumnType.Picture;
+              
             }
             else if (column == excelConfiguration.DataColumn.Index.Nomer)
             {
@@ -99,22 +109,19 @@ namespace WorkWithExcel.Model.Implement
             }
             else
             {
-                excelWorksheet.RowNo = excelConfiguration.DataRowIndex.Title;
-                IDataResult < string > titleNameResult= _getExcelData.GetValue(excelWorksheet);
-
-                //if (!titleNameResult.Success)
-                //{
-                //    dataResult.Message = titleNameResult.Message;
-
-                //    return dataResult;
-                //}
-
-                string titleName = titleNameResult.Data;
-                titleName = _dataNormalization.NormalizeString(titleName).Data;
+                
+                nameTitle = _dataNormalization.NormalizeString(nameTitle).Data;
                 string configName = excelConfiguration.DataColumn.Section.Name;
                 configName = _dataNormalization.NormalizeString(configName).Data;
 
-                if (titleName.Contains(configName))
+                if (nameTitle == null)
+                {
+                    dataResult.Success = false;
+
+                    return dataResult;
+                }
+
+                if (nameTitle.Contains(configName))
                 {
                     columnItem.ColumnType = ColumnType.SectionTransfer;
                 }
@@ -125,8 +132,10 @@ namespace WorkWithExcel.Model.Implement
             }
 
             columnItem.Value = resultValue.Data;
+            columnItem.NameTitle = nameTitle;
             dataResult.Data = columnItem;
-            
+            dataResult.Success = true;
+
             return dataResult;
         }
 

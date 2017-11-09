@@ -52,14 +52,15 @@
     <Compile Include="Entity\HelperEntity\ExcelWorksheetEntity.cs" />
     <Compile Include="Entity\RowItem.cs" />
     <Compile Include="Entity\RowItemError.cs" />
-    <Compile Include="Entity\TranslateEntity.cs" />
-    <Compile Include="Entity\TranslateSectionEntity.cs" />
+    <Compile Include="Entity\DataExcelEntity.cs" />
+    <Compile Include="Entity\TranslationEntity.cs" />
     <Compile Include="Implement\DataNormalization.cs" />
     <Compile Include="Implement\DataSheetResulHolder.cs" />
     <Compile Include="Implement\ExcelDocumentProccesor.cs" />
     <Compile Include="Implement\GetExcelData.cs" />
     <Compile Include="Implement\GetExcelSheetCongSection.cs" />
     <Compile Include="Implement\Parser.cs" />
+    <Compile Include="Implement\ParserSectionPage.cs" />
     <Compile Include="Implement\Validata.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

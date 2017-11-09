@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace WorkWithExcel.Abstract.Entity
 {
-    public interface IExcelColor : IDataExcelEntity
+    public interface IExcelColor
     {
         int R { get; set; }
         int G { get; set; }

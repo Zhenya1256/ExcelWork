@@ -15,5 +15,11 @@ namespace WorkWithExcel.BL.Entity
         public string PageNomer { get; set; }
         public SexType SexType { get; set; }
         public Dictionary<string, string> TranslateDictionary { get; set; }
+        public int R { get; set; }
+        public int G { get; set; }
+        public int B { get; set; }
+        public string NameTitle { get; set; }
+        public string Value { get; set; }
+        public string PathImage { get; set; }
     }
 }

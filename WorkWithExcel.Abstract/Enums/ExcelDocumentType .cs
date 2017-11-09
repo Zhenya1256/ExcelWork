@@ -8,7 +8,9 @@ namespace WorkWithExcel.Abstract.Enums
 {
     public enum ExcelDocumentType
     {
+        None,
         IndexPage,
-        WithoutIndexPage
+        WithoutIndexPage,
+        Section
     }
 }

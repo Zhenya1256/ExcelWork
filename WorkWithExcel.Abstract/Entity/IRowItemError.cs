@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace WorkWithExcel.Abstract.Entity
 {
-   public interface IRowItemError
+   public interface IRowItemError :IRowItem
     {
-        List<IColumnItem> ColumnItems { get; set; }
+        int RowNmomer { get; set; }
     }
 }

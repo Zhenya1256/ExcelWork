@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using WorkWithExcel.Abstract.Common;
 using WorkWithExcel.Abstract.Entity;
+using WorkWithExcel.Abstract.Enums;
 
 namespace WorkWithExcel.Abstract.Abstract
 {
@@ -14,6 +15,8 @@ namespace WorkWithExcel.Abstract.Abstract
             (Dictionary<string, IDataExcelEntity> translateEntities);
 
         IDataResult<string> NormalizeString(string data);
+        IDataResult<Dictionary<IDataExcelEntity, List<ITranslationEntity>>> 
+            NormaliseTranslite(List<IRowItem> listRowItems, ColumnType type);
 
     }
 }

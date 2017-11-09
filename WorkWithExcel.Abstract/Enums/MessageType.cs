@@ -9,6 +9,8 @@
         NotTranslate,
         AlreadyAddLanguage,
         IsNullOrEmpty,
-        DocumentIsEmpty
+        DocumentIsEmpty,
+        NotIsTitle,
+        NamePage
     }
 }

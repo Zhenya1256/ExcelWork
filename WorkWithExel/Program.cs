@@ -20,7 +20,7 @@ namespace WorkWithExel
     {
         static void Main(string[] args)
         {
-            string path = "exp.xlsx";
+            string path = "exp1.xlsx";
 
             IExcelDocumentProccesor excelDocument = new ExcelDocumentProccesor();
             excelDocument.Processor(path);
