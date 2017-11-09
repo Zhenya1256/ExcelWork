@@ -6,9 +6,14 @@ using System.Threading.Tasks;
 
 namespace WorkWithExcel.Abstract.Entity
 {
-    public interface ITranslationEntity
+    public interface ITranslationEntity : IBaseEntity
     {
         string NameTitle { get; set; }
+        string Value { get; set; }
+    }
+
+    public interface IBaseEntity
+    {
         string Value { get; set; }
     }
 }

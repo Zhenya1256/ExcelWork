@@ -11,7 +11,9 @@ namespace WorkWithExcel.Model.Entity
     public class ColumnItem : IColumnItem
     {
         public ColumnType ColumnType { get; set; }
+        //int coluinNub
         public string Value { get; set; }
         public string NameTitle { get; set; }
+        //private IBaseEntity Entity { get; set; }
     }
 }

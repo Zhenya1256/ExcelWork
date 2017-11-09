@@ -12,6 +12,9 @@ namespace WorkWithExcel.Model.Implement
 {
     public class DataSheetResulHolder : IDataSheetResulHolder
     {
+        //IBaseExelEntety BaseExelEntety { get; set; }
+        IDictionary<ITranslationEntity, List<ITranslationEntity>> iNDEXTranslates { get; set; }
+
         public IResult AppendColumn(ExcelWorksheet excelWorksheet, int column)
         {
             throw new NotImplementedException();
@@ -28,6 +31,6 @@ namespace WorkWithExcel.Model.Implement
         }
 
         public List<IDataSheet> DataSheets { get; set; }
-     
+        
     }
 }

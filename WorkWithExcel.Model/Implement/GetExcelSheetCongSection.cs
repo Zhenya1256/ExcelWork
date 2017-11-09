@@ -61,7 +61,7 @@ namespace WorkWithExcel.Model.Implement
             results.Add(HelpGetConfig(data, tmpEntity));
 
 
-            result.Success = !results.Any(p => p.Success == false);
+            result.Success = results.All(p => p.Success);
 
             return result;
         }

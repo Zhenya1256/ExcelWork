@@ -10,7 +10,6 @@ namespace WorkWithExcel.Abstract.Entity
     {
         List<IRowItem> RowItems { get; set; }
         List<IRowItemError> RowItemErrors { get; set; }
-        IBaseExelEntety BaseExelEntety { get; set; }
         int RowCount { get; set; }
         string NameTable { get; set; }
     }

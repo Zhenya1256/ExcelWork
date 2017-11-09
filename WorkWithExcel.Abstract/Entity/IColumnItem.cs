@@ -7,9 +7,11 @@ using WorkWithExcel.Abstract.Enums;
 
 namespace WorkWithExcel.Abstract.Entity
 {
-    public interface IColumnItem : ITranslationEntity
+    public interface IColumnItem
     {
         ColumnType ColumnType { get; set; }
+        IBaseEntity BaseEntity { get; set; }
+        int ColumNumber { get; set; }
     }
 
 }

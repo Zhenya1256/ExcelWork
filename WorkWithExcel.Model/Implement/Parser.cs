@@ -145,7 +145,7 @@ namespace WorkWithExcel.Model.Implement
                 columnItem.Value = resultValue.Data;
             }
 
-         
+        
             columnItem.NameTitle = nameTitle;
             dataResult.Data = columnItem;
             dataResult.Success = true;
