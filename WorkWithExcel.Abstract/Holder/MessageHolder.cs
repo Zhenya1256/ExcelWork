@@ -30,6 +30,7 @@ namespace WorkWithExcel.Abstract.Holder
             _messagesDictionary.Add(MessageType.NotIsTitle, String.Format("сторінку Excel не з читано, оскільки " +
                                                             "не хватає заголовків, чи вони не вірно названі такі як: (" ));
             _messagesDictionary.Add(MessageType.NamePage, "ошибки сторінки ");
+           // _messagesDictionary.Add(MessageType.NotPageSection,"Немає сторінки секції");
             //NotTranslate
         }
 

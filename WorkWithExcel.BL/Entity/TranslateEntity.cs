@@ -18,5 +18,6 @@ namespace WorkWithExcel.BL.Entity
         public string PageNomer { get; set; }
         public SexType SexType { get; set; }
         public IExcelColor ExcelColor { get; set; }
+        public string Language { get; set; }
     }
 }

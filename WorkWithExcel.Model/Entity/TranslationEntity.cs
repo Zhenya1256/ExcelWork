@@ -9,7 +9,7 @@ namespace WorkWithExcel.Model.Entity
 {
     public class TranslationEntity : ITranslationEntity
     {
-        public string NameTitle { get; set; }
         public string Value { get; set; }
+        public string Language { get; set; }
     }
 }

@@ -8,8 +8,7 @@ namespace WorkWithExcel.Abstract.Entity
 {
     public interface ITranslationEntity : IBaseEntity
     {
-        string NameTitle { get; set; }
-        string Value { get; set; }
+        string Language { get; set; }
     }
 
     public interface IBaseEntity

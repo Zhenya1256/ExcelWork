@@ -6,15 +6,16 @@ using System.Threading.Tasks;
 using OfficeOpenXml;
 using WorkWithExcel.Abstract.Abstract;
 using WorkWithExcel.Abstract.Common;
+using WorkWithExcel.Abstract.Common.Config;
 using WorkWithExcel.Abstract.Entity;
+using WorkWithExcel.Abstract.Enums;
 
 namespace WorkWithExcel.Model.Implement
 {
     public class DataSheetResulHolder : IDataSheetResulHolder
     {
         //IBaseExelEntety BaseExelEntety { get; set; }
-        IDictionary<ITranslationEntity, List<ITranslationEntity>> iNDEXTranslates { get; set; }
-
+       
         public IResult AppendColumn(ExcelWorksheet excelWorksheet, int column)
         {
             throw new NotImplementedException();
@@ -29,6 +30,11 @@ namespace WorkWithExcel.Model.Implement
         {
             throw new NotImplementedException();
         }
+
+        public Dictionary<ITranslationEntity, List<ITranslationEntity>> IndexTranslates { get; set; }
+        public ExcelConfiguration ExcelConfiguration { get; set; }//спитити бо кофіги для кожного листа різіні!
+        public string NameExcel { get; set; }
+        public ExcelDocumentType ExcelDocumentType { get; set; }
 
         public List<IDataSheet> DataSheets { get; set; }
         

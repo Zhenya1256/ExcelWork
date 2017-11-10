@@ -7,7 +7,7 @@ using WorkWithExcel.Abstract.Entity;
 
 namespace WorkWithExcel.BL.Entity
 {
-   public class TranslateSectionEntity : ITranslateSectionEntity
+   public class TranslateSectionEntity 
     {
         public Dictionary<string, string> TranslateSection { get; set; }
     }

@@ -41,31 +41,31 @@ namespace WorkWithExcel.Model.Implement
             return dataResult;
         }
 
-        public IDataResult<Dictionary<IDataExcelEntity, List<ITranslationEntity>>>
-            NormaliseTransliteWord(List<IRowItem> listRowItems)
-        {
-            Dictionary<IDataExcelEntity, List<ITranslationEntity>> transltionDictionary;
-            IDataResult<Dictionary<IDataExcelEntity, List<ITranslationEntity>>> resultTranslations =
-                new DataResult<Dictionary<IDataExcelEntity, List<ITranslationEntity>>>();
+        //public IDataResult<Dictionary<IDataExcelEntity, List<ITranslationEntity>>>
+        //    NormaliseTransliteWord(List<IRowItem> listRowItems)
+        //{
+        //    Dictionary<IDataExcelEntity, List<ITranslationEntity>> transltionDictionary;
+        //    IDataResult<Dictionary<IDataExcelEntity, List<ITranslationEntity>>> resultTranslations =
+        //        new DataResult<Dictionary<IDataExcelEntity, List<ITranslationEntity>>>();
 
-            IDataResult<Dictionary<IDataExcelEntity, List<ITranslationEntity>>> dataResultSection =
-                HelperNormaliseTransliteWord(listRowItems);
+        //    IDataResult<Dictionary<IDataExcelEntity, List<ITranslationEntity>>> dataResultSection =
+        //        HelperNormaliseTransliteWord(listRowItems);
 
-            if (!dataResultSection.Success)
-            {
-                resultTranslations.Message = dataResultSection.Message;
-                resultTranslations.Success = false;
+        //    if (!dataResultSection.Success)
+        //    {
+        //        resultTranslations.Message = dataResultSection.Message;
+        //        resultTranslations.Success = false;
 
-                return resultTranslations;
-            }
+        //        return resultTranslations;
+        //    }
 
-            transltionDictionary = dataResultSection.Data;
+        //    transltionDictionary = dataResultSection.Data;
 
-            resultTranslations.Success = true;
-            resultTranslations.Data = transltionDictionary;
+        //    resultTranslations.Success = true;
+        //    resultTranslations.Data = transltionDictionary;
 
-            return resultTranslations;
-        }
+        //    return resultTranslations;
+        //}
 
         public IDataResult<Dictionary<ITranslationEntity, List<ITranslationEntity>>>
             NormaliseTransliteSection(List<IRowItem> listRowItems)
@@ -108,19 +108,23 @@ namespace WorkWithExcel.Model.Implement
 
                 foreach (var columnItem in rowItem.ColumnItems)
                 {
+                    ITranslationEntity entity = columnItem.BaseEntity as ITranslationEntity;
+
                     switch (columnItem.ColumnType)
                     {
                         case ColumnType.Section:
-                            translationKey.Value = columnItem.Value;
-                            translationKey.NameTitle = columnItem.NameTitle;
+
+                            if (entity != null)
+                            {
+                                translationKey.Value = entity.Value;
+                                translationKey.Language = entity.Language;
+                            }
                             break;
 
                         case ColumnType.SectionTransfer:
                             ITranslationEntity tmpEntity = new TranslationEntity();
-                            tmpEntity.NameTitle = columnItem.NameTitle;
-                            tmpEntity.Value = columnItem.Value;
-
-
+                            tmpEntity.Language = entity.Language;
+                            tmpEntity.Value = entity.Value;
                             translationEntities.Add(tmpEntity);
                             break;
 
@@ -135,84 +139,84 @@ namespace WorkWithExcel.Model.Implement
             return dataResult;
         }
 
-        private IDataResult<Dictionary<IDataExcelEntity, List<ITranslationEntity>>>
-            HelperNormaliseTransliteWord(List<IRowItem> listRowItems)
-        {
-            Dictionary<IDataExcelEntity, List<ITranslationEntity>> words =
-                new Dictionary<IDataExcelEntity, List<ITranslationEntity>>();
+        //private IDataResult<Dictionary<IDataExcelEntity, List<ITranslationEntity>>>
+        //    HelperNormaliseTransliteWord(List<IRowItem> listRowItems)
+        //{
+        //    Dictionary<IDataExcelEntity, List<ITranslationEntity>> words =
+        //        new Dictionary<IDataExcelEntity, List<ITranslationEntity>>();
 
-            IDataResult<Dictionary<IDataExcelEntity, List<ITranslationEntity>>> dataResult =
-                new DataResult<Dictionary<IDataExcelEntity, List<ITranslationEntity>>>();
+        //    IDataResult<Dictionary<IDataExcelEntity, List<ITranslationEntity>>> dataResult =
+        //        new DataResult<Dictionary<IDataExcelEntity, List<ITranslationEntity>>>();
 
-            foreach (var rowItem in listRowItems)
-            {
-                List<ITranslationEntity> translationEntities = new List<ITranslationEntity>();
-                IDataExcelEntity translationKey = new DataExcelEntity();
+        //    foreach (var rowItem in listRowItems)
+        //    {
+        //        List<ITranslationEntity> translationEntities = new List<ITranslationEntity>();
+        //        IDataExcelEntity translationKey = new DataExcelEntity();
 
-                foreach (var columnItem in rowItem.ColumnItems)
-                {
-                    switch (columnItem.ColumnType)
-                    {
-                        case ColumnType.Language:
-                            translationKey.Value = columnItem.Value;
-                            translationKey.NameTitle = columnItem.NameTitle;
-                            break;
-                        case ColumnType.Index:
-                            translationKey.Index = columnItem.Value;
-                            break;
-                        case ColumnType.Page:
-                            translationKey.PageNomer = columnItem.Value;
-                            break;
-                        case ColumnType.Picture:
-                            IExcelColor excelColor = new ExcelColor();
+        //        foreach (var columnItem in rowItem.ColumnItems)
+        //        {
+        //            switch (columnItem.ColumnType)
+        //            {
+        //                case ColumnType.Language:
+        //                    translationKey.Value = columnItem.Value;
+        //                    translationKey.NameTitle = columnItem.NameTitle;
+        //                    break;
+        //                case ColumnType.Index:
+        //                    translationKey.Index = columnItem.Value;
+        //                    break;
+        //                case ColumnType.Page:
+        //                    translationKey.PageNomer = columnItem.Value;
+        //                    break;
+        //                case ColumnType.Picture:
+        //                    IExcelColor excelColor = new ExcelColor();
 
-                            if (!string.IsNullOrEmpty(columnItem.Value))
-                            {
-                                Color color = ColorTranslator.FromHtml("#" + columnItem.Value);
-                                excelColor.R = color.R;
-                                excelColor.G = color.G;
-                                excelColor.B = color.B;
-                                translationKey.ExcelColor = excelColor;
-                            }
-                            else
-                            {
-                                translationKey.PathImage = columnItem.Value;
-                            }
-                            break;
-                        case ColumnType.Sex:
+        //                    if (!string.IsNullOrEmpty(columnItem.Value))
+        //                    {
+        //                        Color color = ColorTranslator.FromHtml("#" + columnItem.Value);
+        //                        excelColor.R = color.R;
+        //                        excelColor.G = color.G;
+        //                        excelColor.B = color.B;
+        //                        translationKey.ExcelColor = excelColor;
+        //                    }
+        //                    else
+        //                    {
+        //                        translationKey.PathImage = columnItem.Value;
+        //                    }
+        //                    break;
+        //                case ColumnType.Sex:
 
-                            if (columnItem.Value != null)
-                            {
-                                foreach (var sexTypeValue in Enum.GetValues(typeof(SexType)))
-                                {
-                                    if (sexTypeValue.ToString().ToLower().Equals(columnItem.Value.ToLower()))
-                                    {
-                                        translationKey.SexType = (SexType)sexTypeValue;
-                                        break;
-                                    }
-                                }
-                            }
-                            break;
-                        case ColumnType.WorldSection:
-                            ITranslationEntity tmpEntity = new TranslationEntity();
-                            tmpEntity.NameTitle = columnItem.NameTitle;
-                            tmpEntity.Value = columnItem.Value;
-                            translationEntities.Add(tmpEntity);
+        //                    if (columnItem.Value != null)
+        //                    {
+        //                        foreach (var sexTypeValue in Enum.GetValues(typeof(SexType)))
+        //                        {
+        //                            if (sexTypeValue.ToString().ToLower().Equals(columnItem.Value.ToLower()))
+        //                            {
+        //                                translationKey.SexType = (SexType)sexTypeValue;
+        //                                break;
+        //                            }
+        //                        }
+        //                    }
+        //                    break;
+        //                case ColumnType.WorldSection:
+        //                    ITranslationEntity tmpEntity = new TranslationEntity();
+        //                    tmpEntity.NameTitle = columnItem.NameTitle;
+        //                    tmpEntity.Value = columnItem.Value;
+        //                    translationEntities.Add(tmpEntity);
 
-                            break;
-                    }
-                }
+        //                    break;
+        //            }
+        //        }
 
-                if (translationEntities.Any() && translationKey.NameTitle != null)
-                {
-                    words.Add(translationKey, translationEntities);
-                }
-            }
-            dataResult.Success = true;
-            dataResult.Data = words;
+        //        if (translationEntities.Any() && translationKey.NameTitle != null)
+        //        {
+        //            words.Add(translationKey, translationEntities);
+        //        }
+        //    }
+        //    dataResult.Success = true;
+        //    dataResult.Data = words;
 
-            return dataResult;
-        }
+        //    return dataResult;
+        //}
 
         private string Replace(string data, string sym)
         {

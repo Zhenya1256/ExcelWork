@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using OfficeOpenXml;
 using WorkWithExcel.Abstract.Abstract;
 using WorkWithExcel.Abstract.Common;
@@ -32,9 +33,19 @@ namespace WorkWithExcel.Model.Implement
             return result;
         }
 
-        public IResult ValidataExcel(string path)
+        public IResult ValidateExcelPages(ExcelWorksheets excelWorksheets)
         {
-            throw new NotImplementedException();
+            IResult result = new Result() {Success = false};
+
+            if (!excelWorksheets.Any())
+            {
+                result.Message = MessageHolder.GetErrorMessage(MessageType.DocumentIsEmpty);
+
+                return result;
+            }
+            result.Success = true;
+
+            return result;
         }
 
         public IResult ValidataExcelPath(string path)
@@ -61,24 +72,6 @@ namespace WorkWithExcel.Model.Implement
             return result;
         }
 
-        public IDataResult<string> GetValue(IExcelWorksheetEntity excelWorksheetEntity)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IDataResult<SexType> GetSexType(IExcelWorksheetEntity excelWorksheetEntity)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IDataResult<Dictionary<string, string>> GetTranslateEntity(IExcelWorksheetEntity excelWorksheetEntity)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IDataResult<IExcelColor> GetColorValue(IExcelWorksheetEntity excelWorksheetEntity)
-        {
-            throw new NotImplementedException();
-        }
+     
     }
 }

@@ -19,12 +19,12 @@ namespace WorkWithExcel.Model.Implement
 {
    public class ParserSectionPage : IParser
     {
-        private readonly IGetExcelData _getExcelData;
+        private readonly IReadExcelData _readExcelData;
         private readonly IDataNormalization _dataNormalization;
 
         public ParserSectionPage()
         {
-            _getExcelData = new GetExcelData();
+            _readExcelData = new ReadExcelData();
             _dataNormalization = new DataNormalization();
         }
 
@@ -71,7 +71,7 @@ namespace WorkWithExcel.Model.Implement
 
             IColumnItem columnItem = new ColumnItem();
             int column = worksheetEntity.CellNo;
-            IDataResult<string> resultValue = _getExcelData.GetValue(worksheetEntity);
+            IDataResult<string> resultValue = _readExcelData.GetValue(worksheetEntity);
             int nomertitle = excelConfiguration.DataRowIndex.Title;
 
             if (!resultValue.Success)
@@ -84,7 +84,7 @@ namespace WorkWithExcel.Model.Implement
             tmpExcel.ExcelWorksheet = worksheetEntity.ExcelWorksheet;
             tmpExcel.CellNo = column;
 
-            IDataResult<string> resultNameTitle = _getExcelData.GetValue(tmpExcel);
+            IDataResult<string> resultNameTitle = _readExcelData.GetValue(tmpExcel);
 
             if (!resultNameTitle.Success)
             {
@@ -96,24 +96,26 @@ namespace WorkWithExcel.Model.Implement
 
             string titleConfig = excelConfiguration.DataColumn.Section.Name;
             titleConfig = _dataNormalization.NormalizeString(titleConfig).Data;
+            ITranslationEntity translationEntity = new TranslationEntity();
+            translationEntity.Language = nameTitle;
+            translationEntity.Value = resultValue.Data;
 
             if (nameTitle.Equals(titleConfig))
             {
                 columnItem.ColumnType = ColumnType.Section;
-                columnItem.NameTitle = nameTitle;
-
+                                         
                 if (!resultValue.Success)
                 {
                     dataResult.Message = resultValue.Message;
 
                     return dataResult;
                 }
-                columnItem.Value = resultValue.Data;
+                
+                columnItem.BaseEntity = translationEntity;
             }
             else
             {
                 columnItem.ColumnType = ColumnType.SectionTransfer;
-                columnItem.NameTitle = nameTitle;
 
                 if (!resultValue.Success)
                 {
@@ -122,7 +124,7 @@ namespace WorkWithExcel.Model.Implement
                     return dataResult;
                 }
 
-                columnItem.Value = resultValue.Data;
+                columnItem.BaseEntity = translationEntity;
             }
 
             dataResult.Data = columnItem;

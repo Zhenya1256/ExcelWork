@@ -55,7 +55,7 @@
   <ItemGroup>
     <Compile Include="Abstract\IDataNormalization.cs" />
     <Compile Include="Abstract\IExcelDocumentProccesor.cs" />
-    <Compile Include="Abstract\IGetExcelData.cs" />
+    <Compile Include="Abstract\IReadExcelData.cs" />
     <Compile Include="Abstract\IGetExcelSheetCongSection.cs" />
     <Compile Include="Abstract\IParser.cs" />
     <Compile Include="Abstract\IValidata.cs" />
@@ -75,7 +75,6 @@
     <Compile Include="Entity\IRowItemError.cs" />
     <Compile Include="Entity\IDataExcelEntity.cs" />
     <Compile Include="Entity\ITranslateImgEntity.cs" />
-    <Compile Include="Entity\ITranslateSectionEntity.cs" />
     <Compile Include="Entity\ITranslationEntity.cs" />
     <Compile Include="Entity\ILoadItemEntity.cs" />
     <Compile Include="Entity\IRowItem.cs" />

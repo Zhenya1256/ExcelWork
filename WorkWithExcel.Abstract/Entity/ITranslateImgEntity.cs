@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace WorkWithExcel.Abstract.Entity
 {
-   public interface ITranslateImgEntity
+   public interface ITranslateImgEntity : IBaseEntity
     {
-        string PathImage { get; set; }
+     
     }
 }

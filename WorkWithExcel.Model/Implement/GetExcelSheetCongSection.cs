@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using OfficeOpenXml;
@@ -16,13 +17,13 @@ namespace WorkWithExcel.Model.Implement
 {
     public class GetExcelSheetCongSection : IGetExcelSheetCongSection
     {
-        private readonly IGetExcelData _getExcelData;
+        private readonly IReadExcelData _readExcelData;
         private readonly IDataNormalization _dataNormalization;
         private readonly ExcelConfiguration _excelConfiguration;
-
+        
         public GetExcelSheetCongSection()
         {
-            _getExcelData = new GetExcelData();
+            _readExcelData = new ReadExcelData();
             _dataNormalization = new DataNormalization();
             _excelConfiguration = ConfigurationHolder.ApiConfiguration;
         }
@@ -71,7 +72,7 @@ namespace WorkWithExcel.Model.Implement
         {
             IResult result = new Result() { Success = false };
             IDataResult<string> tmpDataResultValue =
-                _getExcelData.GetValue(tmpEntity);
+                _readExcelData.GetValue(tmpEntity);
             string nameTitle = tmpDataResultValue.Data;
             nameTitle =
                 _dataNormalization.NormalizeString(nameTitle).Data;
@@ -198,7 +199,7 @@ namespace WorkWithExcel.Model.Implement
             {
                 tmpEntity.CellNo = i;
                 IDataResult<string> tmpDataResultValue =
-                    _getExcelData.GetValue(tmpEntity);
+                    _readExcelData.GetValue(tmpEntity);
 
                 if (!tmpDataResultValue.Success)
                 {

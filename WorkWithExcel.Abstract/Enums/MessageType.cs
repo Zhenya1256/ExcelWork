@@ -11,6 +11,7 @@
         IsNullOrEmpty,
         DocumentIsEmpty,
         NotIsTitle,
-        NamePage
+        NamePage,
+        NotPageSection
     }
 }

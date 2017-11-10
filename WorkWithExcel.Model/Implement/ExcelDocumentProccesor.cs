@@ -5,10 +5,12 @@ using WorkWithExcel.Abstract.Abstract;
 using WorkWithExcel.Abstract.Common;
 using WorkWithExcel.Abstract.Common.Config;
 using WorkWithExcel.Abstract.Entity;
+using WorkWithExcel.Abstract.Entity.HelpEntity;
 using WorkWithExcel.Abstract.Enums;
 using WorkWithExcel.Abstract.Holder;
 using WorkWithExcel.Model.Common;
 using WorkWithExcel.Model.Entity;
+using WorkWithExcel.Model.Entity.HelperEntity;
 
 namespace WorkWithExcel.Model.Implement
 {
@@ -17,6 +19,7 @@ namespace WorkWithExcel.Model.Implement
         private readonly IValidata _validata;
         private readonly IGetExcelSheetCongSection _excelSheetCongSection;
         private readonly IParser _parser;
+        private readonly IReadExcelData _readExcelData;
         private readonly IDataNormalization _dataNormalization;
         private ExcelConfiguration _excelConfiguration;
         private readonly IParser _parserSection;
@@ -25,6 +28,7 @@ namespace WorkWithExcel.Model.Implement
         {
             _validata = new Validata();
             _parser = new Parser();
+            _readExcelData = new ReadExcelData();
             _dataNormalization = new DataNormalization();
             _excelSheetCongSection = new GetExcelSheetCongSection();
             _parserSection = new ParserSectionPage();
@@ -37,7 +41,7 @@ namespace WorkWithExcel.Model.Implement
                 new DataResult<IDataSheetResulHolder>() { Success = false };
             IDataSheetResulHolder dataSheetResulHolder = new DataSheetResulHolder();
             List<IDataSheet> dataSheets = new List<IDataSheet>();
-
+            dataSheetResulHolder.ExcelDocumentType = ExcelDocumentType.WithoutIndexPage;
             IResult result = _validata.ValidataExcelPath(path);
 
             if (!result.Success)
@@ -48,11 +52,25 @@ namespace WorkWithExcel.Model.Implement
                 return dataResult;
             }
 
+            dataSheetResulHolder.NameExcel = Path.GetFileName(path);
+
             using (var file = File.Open(path, FileMode.Open))
             {
                 using (var xls = new ExcelPackage(file))
                 {
-                    foreach (var worksheet in xls.Workbook.Worksheets)
+                    ExcelWorksheets tempWorksheets = xls.Workbook.Worksheets;
+
+                    IResult excelDocResult = _validata.ValidateExcelPages(tempWorksheets);
+
+                    if (!excelDocResult.Success)
+                    {
+                        dataResult.Message += excelDocResult.Message;
+                        dataResult.Success = false;
+
+                        return dataResult;
+                    }
+
+                    foreach (var worksheet in tempWorksheets)
                     {
                         using (var sheet = worksheet)
                         {
@@ -74,12 +92,23 @@ namespace WorkWithExcel.Model.Implement
                             string tmpSheetName = _dataNormalization.NormalizeString(sheetName).Data;
                             string configName = _excelConfiguration.NamePage.Section;
                             configName = _dataNormalization.NormalizeString(configName).Data;
-                            IDataResult<IDataSheet> resultDataSheet;
+                            IDataResult<IDataSheet> resultDataSheet = new DataResult<IDataSheet>();
 
                             if (tmpSheetName.Equals(configName))
                             {
-                                resultDataSheet = HelpProcessor
-                                    (sheet, success, ExcelDocumentType.Section);
+                                dataSheetResulHolder.ExcelDocumentType = ExcelDocumentType.IndexPage;
+                                IDataResult<Dictionary<ITranslationEntity, List<ITranslationEntity>>>
+                                    tempSectionTranslation = GetSectionTranslation(sheet);
+
+                                if (tempSectionTranslation.Success)
+                                {
+                                    dataSheetResulHolder.IndexTranslates = tempSectionTranslation.Data;
+                                    dataResult.Message += tempSectionTranslation.Message;
+                                }
+                                else
+                                {
+                                    dataResult.Message += tempSectionTranslation.Message;
+                                }
                             }
                             else
                             {
@@ -97,15 +126,18 @@ namespace WorkWithExcel.Model.Implement
                                     }
 
                                     _excelConfiguration = excelDataResult.Data;
+                                    dataSheetResulHolder.ExcelConfiguration = excelDataResult.Data;
                                 }
 
-                                resultDataSheet = HelpProcessor(sheet, success, ExcelDocumentType.None);
+                                resultDataSheet = HelpProcessor(sheet, success);
+
+                                dataSheets.Add(resultDataSheet.Data);
                             }
 
                             dataResult.Message += resultDataSheet.Message;
                             dataResult.Message += "\n";
 
-                            dataSheets.Add(resultDataSheet.Data);
+                           
                         }
                     }
                 }
@@ -120,7 +152,7 @@ namespace WorkWithExcel.Model.Implement
         }
 
         private IDataResult<IDataSheet> HelpProcessor
-            (ExcelWorksheet sheet, bool success, ExcelDocumentType type)
+            (ExcelWorksheet sheet, bool success)
         {
             IDataResult<IDataSheet> dataResult =
                 new DataResult<IDataSheet>() { Success = false };
@@ -129,53 +161,38 @@ namespace WorkWithExcel.Model.Implement
             List<IRowItem> rowItems = new List<IRowItem>();
             List<IRowItemError> errorRowItems = new List<IRowItemError>();
             IBaseExelEntety baseExelEntety = new BaseExelEntety();
-            baseExelEntety.SectionTranslates = new Dictionary<ITranslationEntity, List<ITranslationEntity>>();
-            baseExelEntety.WordTranslates = new Dictionary<IDataExcelEntity, List<ITranslationEntity>>();
             dataSheet.NameTable = sheet.Name;
 
             if (success)
             {
-                for (int j = sheet.Dimension.Start.Row + 1; j <= sheet.Dimension.End.Row; j++)
-                {
-                    IDataResult<IRowItem> rowParserResult = new DataResult<IRowItem>();
-                    switch (type)
-                    {
-                        case ExcelDocumentType.None:
-                            rowParserResult = _parser.RowParser(sheet, j, _excelConfiguration);
-                            break;
-                        case ExcelDocumentType.Section:
-                            rowParserResult = _parserSection.RowParser(sheet, j, _excelConfiguration);
-                            break;
-                    }
+                IDataResult<List<IColumnItem>> columnResult = GetCulumnTitleItem(sheet);
 
-                    if (rowParserResult.Message != null)
-                    {
-                        IRowItemError error = new RowItemError();
-                        error.ColumnItems = rowParserResult.Data.ColumnItems;
-                        dataResult.Message += rowParserResult.Message;
-                        error.RowNmomer = j;
-                        errorRowItems.Add(error);
-                    }
-                    //  else
-                    //   {
-                    rowItems.Add(rowParserResult.Data);
-                    //  }
+                if (!columnResult.Success)
+                {
+                    dataResult.Message += columnResult.Message;
                 }
-
-                IDataResult<Dictionary<ITranslationEntity, List<ITranslationEntity>>> normalizeSectionResult =
-                    _dataNormalization.NormaliseTransliteSection(rowItems);
-
-                if (normalizeSectionResult.Success)
+                else
                 {
-                    baseExelEntety.SectionTranslates = normalizeSectionResult.Data;
-                }
+                    dataSheet.ColumnTitleItems = columnResult.Data;
 
-                IDataResult<Dictionary<IDataExcelEntity, List<ITranslationEntity>>> normalizeWprdResult =
-                    _dataNormalization.NormaliseTransliteWord(rowItems);
+                    for (int j = sheet.Dimension.Start.Row + 1; j <= sheet.Dimension.End.Row; j++)
+                    {
+                        IDataResult<IRowItem> rowParserResult = 
+                            _parser.RowParser(sheet, j, _excelConfiguration);
 
-                if (normalizeWprdResult.Success)
-                {
-                    baseExelEntety.WordTranslates = normalizeWprdResult.Data;
+                        if (rowParserResult.Message != null)
+                        {
+                            IRowItemError error = new RowItemError();
+                            error.ColumnItems = rowParserResult.Data.ColumnItems;
+                            dataResult.Message += rowParserResult.Message;
+                            error.RowNmomer = j;
+                            errorRowItems.Add(error);
+                        }
+                        //  else
+                        //   {
+                        rowItems.Add(rowParserResult.Data);
+                        //  }
+                    }
                 }
             }
 
@@ -186,6 +203,88 @@ namespace WorkWithExcel.Model.Implement
             dataResult.Success = true;
 
             return dataResult;
+        }
+
+        private IDataResult<Dictionary<ITranslationEntity, List<ITranslationEntity>>>
+            GetSectionTranslation(ExcelWorksheet sheet)
+        {
+            IDataResult<Dictionary<ITranslationEntity,List<ITranslationEntity>>> dataResult = 
+                new DataResult<Dictionary<ITranslationEntity,List<ITranslationEntity>>>();
+            List<IRowItem> rowItems = new List<IRowItem>();
+
+            for (int j = sheet.Dimension.Start.Row + 1; j <= sheet.Dimension.End.Row; j++)
+            {
+                IDataResult<IRowItem> rowParserResult =
+                    _parserSection.RowParser(sheet, j, _excelConfiguration);
+
+                if (!string.IsNullOrEmpty(rowParserResult.Message))
+                {
+                    IRowItemError error = new RowItemError();
+                    error.ColumnItems = rowParserResult.Data.ColumnItems;
+                    dataResult.Message += rowParserResult.Message;
+                    error.RowNmomer = j;
+                 //   dataResult.Success = false;
+
+                    //return dataResult;
+                }
+
+                rowItems.Add(rowParserResult.Data);              
+            }
+
+            IDataResult<Dictionary<ITranslationEntity, List<ITranslationEntity>>> sectiomNormResult =
+                _dataNormalization.NormaliseTransliteSection(rowItems);
+
+            if (!sectiomNormResult.Success)
+            {
+                dataResult.Message += sectiomNormResult.Message;
+             //   dataResult.Success = false;
+
+               // return dataResult;
+            }
+
+            dataResult.Data = sectiomNormResult.Data;
+            dataResult.Success = true;
+
+            return dataResult;
+        }
+
+        private IDataResult<List<IColumnItem>> GetCulumnTitleItem(ExcelWorksheet sheet)
+        {
+            IDataResult<List<IColumnItem>> columnsResult =
+                new DataResult<List<IColumnItem>>() {Success = true};
+            List<IColumnItem> columnItems = new List<IColumnItem>();
+
+            int start = sheet.Dimension.Start.Column;
+            int end = sheet.Dimension.End.Column;
+            int row = _excelConfiguration.DataRowIndex.Title;
+            IExcelWorksheetEntity entity = new ExcelWorksheetEntity();
+            entity.ExcelWorksheet = sheet;
+            entity.RowNo = row;
+          
+            for (int i = start; i< end; i++)
+            {               
+                entity.CellNo = i;
+
+                IDataResult<string> nametitleResilt = _readExcelData.GetValue(entity);
+
+                if (!nametitleResilt.Success)
+                {
+                    columnsResult.Success = false;
+                    columnsResult.Message += nametitleResilt.Message;
+
+                    continue;
+                }
+
+               IColumnItem column = new ColumnItem();
+                column.BaseEntity = new BaseEntity();
+                column.BaseEntity.Value = nametitleResilt.Data;
+                column.ColumNumber = i;
+                columnItems.Add(column);
+            }
+
+            columnsResult.Data = columnItems;
+
+            return columnsResult;
         }
 
     }
