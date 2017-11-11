@@ -13,5 +13,4 @@ namespace WorkWithExcel.Abstract.Entity
         IBaseEntity BaseEntity { get; set; }
         int ColumNumber { get; set; }
     }
-
 }

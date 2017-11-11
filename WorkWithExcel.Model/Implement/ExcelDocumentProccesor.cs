@@ -113,11 +113,11 @@ namespace WorkWithExcel.Model.Implement
                             else
                             {
                                 IResult resultConfig = _excelSheetCongSection.GetExcelConfig(sheet);
-                   
+
                                 if (!resultConfig.Success)
                                 {
                                     IDataResult<ExcelConfiguration> excelDataResult =
-                                        _excelSheetCongSection.GenerationExcelConfig(sheet);
+                                        _excelSheetCongSection.GeneratExcelConfig(sheet);
 
                                     if (!excelDataResult.Success)
                                     {
@@ -136,8 +136,6 @@ namespace WorkWithExcel.Model.Implement
 
                             dataResult.Message += resultDataSheet.Message;
                             dataResult.Message += "\n";
-
-                           
                         }
                     }
                 }
@@ -160,7 +158,6 @@ namespace WorkWithExcel.Model.Implement
             IDataSheet dataSheet = new DataSheet();
             List<IRowItem> rowItems = new List<IRowItem>();
             List<IRowItemError> errorRowItems = new List<IRowItemError>();
-            IBaseExelEntety baseExelEntety = new BaseExelEntety();
             dataSheet.NameTable = sheet.Name;
 
             if (success)
@@ -177,7 +174,7 @@ namespace WorkWithExcel.Model.Implement
 
                     for (int j = sheet.Dimension.Start.Row + 1; j <= sheet.Dimension.End.Row; j++)
                     {
-                        IDataResult<IRowItem> rowParserResult = 
+                        IDataResult<IRowItem> rowParserResult =
                             _parser.RowParser(sheet, j, _excelConfiguration);
 
                         if (rowParserResult.Message != null)
@@ -188,15 +185,14 @@ namespace WorkWithExcel.Model.Implement
                             error.RowNmomer = j;
                             errorRowItems.Add(error);
                         }
-                        //  else
-                        //   {
-                        rowItems.Add(rowParserResult.Data);
-                        //  }
+                        else
+                        {
+                            rowItems.Add(rowParserResult.Data);
+                        }
                     }
                 }
             }
 
-            dataSheet.BaseExelEntety = baseExelEntety;
             dataSheet.RowItemErrors = errorRowItems;
             dataSheet.RowItems = rowItems;
             dataResult.Data = dataSheet;
@@ -208,8 +204,8 @@ namespace WorkWithExcel.Model.Implement
         private IDataResult<Dictionary<ITranslationEntity, List<ITranslationEntity>>>
             GetSectionTranslation(ExcelWorksheet sheet)
         {
-            IDataResult<Dictionary<ITranslationEntity,List<ITranslationEntity>>> dataResult = 
-                new DataResult<Dictionary<ITranslationEntity,List<ITranslationEntity>>>();
+            IDataResult<Dictionary<ITranslationEntity, List<ITranslationEntity>>> dataResult =
+                new DataResult<Dictionary<ITranslationEntity, List<ITranslationEntity>>>();
             List<IRowItem> rowItems = new List<IRowItem>();
 
             for (int j = sheet.Dimension.Start.Row + 1; j <= sheet.Dimension.End.Row; j++)
@@ -221,14 +217,17 @@ namespace WorkWithExcel.Model.Implement
                 {
                     IRowItemError error = new RowItemError();
                     error.ColumnItems = rowParserResult.Data.ColumnItems;
-                    dataResult.Message += rowParserResult.Message;
-                    error.RowNmomer = j;
-                 //   dataResult.Success = false;
+                    dataResult.Message += MessageHolder.GetErrorMessage
+                        (MessageType.NotPageSection);
+                    dataResult.Message += rowParserResult.Message+"\n";
 
-                    //return dataResult;
+                    error.RowNmomer = j;
+                    dataResult.Success = false;
+
+                    return dataResult;
                 }
 
-                rowItems.Add(rowParserResult.Data);              
+                rowItems.Add(rowParserResult.Data);
             }
 
             IDataResult<Dictionary<ITranslationEntity, List<ITranslationEntity>>> sectiomNormResult =
@@ -236,10 +235,12 @@ namespace WorkWithExcel.Model.Implement
 
             if (!sectiomNormResult.Success)
             {
+                dataResult.Message += MessageHolder.GetErrorMessage
+                    (MessageType.NotPageSection);
                 dataResult.Message += sectiomNormResult.Message;
-             //   dataResult.Success = false;
+                dataResult.Success = false;
 
-               // return dataResult;
+                return dataResult;
             }
 
             dataResult.Data = sectiomNormResult.Data;
@@ -251,34 +252,31 @@ namespace WorkWithExcel.Model.Implement
         private IDataResult<List<IColumnItem>> GetCulumnTitleItem(ExcelWorksheet sheet)
         {
             IDataResult<List<IColumnItem>> columnsResult =
-                new DataResult<List<IColumnItem>>() {Success = true};
+                new DataResult<List<IColumnItem>>() { Success = true };
             List<IColumnItem> columnItems = new List<IColumnItem>();
 
             int start = sheet.Dimension.Start.Column;
-            int end = sheet.Dimension.End.Column;
+            int end = sheet.Dimension.Columns;
             int row = _excelConfiguration.DataRowIndex.Title;
             IExcelWorksheetEntity entity = new ExcelWorksheetEntity();
             entity.ExcelWorksheet = sheet;
             entity.RowNo = row;
-          
-            for (int i = start; i< end; i++)
-            {               
-                entity.CellNo = i;
 
+            for (int i = start; i < end; i++)
+            {
+                entity.CellNo = i;
                 IDataResult<string> nametitleResilt = _readExcelData.GetValue(entity);
 
                 if (!nametitleResilt.Success)
                 {
-                    columnsResult.Success = false;
-                    columnsResult.Message += nametitleResilt.Message;
-
-                    continue;
+                    break;
                 }
 
-               IColumnItem column = new ColumnItem();
+                IColumnItem column = new ColumnItem();
                 column.BaseEntity = new BaseEntity();
                 column.BaseEntity.Value = nametitleResilt.Data;
                 column.ColumNumber = i;
+                column.ColumnType = ColumnType.None;
                 columnItems.Add(column);
             }
 
@@ -286,6 +284,5 @@ namespace WorkWithExcel.Model.Implement
 
             return columnsResult;
         }
-
     }
 }

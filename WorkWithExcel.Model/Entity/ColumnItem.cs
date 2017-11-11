@@ -14,6 +14,5 @@ namespace WorkWithExcel.Model.Entity
 
         public IBaseEntity BaseEntity { get; set; }
         public int ColumNumber { get; set; }
-        //private IBaseEntity Entity { get; set; }
     }
 }

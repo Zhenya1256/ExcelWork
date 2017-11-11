@@ -11,5 +11,6 @@ namespace WorkWithExcel.Abstract.Common.Config
         public DataRowIndex DataRowIndex { get; set; }
         public DataColumn DataColumn { get; set; }
         public NamePage NamePage { get; set; }
+        public NameColumnSection NameColumnSection { get; set; }
     }
 }

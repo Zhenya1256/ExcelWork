@@ -15,6 +15,7 @@ namespace WorkWithExcel.Abstract.Enums
         Sex,
         Language,
         SectionTransfer,
-        WorldSection
+        WorldSection,
+        None
     }
 }

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using OfficeOpenXml;
 using WorkWithExcel.Abstract.Abstract;
 using WorkWithExcel.Abstract.Common;
@@ -17,7 +13,7 @@ using WorkWithExcel.Model.Entity.HelperEntity;
 
 namespace WorkWithExcel.Model.Implement
 {
-   public class ParserSectionPage : IParser
+    public class ParserSectionPage : IParser
     {
         private readonly IReadExcelData _readExcelData;
         private readonly IDataNormalization _dataNormalization;
@@ -97,25 +93,32 @@ namespace WorkWithExcel.Model.Implement
             string titleConfig = excelConfiguration.DataColumn.Section.Name;
             titleConfig = _dataNormalization.NormalizeString(titleConfig).Data;
             ITranslationEntity translationEntity = new TranslationEntity();
-            translationEntity.Language = nameTitle;
             translationEntity.Value = resultValue.Data;
+            string mainLanguage = excelConfiguration.NameColumnSection.MainLanguage;
+            mainLanguage = _dataNormalization.NormalizeString(mainLanguage).Data;
+            string excelLanguage = nameTitle.Replace(titleConfig, string.Empty);
 
-            if (nameTitle.Equals(titleConfig))
+            if (nameTitle.Equals(titleConfig) || excelLanguage.Equals(mainLanguage))
             {
                 columnItem.ColumnType = ColumnType.Section;
-                                         
+                translationEntity.Language = 
+                    LanguageHolder.GetISOCodes(mainLanguage, _dataNormalization);
+
                 if (!resultValue.Success)
                 {
                     dataResult.Message = resultValue.Message;
 
                     return dataResult;
                 }
-                
+
                 columnItem.BaseEntity = translationEntity;
             }
             else
             {
                 columnItem.ColumnType = ColumnType.SectionTransfer;
+
+                translationEntity.Language =
+                    LanguageHolder.GetISOCodes(excelLanguage, _dataNormalization);
 
                 if (!resultValue.Success)
                 {

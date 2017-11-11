@@ -10,6 +10,5 @@ namespace WorkWithExcel.Abstract.Entity
     public interface ILoadItemEntity
     {
         ColumnType ColumnType { get; set; }
-
     }
 }

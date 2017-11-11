@@ -66,10 +66,6 @@
       <Project>{0a4dc967-80f7-4630-8876-f9fa93a68ab2}</Project>
       <Name>WorkWithExcel.Abstract</Name>
     </ProjectReference>
-    <ProjectReference Include="..\WorkWithExcel.BL\WorkWithExcel.BL.csproj">
-      <Project>{d83be374-b0d7-4f0b-af59-d5e46184c9da}</Project>
-      <Name>WorkWithExcel.BL</Name>
-    </ProjectReference>
     <ProjectReference Include="..\WorkWithExcel.Model\WorkWithExcel.Model.csproj">
       <Project>{3f34a6cc-e0dd-4768-8523-e9d6b1a49988}</Project>
       <Name>WorkWithExcel.Model</Name>

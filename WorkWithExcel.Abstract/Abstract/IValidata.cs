@@ -14,13 +14,9 @@ namespace WorkWithExcel.Abstract.Abstract
 {
    public interface IValidata
    {
-     
-        //
        IResult ValidataExcelPath(string path);
-
        IResult VolidateExcel
            (ExcelWorksheet excelWorksheet);
-
        IResult ValidateExcelPages(ExcelWorksheets excelWorksheets);
    }
 }

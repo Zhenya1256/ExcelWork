@@ -21,10 +21,8 @@ C:\Users\Евгений\Desktop\WorkWithExel\WorkWithExel\bin\Debug\WorkWithExel
 C:\Users\Евгений\Desktop\WorkWithExel\WorkWithExel\bin\Debug\WorkWithExel.exe
 C:\Users\Евгений\Desktop\WorkWithExel\WorkWithExel\bin\Debug\WorkWithExel.pdb
 C:\Users\Евгений\Desktop\WorkWithExel\WorkWithExel\bin\Debug\WorkWithExcel.Abstract.dll
-C:\Users\Евгений\Desktop\WorkWithExel\WorkWithExel\bin\Debug\WorkWithExcel.BL.dll
 C:\Users\Евгений\Desktop\WorkWithExel\WorkWithExel\bin\Debug\EPPlus.dll
 C:\Users\Евгений\Desktop\WorkWithExel\WorkWithExel\bin\Debug\WorkWithExcel.Abstract.pdb
-C:\Users\Евгений\Desktop\WorkWithExel\WorkWithExel\bin\Debug\WorkWithExcel.BL.pdb
 C:\Users\Евгений\Desktop\WorkWithExel\WorkWithExel\bin\Debug\Bender.pdb
 C:\Users\Евгений\Desktop\WorkWithExel\WorkWithExel\bin\Debug\Flexo.pdb
 C:\Users\Евгений\Desktop\WorkWithExel\WorkWithExel\bin\Debug\SimpleConfig.pdb

@@ -11,19 +11,9 @@ namespace WorkWithExcel.Abstract.Abstract
 {
     public interface IDataNormalization
     {
-        IDataResult<IBaseExelEntety> Normalize
-            (Dictionary<string, IDataExcelEntity> translateEntities);
-
         IDataResult<string> NormalizeString(string data);
 
         IDataResult<Dictionary<ITranslationEntity, List<ITranslationEntity>>>
             NormaliseTransliteSection(List<IRowItem> listRowItems);
-
-        // IDataResult<Dictionary<IDataExcelEntity, List<ITranslationEntity>>>
-        //    NormaliseTransliteWord(List<IRowItem> listRowItems);
-
-        //IDataResult<Dictionary<ITranslationEntity, List<ITranslationEntity>>>
-        //    NormaliseTransliteSection(List<IRowItem> listRowItems);
-
     }
 }

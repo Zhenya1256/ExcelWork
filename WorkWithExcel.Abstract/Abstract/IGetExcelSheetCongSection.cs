@@ -14,6 +14,6 @@ namespace WorkWithExcel.Abstract.Abstract
         IResult GetExcelConfig(ExcelWorksheet excelWorksheet);
 
         IDataResult<ExcelConfiguration>
-            GenerationExcelConfig(ExcelWorksheet excelWorksheet);
+            GeneratExcelConfig(ExcelWorksheet excelWorksheet);
     }
 }

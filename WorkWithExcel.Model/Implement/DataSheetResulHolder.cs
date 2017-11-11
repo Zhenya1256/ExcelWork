@@ -26,7 +26,7 @@ namespace WorkWithExcel.Model.Implement
             throw new NotImplementedException();
         }
 
-        public IResult AppendSheet(ExcelWorksheet excelWorksheet)
+        public IResult AppendSheet()
         {
             throw new NotImplementedException();
         }

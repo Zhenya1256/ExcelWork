@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
+﻿using System.IO;
 using System.Linq;
 using OfficeOpenXml;
 using WorkWithExcel.Abstract.Abstract;
 using WorkWithExcel.Abstract.Common;
-using WorkWithExcel.Abstract.Entity;
-using WorkWithExcel.Abstract.Entity.HelpEntity;
 using WorkWithExcel.Abstract.Enums;
 using WorkWithExcel.Abstract.Holder;
 using WorkWithExcel.Model.Common;
@@ -39,7 +35,8 @@ namespace WorkWithExcel.Model.Implement
 
             if (!excelWorksheets.Any())
             {
-                result.Message = MessageHolder.GetErrorMessage(MessageType.DocumentIsEmpty);
+                result.Message = MessageHolder.GetErrorMessage
+                    (MessageType.DocumentIsEmpty);
 
                 return result;
             }
@@ -51,6 +48,7 @@ namespace WorkWithExcel.Model.Implement
         public IResult ValidataExcelPath(string path)
         {
             IResult result = new Result() { Success = false };
+
             if (string.IsNullOrEmpty(path))
             {
                 result.Message = MessageHolder.

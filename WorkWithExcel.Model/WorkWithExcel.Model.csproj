@@ -47,14 +47,12 @@
     <Compile Include="Common\DataResult.cs" />
     <Compile Include="Common\Result.cs" />
     <Compile Include="Entity\BaseEntity.cs" />
-    <Compile Include="Entity\BaseExelEntety.cs" />
     <Compile Include="Entity\ColumnItem.cs" />
     <Compile Include="Entity\DataSheet.cs" />
     <Compile Include="Entity\ExcelColor.cs" />
     <Compile Include="Entity\HelperEntity\ExcelWorksheetEntity.cs" />
     <Compile Include="Entity\RowItem.cs" />
     <Compile Include="Entity\RowItemError.cs" />
-    <Compile Include="Entity\DataExcelEntity.cs" />
     <Compile Include="Entity\TranslationEntity.cs" />
     <Compile Include="Implement\DataNormalization.cs" />
     <Compile Include="Implement\DataSheetResulHolder.cs" />

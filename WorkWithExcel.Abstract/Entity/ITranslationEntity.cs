@@ -10,9 +10,4 @@ namespace WorkWithExcel.Abstract.Entity
     {
         string Language { get; set; }
     }
-
-    public interface IBaseEntity
-    {
-        string Value { get; set; }
-    }
 }

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using OfficeOpenXml;
@@ -88,7 +87,7 @@ namespace WorkWithExcel.Model.Implement
         }
 
         public IDataResult<ExcelConfiguration>
-            GenerationExcelConfig(ExcelWorksheet excelWorksheet)
+            GeneratExcelConfig(ExcelWorksheet excelWorksheet)
         {
             IDataResult<ExcelConfiguration> dataResult =
                 new DataResult<ExcelConfiguration>();
@@ -106,7 +105,7 @@ namespace WorkWithExcel.Model.Implement
             //
             StringBuilder messegeBuilder= new StringBuilder();
             Data data = _excelConfiguration.DataColumn.Index;
-            IDataResult<Data> tmResultHelper = HelperGeneration(data, tmpEntity, endColumn);
+            IDataResult<Data> tmResultHelper = HelperGenerat(data, tmpEntity, endColumn);
 
             if (!tmResultHelper.Success)
             {
@@ -117,7 +116,7 @@ namespace WorkWithExcel.Model.Implement
             excelConfiguration.DataColumn.Index = tmResultHelper.Data;
             //
             data = _excelConfiguration.DataColumn.Language;
-            tmResultHelper = HelperGeneration(data, tmpEntity, endColumn);
+            tmResultHelper = HelperGenerat(data, tmpEntity, endColumn);
 
             if (!tmResultHelper.Success)
             {
@@ -128,18 +127,18 @@ namespace WorkWithExcel.Model.Implement
             excelConfiguration.DataColumn.Language = tmResultHelper.Data;
             //
             data = _excelConfiguration.DataColumn.Page;
-            tmResultHelper = HelperGeneration(data, tmpEntity, endColumn);
+            tmResultHelper = HelperGenerat(data, tmpEntity, endColumn);
 
             if (!tmResultHelper.Success)
             {
                 messegeBuilder.Append(data.Name + " ");
-            }
+            } 
 
             dataResults.Add(tmResultHelper);
             excelConfiguration.DataColumn.Page = tmResultHelper.Data;
             //
             data = _excelConfiguration.DataColumn.Picture;
-            tmResultHelper = HelperGeneration(data, tmpEntity, endColumn);
+            tmResultHelper = HelperGenerat(data, tmpEntity, endColumn);
 
             if (!tmResultHelper.Success)
             {
@@ -150,7 +149,7 @@ namespace WorkWithExcel.Model.Implement
             excelConfiguration.DataColumn.Picture = tmResultHelper.Data;
             //
             data = _excelConfiguration.DataColumn.Section;
-            tmResultHelper = HelperGeneration(data, tmpEntity, endColumn);
+            tmResultHelper = HelperGenerat(data, tmpEntity, endColumn);
 
             if (!tmResultHelper.Success)
             {
@@ -161,7 +160,7 @@ namespace WorkWithExcel.Model.Implement
             excelConfiguration.DataColumn.Section = tmResultHelper.Data;
             //
             data = _excelConfiguration.DataColumn.Sex;
-            tmResultHelper = HelperGeneration(data, tmpEntity, endColumn);
+            tmResultHelper = HelperGenerat(data, tmpEntity, endColumn);
 
             if (!tmResultHelper.Success)
             {
@@ -186,7 +185,7 @@ namespace WorkWithExcel.Model.Implement
             return dataResult;
         }
 
-        private IDataResult<Data> HelperGeneration
+        private IDataResult<Data> HelperGenerat
             (Data data, IExcelWorksheetEntity tmpEntity, int endColumn)
         {
             IDataResult<Data> dataResult =
@@ -220,7 +219,6 @@ namespace WorkWithExcel.Model.Implement
 
                     return dataResult;
                 }
-
             }
 
             return dataResult;

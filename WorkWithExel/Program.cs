@@ -10,8 +10,6 @@ using OfficeOpenXml;
 using WorkWithExcel.Abstract.Abstract;
 using WorkWithExcel.Abstract.Common;
 using WorkWithExcel.Abstract.Entity;
-using WorkWithExcel.BL.Entety;
-using WorkWithExcel.BL.Impl;
 using WorkWithExcel.Model.Implement;
 
 namespace WorkWithExel
@@ -21,7 +19,7 @@ namespace WorkWithExel
         static void Main(string[] args)
         {
             string path = "exp1.xlsx";
-
+         
             IExcelDocumentProccesor excelDocument = new ExcelDocumentProccesor();
             excelDocument.Processor(path);
             //section.GetType().GetProperties()

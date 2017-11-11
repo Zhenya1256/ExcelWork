@@ -14,11 +14,7 @@ namespace WorkWithExcel.Model.Implement
 {
     public class DataNormalization : IDataNormalization
     {
-        public IDataResult<IBaseExelEntety> Normalize(Dictionary<string, IDataExcelEntity> translateEntities)
-        {
-            throw new NotImplementedException();
-        }
-
+     
         public IDataResult<string> NormalizeString(string data)
         {
             IDataResult<string> dataResult =

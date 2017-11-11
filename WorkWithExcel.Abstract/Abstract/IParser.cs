@@ -13,9 +13,10 @@ namespace WorkWithExcel.Abstract.Abstract
 {
     public interface IParser
     {
-        IDataResult<IRowItem> RowParser(ExcelWorksheet excelWorksheet,int row, ExcelConfiguration excelConfiguration);
-        IDataResult<IColumnItem> ColumnParser(IExcelWorksheetEntity worksheetEntity, ExcelConfiguration excelConfiguration);
         int RowCount { get; set; }
-
+        IDataResult<IRowItem> RowParser(ExcelWorksheet excelWorksheet,
+            int row, ExcelConfiguration excelConfiguration);
+        IDataResult<IColumnItem> ColumnParser(IExcelWorksheetEntity worksheetEntity,
+            ExcelConfiguration excelConfiguration);
     }
 }
