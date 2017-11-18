@@ -7,10 +7,10 @@ using System.Runtime.Versioning;
 using System.Text;
 using System.Threading.Tasks;
 using OfficeOpenXml;
-using WorkWithExcel.Abstract.Abstract;
+using WorkWithExcel.Abstract.BL;
 using WorkWithExcel.Abstract.Common;
 using WorkWithExcel.Abstract.Entity;
-using WorkWithExcel.Model.Implement;
+using WorkWithExcel.Model.Impl;
 
 namespace WorkWithExel
 {
@@ -18,7 +18,7 @@ namespace WorkWithExel
     {
         static void Main(string[] args)
         {
-            string path = "exp1.xlsx";
+            string path = "exp.xlsx";
          
             IExcelDocumentProccesor excelDocument = new ExcelDocumentProccesor();
             excelDocument.Processor(path);

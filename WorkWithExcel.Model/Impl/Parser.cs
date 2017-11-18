@@ -1,7 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using OfficeOpenXml;
-using WorkWithExcel.Abstract.Abstract;
+using WorkWithExcel.Abstract.BL;
 using WorkWithExcel.Abstract.Common;
 using WorkWithExcel.Abstract.Common.Config;
 using WorkWithExcel.Abstract.Entity;
@@ -12,7 +13,7 @@ using WorkWithExcel.Model.Common;
 using WorkWithExcel.Model.Entity;
 using WorkWithExcel.Model.Entity.HelperEntity;
 
-namespace WorkWithExcel.Model.Implement
+namespace WorkWithExcel.Model.Impl
 {
     public class Parser : IParser
     {
@@ -31,8 +32,10 @@ namespace WorkWithExcel.Model.Implement
             IDataResult<IRowItem> dataResult =
                 new DataResult<IRowItem>() { Success = false };
             IRowItem rowItem = new RowItem();
+            IRowItemError error = new RowItemError();
 
             List<IColumnItem> columnItems = new List<IColumnItem>();
+            List<IDataResult<IColumnItem>> errorColumnItems = new List<IDataResult<IColumnItem>>();
             int start = excelWorksheet.Dimension.Start.Column;
             int end = excelWorksheet.Dimension.End.Column;
 
@@ -45,12 +48,30 @@ namespace WorkWithExcel.Model.Implement
 
                 IDataResult<IColumnItem> getDataResult =
                     ColumnParser(tmpEntity, excelConfiguration);
+
                 dataResult.Message += getDataResult.Message;
 
                 if (getDataResult.Success)
                 {
-                    columnItems.Add(getDataResult.Data);
+                    if (!string.IsNullOrEmpty(getDataResult.Message))
+                    {
+                        getDataResult.Success = false;
+                        errorColumnItems.Add(getDataResult);
+                    }
+                    else
+                    {
+                        columnItems.Add(getDataResult.Data);
+                    }
                 }
+            }
+            error.ListColums = errorColumnItems;
+
+            if (errorColumnItems.Any())
+            {
+                dataResult.Data = error;
+                dataResult.Success = false;
+
+                return dataResult;
             }
 
             rowItem.ColumnItems = columnItems;
@@ -71,72 +92,37 @@ namespace WorkWithExcel.Model.Implement
             IDataResult<string> resultValue = _readExcelData.GetValue(excelWorksheet);
             int nomertitle = excelConfiguration.DataRowIndex.Title;
 
-            if (!resultValue.Success)
-            {
-                dataResult.Message = resultValue.Message;
-            }
-
             IExcelWorksheetEntity tmpExcel = new ExcelWorksheetEntity();
             tmpExcel.RowNo = nomertitle;
             tmpExcel.ExcelWorksheet = excelWorksheet.ExcelWorksheet;
             tmpExcel.CellNo = column;
             string nameTitle = _readExcelData.GetValue(tmpExcel).Data;
-            string configNameSection = excelConfiguration.DataColumn.Section.Name;
+            string configNameSection = excelConfiguration.DataColumn.Datas
+                .FirstOrDefault(p => p.ColumnType == (int)ColumnType.Section)?.Name;
             configNameSection = _dataNormalization.NormalizeString(configNameSection).Data;
             columnItem.BaseEntity = new BaseEntity();
+            bool isResult = false;
 
-            if (column == excelConfiguration.DataColumn.Picture.Nomer)
+            foreach (var data in excelConfiguration.DataColumn.Datas)
             {
-                columnItem.ColumnType = ColumnType.Picture;
-                IDataResult<string> colorNameResult =
-                    _readExcelData.GetColorValue(excelWorksheet);
-                IExcelColor excelColor = new ExcelColor();
-                if (colorNameResult.Success)
+                if (column == data.Nomer)
                 {
-                    Color color = ColorTranslator.FromHtml("#" + colorNameResult.Data);
-                    excelColor.R = color.R;
-                    excelColor.G = color.G;
-                    excelColor.B = color.B;
+                    if (!resultValue.Success)
+                    {
+                        if (data.MustExist)
+                        {
+                            dataResult.Message += resultValue.Message;
+                        }
+                    }
+
+                    columnItem.ColumnType = (ColumnType)data.ColumnType;
+                    columnItem.BaseEntity = GetBaseEntity
+                        (excelWorksheet, resultValue.Data, column, excelConfiguration);
+                    isResult = true;
                 }
 
-                columnItem.BaseEntity = excelColor;
             }
-            else if (column == excelConfiguration.DataColumn.Index.Nomer)
-            {
-                columnItem.ColumnType = ColumnType.Index;
-                columnItem.BaseEntity.Value = resultValue.Data;
-            }
-
-            else if (column == excelConfiguration.DataColumn.Page.Nomer)
-            {
-                columnItem.ColumnType = ColumnType.Page;
-                columnItem.BaseEntity.Value = resultValue.Data;
-            }
-            else if (column == excelConfiguration.DataColumn.Sex.Nomer)
-            {
-                columnItem.ColumnType = ColumnType.Sex;
-                columnItem.BaseEntity.Value = resultValue.Data;
-            }
-            else if (column == excelConfiguration.DataColumn.Section.Nomer)
-            {
-                columnItem.ColumnType = ColumnType.Section;
-                string name = excelConfiguration.NameColumnSection.MainLanguage;
-                ITranslationEntity entity = new TranslationEntity();
-                entity.Language =
-                    LanguageHolder.GetISOCodes(name, _dataNormalization);
-                entity.Value = resultValue.Data;
-                columnItem.BaseEntity = entity;
-            }
-            else if (column == excelConfiguration.DataColumn.Language.Nomer)
-            {
-                columnItem.ColumnType = ColumnType.Language;
-                string name = excelConfiguration.NameColumnSection.MainLanguage;
-                ITranslationEntity entity = new TranslationEntity();
-                entity.Language = LanguageHolder.GetISOCodes(name, _dataNormalization);
-                entity.Value = resultValue.Data;
-                columnItem.BaseEntity = entity;
-            }
-            else
+            if (!isResult)
             {
                 nameTitle = _dataNormalization.NormalizeString(nameTitle).Data;
 
@@ -156,22 +142,59 @@ namespace WorkWithExcel.Model.Implement
                 {
                     columnItem.ColumnType = ColumnType.WorldSection;
                 }
-
+                dataResult.Message += resultValue.Message;
                 string language = LanguageHolder.GetISOCodes(nameTitle, _dataNormalization);
 
                 ITranslationEntity entity = new TranslationEntity();
                 entity.Language = language;
                 entity.Value = resultValue.Data;
                 columnItem.BaseEntity = entity;
-
-
             }
 
             columnItem.ColumNumber = column;
             dataResult.Data = columnItem;
             dataResult.Success = true;
 
+
             return dataResult;
+        }
+
+        private IBaseEntity GetBaseEntity(IExcelWorksheetEntity excelWorksheet,
+            string data, int column, ExcelConfiguration excelConfiguration)
+        {
+            IBaseEntity baseEntity = new BaseEntity() { Value = data };
+
+            if (column == excelConfiguration.DataColumn
+                    .Datas.FirstOrDefault(p => p.ColumnType == (int)ColumnType.Section)?.Nomer
+                    || column == excelConfiguration.DataColumn.Datas
+                    .FirstOrDefault(p => p.ColumnType == (int)ColumnType.Language)?.Nomer)
+            {
+                string name = excelConfiguration.NameColumnSection.MainLanguage;
+                ITranslationEntity entity = new TranslationEntity();
+                entity.Language = LanguageHolder.GetISOCodes(name, _dataNormalization);
+                entity.Value = data;
+
+                return entity;
+            }
+
+            if (column == excelConfiguration.DataColumn.Datas
+                    .FirstOrDefault(p => p.ColumnType == (int)ColumnType.Picture)?.Nomer)
+            {
+                IDataResult<string> colorNameResult =
+                    _readExcelData.GetColorValue(excelWorksheet);
+                IExcelColor excelColor = new ExcelColor();
+                if (colorNameResult.Success)
+                {
+                    Color color = ColorTranslator.FromHtml("#" + colorNameResult.Data);
+                    excelColor.R = color.R;
+                    excelColor.G = color.G;
+                    excelColor.B = color.B;
+                }
+
+                return excelColor;
+            }
+
+            return baseEntity;
         }
 
         public int RowCount { get; set; }

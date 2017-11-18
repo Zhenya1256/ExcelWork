@@ -54,14 +54,15 @@
     <Compile Include="Entity\RowItem.cs" />
     <Compile Include="Entity\RowItemError.cs" />
     <Compile Include="Entity\TranslationEntity.cs" />
-    <Compile Include="Implement\DataNormalization.cs" />
-    <Compile Include="Implement\DataSheetResulHolder.cs" />
-    <Compile Include="Implement\ExcelDocumentProccesor.cs" />
-    <Compile Include="Implement\ReadExcelData.cs" />
-    <Compile Include="Implement\GetExcelSheetCongSection.cs" />
-    <Compile Include="Implement\Parser.cs" />
-    <Compile Include="Implement\ParserSectionPage.cs" />
-    <Compile Include="Implement\Validata.cs" />
+    <Compile Include="Impl\DataNormalization.cs" />
+    <Compile Include="Impl\DataSheetResulHolder.cs" />
+    <Compile Include="Impl\ExcelDocumentProccesor.cs" />
+    <Compile Include="Impl\ExcelSheetCongSection.cs" />
+    <Compile Include="Impl\ReadExcelData.cs" />
+    <Compile Include="Impl\GetExcelSheetCongSection.cs" />
+    <Compile Include="Impl\Parser.cs" />
+    <Compile Include="Impl\ParserSectionPage.cs" />
+    <Compile Include="Impl\Validata.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

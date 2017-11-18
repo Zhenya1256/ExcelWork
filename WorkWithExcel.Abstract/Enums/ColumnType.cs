@@ -8,7 +8,7 @@ namespace WorkWithExcel.Abstract.Enums
 {
     public enum ColumnType
     {
-        Index,
+        Index=1,
         Page,
         Picture,
         Section,

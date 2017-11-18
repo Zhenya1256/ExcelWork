@@ -7,7 +7,7 @@ using WorkWithExcel.Abstract.Common;
 
 namespace WorkWithExcel.Abstract.Entity
 {
-   public interface IRowItemError :IRowItem
+   public interface IRowItemError : IRowItem 
     {
         int RowNmomer { get; set; }
         List<IDataResult<IColumnItem>> ListColums { get; set; }

@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using OfficeOpenXml;
-using WorkWithExcel.Abstract.Abstract;
+using WorkWithExcel.Abstract.BL;
 using WorkWithExcel.Abstract.Common;
 using WorkWithExcel.Abstract.Common.Config;
 using WorkWithExcel.Abstract.Entity;
@@ -12,7 +12,7 @@ using WorkWithExcel.Model.Common;
 using WorkWithExcel.Model.Entity;
 using WorkWithExcel.Model.Entity.HelperEntity;
 
-namespace WorkWithExcel.Model.Implement
+namespace WorkWithExcel.Model.Impl
 {
     public class ExcelDocumentProccesor : IExcelDocumentProccesor
     {
@@ -30,7 +30,7 @@ namespace WorkWithExcel.Model.Implement
             _parser = new Parser();
             _readExcelData = new ReadExcelData();
             _dataNormalization = new DataNormalization();
-            _excelSheetCongSection = new GetExcelSheetCongSection();
+            _excelSheetCongSection = new ExcelSheetCongSection();
             _parserSection = new ParserSectionPage();
             _excelConfiguration = ConfigurationHolder.ApiConfiguration;
         }
@@ -177,10 +177,10 @@ namespace WorkWithExcel.Model.Implement
                         IDataResult<IRowItem> rowParserResult =
                             _parser.RowParser(sheet, j, _excelConfiguration);
 
-                        if (rowParserResult.Message != null)
+                        if (!rowParserResult.Success)
                         {
-                            IRowItemError error = new RowItemError();
-                            error.ColumnItems = rowParserResult.Data.ColumnItems;
+                            IRowItemError error = (IRowItemError)rowParserResult.Data;
+                            
                             dataResult.Message += rowParserResult.Message;
                             error.RowNmomer = j;
                             errorRowItems.Add(error);

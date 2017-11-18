@@ -53,12 +53,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Abstract\IDataNormalization.cs" />
-    <Compile Include="Abstract\IExcelDocumentProccesor.cs" />
-    <Compile Include="Abstract\IReadExcelData.cs" />
-    <Compile Include="Abstract\IGetExcelSheetCongSection.cs" />
-    <Compile Include="Abstract\IParser.cs" />
-    <Compile Include="Abstract\IValidata.cs" />
+    <Compile Include="BL\IDataNormalization.cs" />
+    <Compile Include="BL\IExcelDocumentProccesor.cs" />
+    <Compile Include="BL\IReadExcelData.cs" />
+    <Compile Include="BL\IGetExcelSheetCongSection.cs" />
+    <Compile Include="BL\IParser.cs" />
+    <Compile Include="BL\IValidata.cs" />
     <Compile Include="Common\Config\Data.cs" />
     <Compile Include="Common\Config\DataColumn.cs" />
     <Compile Include="Common\Config\DataRowIndex.cs" />
@@ -90,5 +90,6 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

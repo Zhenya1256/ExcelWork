@@ -1,13 +1,13 @@
 ﻿using System.IO;
 using System.Linq;
 using OfficeOpenXml;
-using WorkWithExcel.Abstract.Abstract;
+using WorkWithExcel.Abstract.BL;
 using WorkWithExcel.Abstract.Common;
 using WorkWithExcel.Abstract.Enums;
 using WorkWithExcel.Abstract.Holder;
 using WorkWithExcel.Model.Common;
 
-namespace WorkWithExcel.Model.Implement
+namespace WorkWithExcel.Model.Impl
 {
     public class Validata : IValidata
     {

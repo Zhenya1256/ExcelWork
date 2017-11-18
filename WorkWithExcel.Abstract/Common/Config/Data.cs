@@ -11,5 +11,7 @@ namespace WorkWithExcel.Abstract.Common.Config
     {
         public int Nomer { get; set; }
         public  string Name { get; set; }
+        public bool MustExist { get; set; }
+        public int ColumnType { get; set; }
     }
 }

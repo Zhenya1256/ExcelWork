@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using OfficeOpenXml;
-using WorkWithExcel.Abstract.Abstract;
+using WorkWithExcel.Abstract.BL;
 using WorkWithExcel.Abstract.Common;
 using WorkWithExcel.Abstract.Common.Config;
 using WorkWithExcel.Abstract.Entity;
@@ -11,7 +12,7 @@ using WorkWithExcel.Model.Common;
 using WorkWithExcel.Model.Entity;
 using WorkWithExcel.Model.Entity.HelperEntity;
 
-namespace WorkWithExcel.Model.Implement
+namespace WorkWithExcel.Model.Impl
 {
     public class ParserSectionPage : IParser
     {
@@ -90,7 +91,8 @@ namespace WorkWithExcel.Model.Implement
             string nameTitle = resultNameTitle.Data;
             nameTitle = _dataNormalization.NormalizeString(nameTitle).Data;
 
-            string titleConfig = excelConfiguration.DataColumn.Section.Name;
+            string titleConfig = excelConfiguration.DataColumn.Datas
+                .FirstOrDefault(p=>p.ColumnType==(int)ColumnType.Section)?.Name;
             titleConfig = _dataNormalization.NormalizeString(titleConfig).Data;
             ITranslationEntity translationEntity = new TranslationEntity();
             translationEntity.Value = resultValue.Data;

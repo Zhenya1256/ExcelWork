@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using WorkWithExcel.Abstract.Abstract;
+using WorkWithExcel.Abstract.BL;
 using WorkWithExcel.Abstract.Common;
 using WorkWithExcel.Abstract.Entity;
 using WorkWithExcel.Abstract.Enums;
@@ -10,7 +8,7 @@ using WorkWithExcel.Abstract.Holder;
 using WorkWithExcel.Model.Common;
 using WorkWithExcel.Model.Entity;
 
-namespace WorkWithExcel.Model.Implement
+namespace WorkWithExcel.Model.Impl
 {
     public class DataNormalization : IDataNormalization
     {
