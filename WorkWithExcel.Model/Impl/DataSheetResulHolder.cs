@@ -28,10 +28,9 @@ namespace WorkWithExcel.Model.Impl
         }
 
         public Dictionary<ITranslationEntity, List<ITranslationEntity>> IndexTranslates { get; set; }
-        public ExcelConfiguration ExcelConfiguration { get; set; }//спитити бо кофіги для кожного листа різіні!
+        public ExcelConfiguration ExcelConfiguration { get; set; }
         public string NameExcel { get; set; }
         public ExcelDocumentType ExcelDocumentType { get; set; }
-
         public List<IDataSheet> DataSheets { get; set; }
         
     }

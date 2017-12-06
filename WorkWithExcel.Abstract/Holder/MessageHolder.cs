@@ -31,6 +31,12 @@ namespace WorkWithExcel.Abstract.Holder
                                                             "не хватає заголовків, чи вони не вірно названі такі як: (" ));
             _messagesDictionary.Add(MessageType.NamePage, "ошибки сторінки ");
             _messagesDictionary.Add(MessageType.NotPageSection, "сторінку секцій не записано за помилок:\n");
+            _messagesDictionary.Add(MessageType.BackBracket, " )");
+            _messagesDictionary.Add(MessageType.FrontBracket, "( ");
+            _messagesDictionary.Add(MessageType.Line, " | ");
+            _messagesDictionary.Add(MessageType.NewLine, "\n");
+            _messagesDictionary.Add(MessageType.Space," ");
+            _messagesDictionary.Add(MessageType.NameSheet, "імя: ");
         }
 
         public static string GetErrorMessage(MessageType type)

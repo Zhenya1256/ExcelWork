@@ -11,6 +11,7 @@ using WorkWithExcel.Abstract.BL;
 using WorkWithExcel.Abstract.Common;
 using WorkWithExcel.Abstract.Entity;
 using WorkWithExcel.Model.Impl;
+using WorkWithExcel.DAL.Initial;
 
 namespace WorkWithExel
 {
@@ -18,37 +19,13 @@ namespace WorkWithExel
     {
         static void Main(string[] args)
         {
-            string path = "exp.xlsx";
-         
-            IExcelDocumentProccesor excelDocument = new ExcelDocumentProccesor();
-            excelDocument.Processor(path);
-            //section.GetType().GetProperties()
+            string path = "exp1.xlsx";
 
-            //using (var file = File.Open(path, FileMode.Open))
-            //{
-            //    using (var xls = new ExcelPackage(file))
-            //    {
-            //        using (var sheet = xls.Workbook.Worksheets.FirstOrDefault())
-            //        {
-            //            section.GenerationConfig(sheet);
-            //        }
-            //    }
-            //}
-            //IValidata validate =  new Validata();
-            //Division  div = new Division(validate);
+            //IExcelDocumentProccesor excelDocument = new ExcelDocumentProccesor();
+            //excelDocument.Processor(path);
+            Init init = new Init();
+            init.InitBD(path);
 
-            //IDataResult<IBaseExelEntety> dataResult = div.GetComponent(path);
-
-            //foreach (var item in dataResult.Data.TranslateEntitys)
-            //{
-            //    int i = 0;
-            //    foreach (var section in item.Key.TranslateSection)
-            //    {
-            //        i++;
-            //      Console.WriteLine(i+")"+section.Key+" "+ section.Value);   
-            //    }
-
-            //}
 
             Console.ReadKey();
         }

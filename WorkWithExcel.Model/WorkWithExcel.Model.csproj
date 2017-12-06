@@ -59,7 +59,6 @@
     <Compile Include="Impl\ExcelDocumentProccesor.cs" />
     <Compile Include="Impl\ExcelSheetCongSection.cs" />
     <Compile Include="Impl\ReadExcelData.cs" />
-    <Compile Include="Impl\GetExcelSheetCongSection.cs" />
     <Compile Include="Impl\Parser.cs" />
     <Compile Include="Impl\ParserSectionPage.cs" />
     <Compile Include="Impl\Validata.cs" />

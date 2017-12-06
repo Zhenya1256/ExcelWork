@@ -12,6 +12,13 @@
         DocumentIsEmpty,
         NotIsTitle,
         NamePage,
-        NotPageSection
+        NotPageSection,
+        FrontBracket,
+        BackBracket,
+        Line,
+        NewLine,
+        NameSheet,
+        Space
+
     }
 }

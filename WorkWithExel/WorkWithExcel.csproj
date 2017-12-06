@@ -35,6 +35,12 @@
     <Reference Include="Bender">
       <HintPath>..\..\..\..\Desktop\BrainRingGame\packages\Bender.3.0.1.0\lib\Bender.dll</HintPath>
     </Reference>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
     <Reference Include="EPPlus, Version=4.1.1.0, Culture=neutral, PublicKeyToken=ea159fdaa78159a1, processorArchitecture=MSIL">
       <HintPath>..\packages\EPPlus.4.1.1\lib\net40\EPPlus.dll</HintPath>
     </Reference>
@@ -45,6 +51,7 @@
       <HintPath>..\..\..\..\Desktop\SVGConvert\SVGConvert\bin\Debug\SimpleConfig.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -65,6 +72,10 @@
     <ProjectReference Include="..\WorkWithExcel.Abstract\WorkWithExcel.Abstract.csproj">
       <Project>{0a4dc967-80f7-4630-8876-f9fa93a68ab2}</Project>
       <Name>WorkWithExcel.Abstract</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WorkWithExcel.DAL\WorkWithExcel.DAL.csproj">
+      <Project>{E3DED97C-320D-4A8A-A089-F43109E7D405}</Project>
+      <Name>WorkWithExcel.DAL</Name>
     </ProjectReference>
     <ProjectReference Include="..\WorkWithExcel.Model\WorkWithExcel.Model.csproj">
       <Project>{3f34a6cc-e0dd-4768-8523-e9d6b1a49988}</Project>

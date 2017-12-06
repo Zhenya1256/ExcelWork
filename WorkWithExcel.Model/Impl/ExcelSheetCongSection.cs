@@ -68,7 +68,7 @@ namespace WorkWithExcel.Model.Impl
 
                 if (!tmResultHelper.Success)
                 {
-                    messegeBuilder.Append(data.Name + " ");
+                    messegeBuilder.Append(data.Name + MessageHolder.GetErrorMessage(MessageType.Space));
                 }
                 dataResults.Add(tmResultHelper);
                
@@ -79,7 +79,10 @@ namespace WorkWithExcel.Model.Impl
             {
                 dataResult.Success = false;
                 dataResult.Message = MessageHolder.
-                              GetErrorMessage(MessageType.NotIsTitle) + " " + messegeBuilder + ")";
+                              GetErrorMessage(MessageType.NotIsTitle) + 
+                              MessageHolder.GetErrorMessage(MessageType.Space)
+                              +messegeBuilder +
+                               MessageHolder.GetErrorMessage(MessageType.BackBracket);
 
                 return dataResult;
             }

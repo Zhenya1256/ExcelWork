@@ -18,7 +18,6 @@ namespace WorkWithExcel.Abstract.Holder
             {
                 if (_exelConfiguration == null)
                 {
-
                     lock (typeof(ConfigurationHolder))
                     {
                         if (_exelConfiguration == null)

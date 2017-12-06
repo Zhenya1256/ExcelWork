@@ -15,10 +15,7 @@ C:\Users\Евгений\source\repos\WorkWithExel\WorkWithExcel.Abstract\bin\Deb
 C:\Users\Евгений\Desktop\WorkWithExel\WorkWithExcel.Abstract\bin\Debug\WorkWithExcel.Abstract.dll
 C:\Users\Евгений\Desktop\WorkWithExel\WorkWithExcel.Abstract\bin\Debug\WorkWithExcel.Abstract.pdb
 C:\Users\Евгений\Desktop\WorkWithExel\WorkWithExcel.Abstract\bin\Debug\EPPlus.dll
-C:\Users\Евгений\Desktop\WorkWithExel\WorkWithExcel.Abstract\bin\Debug\Bender.pdb
 C:\Users\Евгений\Desktop\WorkWithExel\WorkWithExcel.Abstract\bin\Debug\EPPlus.xml
-C:\Users\Евгений\Desktop\WorkWithExel\WorkWithExcel.Abstract\bin\Debug\Flexo.pdb
-C:\Users\Евгений\Desktop\WorkWithExel\WorkWithExcel.Abstract\bin\Debug\SimpleConfig.pdb
 C:\Users\Евгений\Desktop\WorkWithExel\WorkWithExcel.Abstract\obj\Debug\WorkWithExcel.Abstract.csprojResolveAssemblyReference.cache
 C:\Users\Евгений\Desktop\WorkWithExel\WorkWithExcel.Abstract\obj\Debug\WorkWithExcel.Abstract.csproj.CoreCompileInputs.cache
 C:\Users\Евгений\Desktop\WorkWithExel\WorkWithExcel.Abstract\obj\Debug\WorkWithExcel.Abstract.dll

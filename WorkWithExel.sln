@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WorkWithExcel.Abstract", "W
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WorkWithExcel.Model", "WorkWithExcel.Model\WorkWithExcel.Model.csproj", "{3F34A6CC-E0DD-4768-8523-E9D6B1A49988}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WorkWithExcel.DAL", "WorkWithExcel.DAL\WorkWithExcel.DAL.csproj", "{E3DED97C-320D-4A8A-A089-F43109E7D405}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{3F34A6CC-E0DD-4768-8523-E9D6B1A49988}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3F34A6CC-E0DD-4768-8523-E9D6B1A49988}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3F34A6CC-E0DD-4768-8523-E9D6B1A49988}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E3DED97C-320D-4A8A-A089-F43109E7D405}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E3DED97C-320D-4A8A-A089-F43109E7D405}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E3DED97C-320D-4A8A-A089-F43109E7D405}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E3DED97C-320D-4A8A-A089-F43109E7D405}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

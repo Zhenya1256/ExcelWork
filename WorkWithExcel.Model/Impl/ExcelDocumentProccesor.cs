@@ -81,7 +81,8 @@ namespace WorkWithExcel.Model.Impl
                             IResult isDataResult = _validata.VolidateExcel(sheet);
                             bool success = true;
                             dataResult.Message += MessageHolder.
-                                GetErrorMessage(MessageType.NamePage) + sheetName + "\n";
+                                GetErrorMessage(MessageType.NamePage) + sheetName + 
+                                MessageHolder.GetErrorMessage(MessageType.NewLine);
 
                             if (!isDataResult.Success)
                             {
@@ -121,7 +122,8 @@ namespace WorkWithExcel.Model.Impl
 
                                     if (!excelDataResult.Success)
                                     {
-                                        dataResult.Message += excelDataResult.Message + "імя: " + sheetName;
+                                        dataResult.Message += excelDataResult.Message +
+                                            MessageHolder.GetErrorMessage(MessageType.NameSheet) + sheetName;
                                         success = false;
                                     }
 
@@ -135,7 +137,7 @@ namespace WorkWithExcel.Model.Impl
                             }
 
                             dataResult.Message += resultDataSheet.Message;
-                            dataResult.Message += "\n";
+                            dataResult.Message += MessageHolder.GetErrorMessage(MessageType.NewLine); ;
                         }
                     }
                 }
@@ -219,7 +221,8 @@ namespace WorkWithExcel.Model.Impl
                     error.ColumnItems = rowParserResult.Data.ColumnItems;
                     dataResult.Message += MessageHolder.GetErrorMessage
                         (MessageType.NotPageSection);
-                    dataResult.Message += rowParserResult.Message+"\n";
+                    dataResult.Message += rowParserResult.Message+ 
+                        MessageHolder.GetErrorMessage(MessageType.NewLine); ;
 
                     error.RowNmomer = j;
                     dataResult.Success = false;

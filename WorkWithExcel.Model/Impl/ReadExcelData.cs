@@ -29,7 +29,10 @@ namespace WorkWithExcel.Model.Impl
 
             dataResult.Message = 
                 MessageHolder.GetErrorMessage
-                (MessageType.IsNullOrEmpty)+"("+ rowNo+"|"+ cellNo + ")";
+                (MessageType.IsNullOrEmpty)+
+                  MessageHolder.GetErrorMessage(MessageType.FrontBracket) + rowNo+
+                   MessageHolder.GetErrorMessage(MessageType.Line) + cellNo +
+                     MessageHolder.GetErrorMessage(MessageType.BackBracket);
 
             return dataResult;
         }
