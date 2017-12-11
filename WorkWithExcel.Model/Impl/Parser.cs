@@ -37,13 +37,25 @@ namespace WorkWithExcel.Model.Impl
             List<IColumnItem> columnItems = new List<IColumnItem>();
             List<IDataResult<IColumnItem>> errorColumnItems = new List<IDataResult<IColumnItem>>();
             int start = excelWorksheet.Dimension.Start.Column;
-            int end = excelWorksheet.Dimension.End.Column;
+            int end = excelWorksheet.Dimension.Columns;
 
-            for (int j = start; j <= end; j++)
+            for (int j = start; j <end; j++)
             {
                 IExcelWorksheetEntity tmpEntity = new ExcelWorksheetEntity();
                 tmpEntity.CellNo = j;
                 tmpEntity.RowNo = row;
+                //
+                IExcelWorksheetEntity titleEntity = new ExcelWorksheetEntity();
+                titleEntity.RowNo = excelConfiguration.DataRowIndex.Title;
+                titleEntity.CellNo = j;
+                titleEntity.ExcelWorksheet = excelWorksheet;
+
+                IDataResult<string> nametitleResilt = _readExcelData.GetValue(titleEntity);
+
+                if (!nametitleResilt.Success)
+                {
+                    break;
+                }
                 tmpEntity.ExcelWorksheet = excelWorksheet;
 
                 IDataResult<IColumnItem> getDataResult =
@@ -53,15 +65,19 @@ namespace WorkWithExcel.Model.Impl
 
                 if (getDataResult.Success)
                 {
-                    if (!string.IsNullOrEmpty(getDataResult.Message))
-                    {
-                        getDataResult.Success = false;
-                        errorColumnItems.Add(getDataResult);
-                    }
-                    else
+                    //if (!string.IsNullOrEmpty(getDataResult.Message))
+                    //{
+                    //    getDataResult.Success = false;
+                    //    errorColumnItems.Add(getDataResult);
+                    //}
+                    //else
                     {
                         columnItems.Add(getDataResult.Data);
                     }
+                }
+                else
+                {
+                    errorColumnItems.Add(getDataResult);
                 }
             }
             error.ListColums = errorColumnItems;
@@ -126,9 +142,11 @@ namespace WorkWithExcel.Model.Impl
             {
                 nameTitle = _dataNormalization.NormalizeString(nameTitle).Data;
 
+          
                 if (nameTitle == null)
                 {
-                    dataResult.Success = false;
+                    //TODO
+                    dataResult.Success = true;
 
                     return dataResult;
                 }
@@ -197,6 +215,43 @@ namespace WorkWithExcel.Model.Impl
             return baseEntity;
         }
 
-        public int RowCount { get; set; }
+        public IDataResult<List<IColumnItem>> GetCulumnTitleItem
+            (ExcelWorksheet sheet, ExcelConfiguration excelConfiguration)
+        {
+            IDataResult<List<IColumnItem>> columnsResult =
+                new DataResult<List<IColumnItem>>() { Success = true };
+            List<IColumnItem> columnItems = new List<IColumnItem>();
+
+            int start = sheet.Dimension.Start.Column;
+            int end = sheet.Dimension.Columns;
+            int row = excelConfiguration.DataRowIndex.Title;
+            IExcelWorksheetEntity entity = new ExcelWorksheetEntity();
+            entity.ExcelWorksheet = sheet;
+            entity.RowNo = row;
+
+            for (int i = start; i < end; i++)
+            {
+                entity.CellNo = i;
+                IDataResult<string> nametitleResilt = _readExcelData.GetValue(entity);
+
+                if (!nametitleResilt.Success)
+                {
+                    break;
+                }
+
+                IColumnItem column = new ColumnItem();
+                column.BaseEntity = new BaseEntity();
+                column.BaseEntity.Value = nametitleResilt.Data;
+                column.ColumNumber = i;
+                column.ColumnType = ColumnType.None;
+                columnItems.Add(column);
+            }
+
+            columnsResult.Data = columnItems;
+
+            return columnsResult;       
+    }
+
+    public int RowCount { get; set; }
     }
 }

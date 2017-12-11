@@ -1,4 +1,5 @@
-﻿using OfficeOpenXml;
+﻿using System.Collections.Generic;
+using OfficeOpenXml;
 using WorkWithExcel.Abstract.Common;
 using WorkWithExcel.Abstract.Common.Config;
 using WorkWithExcel.Abstract.Entity;
@@ -13,5 +14,8 @@ namespace WorkWithExcel.Abstract.BL
             int row, ExcelConfiguration excelConfiguration);
         IDataResult<IColumnItem> ColumnParser(IExcelWorksheetEntity worksheetEntity,
             ExcelConfiguration excelConfiguration);
+
+        IDataResult<List<IColumnItem>> GetCulumnTitleItem
+            (ExcelWorksheet sheet, ExcelConfiguration excelConfiguration);
     }
 }

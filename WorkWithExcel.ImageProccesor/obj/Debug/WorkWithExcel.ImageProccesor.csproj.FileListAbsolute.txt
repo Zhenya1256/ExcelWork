@@ -1,0 +1,5 @@
+C:\Users\Евгений\Desktop\WorkWithExel\WorkWithExcel.ImageProccesor\bin\Debug\WorkWithExcel.ImageProccesor.dll
+C:\Users\Евгений\Desktop\WorkWithExel\WorkWithExcel.ImageProccesor\bin\Debug\WorkWithExcel.ImageProccesor.pdb
+C:\Users\Евгений\Desktop\WorkWithExel\WorkWithExcel.ImageProccesor\obj\Debug\WorkWithExcel.ImageProccesor.csproj.CoreCompileInputs.cache
+C:\Users\Евгений\Desktop\WorkWithExel\WorkWithExcel.ImageProccesor\obj\Debug\WorkWithExcel.ImageProccesor.dll
+C:\Users\Евгений\Desktop\WorkWithExel\WorkWithExcel.ImageProccesor\obj\Debug\WorkWithExcel.ImageProccesor.pdb

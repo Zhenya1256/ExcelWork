@@ -30,10 +30,17 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
     <Reference Include="EPPlus, Version=4.1.1.0, Culture=neutral, PublicKeyToken=ea159fdaa78159a1, processorArchitecture=MSIL">
       <HintPath>..\packages\EPPlus.4.1.1\lib\net40\EPPlus.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Xml.Linq" />
@@ -48,9 +55,20 @@
     <Compile Include="Common\Result.cs" />
     <Compile Include="Entity\BaseEntity.cs" />
     <Compile Include="Entity\ColumnItem.cs" />
+    <Compile Include="Entity\DalEntity\Category.cs" />
+    <Compile Include="Entity\DalEntity\CategoryTranslation.cs" />
+    <Compile Include="Entity\DalEntity\ImageDescription.cs" />
+    <Compile Include="Entity\DalEntity\ImageDictionary.cs" />
+    <Compile Include="Entity\DalEntity\LangDictionary.cs" />
     <Compile Include="Entity\DataSheet.cs" />
     <Compile Include="Entity\ExcelColor.cs" />
     <Compile Include="Entity\HelperEntity\ExcelWorksheetEntity.cs" />
+    <Compile Include="Entity\NormalizeEntity\BaseEntityCategory.cs" />
+    <Compile Include="Entity\NormalizeEntity\BaseTranslationItemEntity.cs" />
+    <Compile Include="Entity\NormalizeEntity\ItemEntity.cs" />
+    <Compile Include="Entity\NormalizeEntity\ParsedResultEntity.cs" />
+    <Compile Include="Entity\NormalizeEntity\RootTranslationItemEntity.cs" />
+    <Compile Include="Entity\NormalizeEntity\TranslationItemEntity.cs" />
     <Compile Include="Entity\RowItem.cs" />
     <Compile Include="Entity\RowItemError.cs" />
     <Compile Include="Entity\TranslationEntity.cs" />
@@ -58,6 +76,7 @@
     <Compile Include="Impl\DataSheetResulHolder.cs" />
     <Compile Include="Impl\ExcelDocumentProccesor.cs" />
     <Compile Include="Impl\ExcelSheetCongSection.cs" />
+    <Compile Include="Impl\NormalizeData.cs" />
     <Compile Include="Impl\ReadExcelData.cs" />
     <Compile Include="Impl\Parser.cs" />
     <Compile Include="Impl\ParserSectionPage.cs" />
@@ -71,6 +90,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

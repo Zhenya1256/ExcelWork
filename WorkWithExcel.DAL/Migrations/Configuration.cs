@@ -5,14 +5,14 @@ namespace WorkWithExcel.DAL.Migrations
     using System.Data.Entity.Migrations;
     using System.Linq;
 
-    internal sealed class Configuration : DbMigrationsConfiguration<WorkWithExcel.DAL.ExcelContext>
+    internal sealed class Configuration : DbMigrationsConfiguration<WorkWithExcel.DAL.SketchpackDbContext>
     {
         public Configuration()
         {
             AutomaticMigrationsEnabled = false;
         }
 
-        protected override void Seed(WorkWithExcel.DAL.ExcelContext context)
+        protected override void Seed(WorkWithExcel.DAL.SketchpackDbContext context)
         {
             //  This method will be called after migrating to the latest version.
 

@@ -1,9 +1,14 @@
+C:\Users\Евгений\Desktop\WorkWithExel\WorkWithExcel.Model\bin\Debug\WorkWithExcel.Model.dll.config
 C:\Users\Евгений\Desktop\WorkWithExel\WorkWithExcel.Model\bin\Debug\WorkWithExcel.Model.dll
 C:\Users\Евгений\Desktop\WorkWithExel\WorkWithExcel.Model\bin\Debug\WorkWithExcel.Model.pdb
+C:\Users\Евгений\Desktop\WorkWithExel\WorkWithExcel.Model\bin\Debug\EntityFramework.dll
+C:\Users\Евгений\Desktop\WorkWithExel\WorkWithExcel.Model\bin\Debug\EntityFramework.SqlServer.dll
 C:\Users\Евгений\Desktop\WorkWithExel\WorkWithExcel.Model\bin\Debug\EPPlus.dll
 C:\Users\Евгений\Desktop\WorkWithExel\WorkWithExcel.Model\bin\Debug\WorkWithExcel.Abstract.dll
 C:\Users\Евгений\Desktop\WorkWithExel\WorkWithExcel.Model\bin\Debug\SimpleConfig.dll
 C:\Users\Евгений\Desktop\WorkWithExel\WorkWithExcel.Model\bin\Debug\WorkWithExcel.Abstract.pdb
+C:\Users\Евгений\Desktop\WorkWithExel\WorkWithExcel.Model\bin\Debug\EntityFramework.xml
+C:\Users\Евгений\Desktop\WorkWithExel\WorkWithExcel.Model\bin\Debug\EntityFramework.SqlServer.xml
 C:\Users\Евгений\Desktop\WorkWithExel\WorkWithExcel.Model\bin\Debug\EPPlus.xml
 C:\Users\Евгений\Desktop\WorkWithExel\WorkWithExcel.Model\obj\Debug\WorkWithExcel.Model.csprojResolveAssemblyReference.cache
 C:\Users\Евгений\Desktop\WorkWithExel\WorkWithExcel.Model\obj\Debug\WorkWithExcel.Model.csproj.CoreCompileInputs.cache

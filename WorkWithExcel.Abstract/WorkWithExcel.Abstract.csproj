@@ -55,6 +55,7 @@
   <ItemGroup>
     <Compile Include="BL\IDataNormalization.cs" />
     <Compile Include="BL\IExcelDocumentProccesor.cs" />
+    <Compile Include="BL\INormalizeData.cs" />
     <Compile Include="BL\IReadExcelData.cs" />
     <Compile Include="BL\IGetExcelSheetCongSection.cs" />
     <Compile Include="BL\IParser.cs" />
@@ -78,6 +79,10 @@
     <Compile Include="Entity\ITranslationEntity.cs" />
     <Compile Include="Entity\ILoadItemEntity.cs" />
     <Compile Include="Entity\IRowItem.cs" />
+    <Compile Include="Entity\NormalizeEntity\IBaseEntityCategory.cs" />
+    <Compile Include="Entity\NormalizeEntity\IItemEntity.cs" />
+    <Compile Include="Entity\NormalizeEntity\IParsedResultEntity.cs" />
+    <Compile Include="Entity\NormalizeEntity\ITranslationItemEntity.cs" />
     <Compile Include="Enums\ColumnType.cs" />
     <Compile Include="Enums\ExcelDocumentType.cs" />
     <Compile Include="Enums\SexType.cs" />

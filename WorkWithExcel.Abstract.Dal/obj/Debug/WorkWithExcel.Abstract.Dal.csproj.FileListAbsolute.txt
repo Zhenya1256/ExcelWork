@@ -1,0 +1,14 @@
+C:\Users\Евгений\Desktop\WorkWithExel\WorkWithExcel.Abstract.Dal\bin\Debug\WorkWithExcel.Abstract.Dal.dll
+C:\Users\Евгений\Desktop\WorkWithExel\WorkWithExcel.Abstract.Dal\bin\Debug\WorkWithExcel.Abstract.Dal.pdb
+C:\Users\Евгений\Desktop\WorkWithExel\WorkWithExcel.Abstract.Dal\bin\Debug\WorkWithExcel.Model.dll
+C:\Users\Евгений\Desktop\WorkWithExel\WorkWithExcel.Abstract.Dal\bin\Debug\WorkWithExcel.Abstract.dll
+C:\Users\Евгений\Desktop\WorkWithExel\WorkWithExcel.Abstract.Dal\bin\Debug\EPPlus.dll
+C:\Users\Евгений\Desktop\WorkWithExel\WorkWithExcel.Abstract.Dal\bin\Debug\SimpleConfig.dll
+C:\Users\Евгений\Desktop\WorkWithExel\WorkWithExcel.Abstract.Dal\bin\Debug\WorkWithExcel.Model.pdb
+C:\Users\Евгений\Desktop\WorkWithExel\WorkWithExcel.Abstract.Dal\bin\Debug\WorkWithExcel.Model.dll.config
+C:\Users\Евгений\Desktop\WorkWithExel\WorkWithExcel.Abstract.Dal\bin\Debug\WorkWithExcel.Abstract.pdb
+C:\Users\Евгений\Desktop\WorkWithExel\WorkWithExcel.Abstract.Dal\bin\Debug\EPPlus.xml
+C:\Users\Евгений\Desktop\WorkWithExel\WorkWithExcel.Abstract.Dal\obj\Debug\WorkWithExcel.Abstract.Dal.csprojResolveAssemblyReference.cache
+C:\Users\Евгений\Desktop\WorkWithExel\WorkWithExcel.Abstract.Dal\obj\Debug\WorkWithExcel.Abstract.Dal.csproj.CoreCompileInputs.cache
+C:\Users\Евгений\Desktop\WorkWithExel\WorkWithExcel.Abstract.Dal\obj\Debug\WorkWithExcel.Abstract.Dal.dll
+C:\Users\Евгений\Desktop\WorkWithExel\WorkWithExcel.Abstract.Dal\obj\Debug\WorkWithExcel.Abstract.Dal.pdb

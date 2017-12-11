@@ -33,9 +33,10 @@ namespace WorkWithExcel.Model.Impl
             IRowItem rowItem = new RowItem();
 
             List<IColumnItem> columnItems = new List<IColumnItem>();
+            int end  = excelWorksheet.Dimension.Columns;
 
             for (int j = excelWorksheet.Dimension.Start.Column;
-                j <= excelWorksheet.Dimension.End.Column;
+                j <=end;
                 j++)
             {
                 IExcelWorksheetEntity tmpEntity = new ExcelWorksheetEntity();
@@ -91,16 +92,22 @@ namespace WorkWithExcel.Model.Impl
             string nameTitle = resultNameTitle.Data;
             nameTitle = _dataNormalization.NormalizeString(nameTitle).Data;
 
-            string titleConfig = excelConfiguration.DataColumn.Datas
+            string titleConfig = excelConfiguration.DataColumn.Datas?
                 .FirstOrDefault(p=>p.ColumnType==(int)ColumnType.Section)?.Name;
             titleConfig = _dataNormalization.NormalizeString(titleConfig).Data;
             ITranslationEntity translationEntity = new TranslationEntity();
             translationEntity.Value = resultValue.Data;
             string mainLanguage = excelConfiguration.NameColumnSection.MainLanguage;
             mainLanguage = _dataNormalization.NormalizeString(mainLanguage).Data;
-            string excelLanguage = nameTitle.Replace(titleConfig, string.Empty);
+            string excelLanguage = null;
 
-            if (nameTitle.Equals(titleConfig) || excelLanguage.Equals(mainLanguage))
+            if (titleConfig != null)
+            {
+                excelLanguage = nameTitle.Replace(titleConfig, string.Empty);
+            }
+
+
+            if (nameTitle.Equals(titleConfig) || (excelLanguage!=null && excelLanguage.Equals(mainLanguage)))
             {
                 columnItem.ColumnType = ColumnType.Section;
                 translationEntity.Language = 
@@ -136,6 +143,12 @@ namespace WorkWithExcel.Model.Impl
             dataResult.Success = true;
 
             return dataResult;
+        }
+
+        public IDataResult<List<IColumnItem>> GetCulumnTitleItem
+            (ExcelWorksheet sheet, ExcelConfiguration excelConfiguration)
+        {
+            throw new System.NotImplementedException();
         }
 
         public int RowCount { get; set; }

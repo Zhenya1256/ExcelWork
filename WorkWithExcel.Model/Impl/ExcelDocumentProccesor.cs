@@ -164,7 +164,7 @@ namespace WorkWithExcel.Model.Impl
 
             if (success)
             {
-                IDataResult<List<IColumnItem>> columnResult = GetCulumnTitleItem(sheet);
+                IDataResult<List<IColumnItem>> columnResult = _parser.GetCulumnTitleItem(sheet,_excelConfiguration);
 
                 if (!columnResult.Success)
                 {
@@ -250,42 +250,6 @@ namespace WorkWithExcel.Model.Impl
             dataResult.Success = true;
 
             return dataResult;
-        }
-
-        private IDataResult<List<IColumnItem>> GetCulumnTitleItem(ExcelWorksheet sheet)
-        {
-            IDataResult<List<IColumnItem>> columnsResult =
-                new DataResult<List<IColumnItem>>() { Success = true };
-            List<IColumnItem> columnItems = new List<IColumnItem>();
-
-            int start = sheet.Dimension.Start.Column;
-            int end = sheet.Dimension.Columns;
-            int row = _excelConfiguration.DataRowIndex.Title;
-            IExcelWorksheetEntity entity = new ExcelWorksheetEntity();
-            entity.ExcelWorksheet = sheet;
-            entity.RowNo = row;
-
-            for (int i = start; i < end; i++)
-            {
-                entity.CellNo = i;
-                IDataResult<string> nametitleResilt = _readExcelData.GetValue(entity);
-
-                if (!nametitleResilt.Success)
-                {
-                    break;
-                }
-
-                IColumnItem column = new ColumnItem();
-                column.BaseEntity = new BaseEntity();
-                column.BaseEntity.Value = nametitleResilt.Data;
-                column.ColumNumber = i;
-                column.ColumnType = ColumnType.None;
-                columnItems.Add(column);
-            }
-
-            columnsResult.Data = columnItems;
-
-            return columnsResult;
         }
     }
 }

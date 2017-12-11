@@ -12,6 +12,10 @@ namespace WorkWithExcel.Abstract.Holder
         private static Dictionary<string, string> _languageDictionary =
             new Dictionary<string, string>();
 
+        public static Dictionary<string, string> LanguageDictionary {
+            get { return _languageDictionary; }
+        }
+
         static LanguageHolder()
         {
             Init();
