@@ -65,12 +65,12 @@ namespace WorkWithExcel.Model.Impl
 
                 if (getDataResult.Success)
                 {
-                    //if (!string.IsNullOrEmpty(getDataResult.Message))
-                    //{
-                    //    getDataResult.Success = false;
-                    //    errorColumnItems.Add(getDataResult);
-                    //}
-                    //else
+                    if (!string.IsNullOrEmpty(getDataResult.Message))
+                    {
+                        getDataResult.Success = false;
+                        errorColumnItems.Add(getDataResult);
+                    }
+                    else
                     {
                         columnItems.Add(getDataResult.Data);
                     }
@@ -81,7 +81,7 @@ namespace WorkWithExcel.Model.Impl
                 }
             }
             error.ListColums = errorColumnItems;
-
+            error.ColumnItems = columnItems;
             if (errorColumnItems.Any())
             {
                 dataResult.Data = error;

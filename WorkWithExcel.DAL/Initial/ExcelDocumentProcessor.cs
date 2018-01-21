@@ -43,6 +43,7 @@ namespace WorkWithExcel.DAL.Initial
         {
             IDataResult<IBaseEntityCategory> dataResult = _normalizeData.Normalize(path);
 
+            return;
             if (!dataResult.Success)
             {
                 return;
@@ -73,6 +74,7 @@ namespace WorkWithExcel.DAL.Initial
                         {
                             ImgPath = ""
                         };
+
                         await _categoryRepository.AddAsync(category);
                         await _categoryRepository.SaveAsync();
                         categoryId = category.Id;
@@ -97,8 +99,6 @@ namespace WorkWithExcel.DAL.Initial
 
                         await _categoryTranslationRepository.SaveAsync();
                     }
-
-
 
                     foreach (ITranslationEntity translationEntity in parsedResultEntity.Value.CategoryTranslate)
                     {
@@ -304,6 +304,7 @@ namespace WorkWithExcel.DAL.Initial
 
             if (langEntity == null)
             {
+
                 await _langDictionaryRepository.AddAsync(new LangDictionary()
                 {
                     Id = id,

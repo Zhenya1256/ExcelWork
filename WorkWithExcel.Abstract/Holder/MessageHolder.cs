@@ -25,18 +25,18 @@ namespace WorkWithExcel.Abstract.Holder
             _messagesDictionary.Add(MessageType.NotNameTitle, "Відсутня назва заголовка стовпчика -");
             _messagesDictionary.Add(MessageType.NotTranslate, "Відсутній перевод слова, рядка-");
             _messagesDictionary.Add(MessageType.AlreadyAddLanguage, "зустрічаються дві однакові мови - ");
-            _messagesDictionary.Add(MessageType.IsNullOrEmpty, "ви намагаєтеся записвти пусту ячийку!");
+            _messagesDictionary.Add(MessageType.IsNullOrEmpty, "you are trying to write an empty bunny! ");
             _messagesDictionary.Add(MessageType.DocumentIsEmpty, "документ не має даних");
             _messagesDictionary.Add(MessageType.NotIsTitle, String.Format("сторінку Excel не з читано, оскільки " +
                                                             "не хватає заголовків, чи вони не вірно названі такі як: (" ));
-            _messagesDictionary.Add(MessageType.NamePage, "ошибки сторінки ");
+            _messagesDictionary.Add(MessageType.NamePage, "Зage errors ");
             _messagesDictionary.Add(MessageType.NotPageSection, "сторінку секцій не записано за помилок:\n");
             _messagesDictionary.Add(MessageType.BackBracket, " )");
-            _messagesDictionary.Add(MessageType.FrontBracket, "( ");
-            _messagesDictionary.Add(MessageType.Line, " | ");
+            _messagesDictionary.Add(MessageType.FrontBracket, "RowNumber ");
+            _messagesDictionary.Add(MessageType.Line, " ColumnNumber ");
             _messagesDictionary.Add(MessageType.NewLine, "\n");
             _messagesDictionary.Add(MessageType.Space," ");
-            _messagesDictionary.Add(MessageType.NameSheet, "імя: ");
+            _messagesDictionary.Add(MessageType.NameSheet, "name: ");
         }
 
         public static string GetErrorMessage(MessageType type)

@@ -1,4 +1,5 @@
-﻿using WorkWithExcel.Abstract.BL;
+﻿using System.Text;
+using WorkWithExcel.Abstract.BL;
 using WorkWithExcel.Abstract.Common;
 using WorkWithExcel.Abstract.Entity.HelpEntity;
 using WorkWithExcel.Abstract.Enums;
@@ -27,15 +28,33 @@ namespace WorkWithExcel.Model.Impl
                 return dataResult;
             }
 
-            dataResult.Message = 
+            dataResult.Message = "("+AlphabetHolder.GetSmbol(cellNo)+") "+
                 MessageHolder.GetErrorMessage
-                (MessageType.IsNullOrEmpty)+
-                  MessageHolder.GetErrorMessage(MessageType.FrontBracket) + rowNo+
-                   MessageHolder.GetErrorMessage(MessageType.Line) + cellNo +
-                     MessageHolder.GetErrorMessage(MessageType.BackBracket);
+                (MessageType.IsNullOrEmpty);
+                //  MessageHolder.GetErrorMessage(MessageType.FrontBracket) + 
+                //"("+rowNo+")" +;
+                     //MessageHolder.GetErrorMessage(MessageType.BackBracket);
 
             return dataResult;
         }
+
+        //public string ErrorMessage(string message)
+        //{
+        //    StringBuilder sb = new StringBuilder();
+        //    int i = 1;
+
+        //    while(message!=null)
+        //    {
+        //        if (message.Contains("(" + i + ")"))
+        //        {
+                    
+        //        }
+        //        else
+        //        {
+        //            i++;
+        //        }
+        //    }
+        //}
 
         public IDataResult<string> GetColorValue
             (IExcelWorksheetEntity excelWorksheetEntity)

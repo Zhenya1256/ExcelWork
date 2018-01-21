@@ -19,5 +19,5 @@ C:\Users\Евгений\Desktop\WorkWithExel\WorkWithExcel.DAL\obj\Debug\WorkWit
 C:\Users\Евгений\Desktop\WorkWithExel\WorkWithExcel.DAL\obj\Debug\WorkWithExcel.DAL.csproj.CoreCompileInputs.cache
 C:\Users\Евгений\Desktop\WorkWithExel\WorkWithExcel.DAL\obj\Debug\WorkWithExcel.DAL.dll
 C:\Users\Евгений\Desktop\WorkWithExel\WorkWithExcel.DAL\obj\Debug\WorkWithExcel.DAL.pdb
-C:\Users\Евгений\Desktop\WorkWithExel\WorkWithExcel.DAL\obj\Debug\WorkWithExcel.DAL.Migrations.Init.resources
+C:\Users\Евгений\Desktop\WorkWithExel\WorkWithExcel.DAL\obj\Debug\WorkWithExcel.DAL.Migrations.init.resources
 C:\Users\Евгений\Desktop\WorkWithExel\WorkWithExcel.DAL\obj\Debug\WorkWithExcel.DAL.csproj.GenerateResource.Cache

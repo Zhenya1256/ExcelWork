@@ -20,15 +20,15 @@ namespace WorkWithExel
     {
         static void Main(string[] args)
         {
-            string path = "exp1.xlsx";
+            string path = "translating Turkish.xlsx";
 
             //   INormalizeData excelDocument = new NormalizeData();
             //IDataResult<IBaseEntityCategory> entity = excelDocument.Normalize(path);
             using (ExcelDocumentProcessor excelDocumentProcessor = new ExcelDocumentProcessor())
-                excelDocumentProcessor.InitDb(path);
+                excelDocumentProcessor.InitDb(path).Wait();
             //string words = WriteWord(entity.Data);
 
-            Console.ReadKey();
+            //Console.ReadKey();
         }
 
         private static void WriteTxt(string value,string name)

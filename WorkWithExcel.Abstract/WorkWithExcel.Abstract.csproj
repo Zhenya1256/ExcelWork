@@ -86,6 +86,7 @@
     <Compile Include="Enums\ColumnType.cs" />
     <Compile Include="Enums\ExcelDocumentType.cs" />
     <Compile Include="Enums\SexType.cs" />
+    <Compile Include="Holder\AlphabetHolder.cs" />
     <Compile Include="Holder\ConfigurationHolder.cs" />
     <Compile Include="Holder\LanguageHolder.cs" />
     <Compile Include="Holder\MessageHolder.cs" />

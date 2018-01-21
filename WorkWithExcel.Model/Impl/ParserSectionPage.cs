@@ -33,7 +33,7 @@ namespace WorkWithExcel.Model.Impl
             IRowItem rowItem = new RowItem();
 
             List<IColumnItem> columnItems = new List<IColumnItem>();
-            int end  = excelWorksheet.Dimension.Columns;
+            int end  = excelWorksheet.Dimension.End.Column;
 
             for (int j = excelWorksheet.Dimension.Start.Column;
                 j <=end;
@@ -44,6 +44,17 @@ namespace WorkWithExcel.Model.Impl
                 tmpEntity.RowNo = row;
                 tmpEntity.ExcelWorksheet = excelWorksheet;
 
+                IExcelWorksheetEntity titleEntity = new ExcelWorksheetEntity();
+                titleEntity.RowNo = excelConfiguration.DataRowIndex.Title;
+                titleEntity.CellNo = j;
+                titleEntity.ExcelWorksheet = excelWorksheet;
+
+                IDataResult<string> nametitleResilt = _readExcelData.GetValue(titleEntity);
+
+                if (!nametitleResilt.Success)
+                {
+                    break;
+                }
                 IDataResult<IColumnItem> getDataResult =
                     ColumnParser(tmpEntity, excelConfiguration);
                 dataResult.Message += getDataResult.Message;

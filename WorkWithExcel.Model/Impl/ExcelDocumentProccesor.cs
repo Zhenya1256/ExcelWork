@@ -11,6 +11,8 @@ using WorkWithExcel.Abstract.Holder;
 using WorkWithExcel.Model.Common;
 using WorkWithExcel.Model.Entity;
 using WorkWithExcel.Model.Entity.HelperEntity;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace WorkWithExcel.Model.Impl
 {
@@ -81,7 +83,7 @@ namespace WorkWithExcel.Model.Impl
                             IResult isDataResult = _validata.VolidateExcel(sheet);
                             bool success = true;
                             dataResult.Message += MessageHolder.
-                                GetErrorMessage(MessageType.NamePage) + sheetName + 
+                                GetErrorMessage(MessageType.NamePage) + sheetName +
                                 MessageHolder.GetErrorMessage(MessageType.NewLine);
 
                             if (!isDataResult.Success)
@@ -91,7 +93,7 @@ namespace WorkWithExcel.Model.Impl
                             }
 
                             string tmpSheetName = _dataNormalization.NormalizeString(sheetName).Data;
-                            string configName = _excelConfiguration.NamePage.Section;
+                            string configName = _excelConfiguration.NamePage?.Section;
                             configName = _dataNormalization.NormalizeString(configName).Data;
                             IDataResult<IDataSheet> resultDataSheet = new DataResult<IDataSheet>();
 
@@ -132,7 +134,9 @@ namespace WorkWithExcel.Model.Impl
                                 }
 
                                 resultDataSheet = HelpProcessor(sheet, success);
-
+                                ProcessErrors(resultDataSheet.Data.RowItemErrors, 
+                                    sheetName, 
+                                    Path.GetFileNameWithoutExtension(path)).Wait();
                                 dataSheets.Add(resultDataSheet.Data);
                             }
 
@@ -164,7 +168,7 @@ namespace WorkWithExcel.Model.Impl
 
             if (success)
             {
-                IDataResult<List<IColumnItem>> columnResult = _parser.GetCulumnTitleItem(sheet,_excelConfiguration);
+                IDataResult<List<IColumnItem>> columnResult = _parser.GetCulumnTitleItem(sheet, _excelConfiguration);
 
                 if (!columnResult.Success)
                 {
@@ -173,20 +177,29 @@ namespace WorkWithExcel.Model.Impl
                 else
                 {
                     dataSheet.ColumnTitleItems = columnResult.Data;
+                    int end = sheet.Dimension.End.Row;
 
-                    for (int j = sheet.Dimension.Start.Row + 1; j <= sheet.Dimension.End.Row; j++)
+                    for (int j = sheet.Dimension.Start.Row + 1; j <= end; j++)
                     {
                         IDataResult<IRowItem> rowParserResult =
                             _parser.RowParser(sheet, j, _excelConfiguration);
 
+
                         if (!rowParserResult.Success)
-                        {
+                        {    
                             IRowItemError error = (IRowItemError)rowParserResult.Data;
-                            
+
+                            if (error.ListColums.All(p => p.Data.BaseEntity.Value == null)
+                                && error.ColumnItems.All(p => p.BaseEntity.Value == null))
+                            {
+                                break;
+                            }
+
                             dataResult.Message += rowParserResult.Message;
                             error.RowNmomer = j;
                             errorRowItems.Add(error);
                         }
+
                         else
                         {
                             rowItems.Add(rowParserResult.Data);
@@ -201,6 +214,50 @@ namespace WorkWithExcel.Model.Impl
             dataResult.Success = true;
 
             return dataResult;
+        }
+
+        private async Task ProcessErrors (List<IRowItemError> itemErrors,string pageName,string documentName)
+        {
+            if (!Directory.Exists(documentName))
+            {
+                Directory.CreateDirectory(documentName);
+            }
+
+            var path = Path.Combine(new string[] { documentName, pageName });
+
+            using (FileStream fileStream = File.Create(path.ToString()))
+            {
+                using (StreamWriter sw = new StreamWriter(fileStream))
+                {
+                    await sw.WriteLineAsync($"Total errors count on page {pageName} is {itemErrors.Sum(p => p.ListColums.Count())}");
+                    await sw.WriteLineAsync($"Total error rows count on page {pageName} is {itemErrors.Count()}");
+                    await sw.WriteLineAsync(sw.NewLine);
+                    await sw.WriteLineAsync(sw.NewLine);
+                    await sw.WriteLineAsync(sw.NewLine);
+
+                    foreach (var row in itemErrors)
+                    {
+
+                        await sw.WriteLineAsync($"Error at row number {row.RowNmomer}");
+                        await sw.WriteLineAsync(sw.NewLine);
+                        await sw.WriteLineAsync($"Total count in row {row.ListColums.Count}");
+                        await sw.WriteLineAsync(sw.NewLine);
+
+                        foreach (var colum in row.ListColums)
+                        {
+                            await sw.WriteLineAsync($"At colum letter : {colum.Message}");
+                            await sw.WriteLineAsync(sw.NewLine);
+                            await sw.WriteLineAsync($"Field {colum.Data.ColumnType.ToString()} value not exist");
+                            await sw.WriteLineAsync(sw.NewLine);
+                        }
+
+                        await sw.WriteLineAsync(sw.NewLine);
+                        await sw.WriteLineAsync(sw.NewLine);
+                    }
+
+                    await sw.FlushAsync();
+            }
+            }
         }
 
         private IDataResult<Dictionary<ITranslationEntity, List<ITranslationEntity>>>
@@ -221,11 +278,12 @@ namespace WorkWithExcel.Model.Impl
                     error.ColumnItems = rowParserResult.Data.ColumnItems;
                     dataResult.Message += MessageHolder.GetErrorMessage
                         (MessageType.NotPageSection);
-                    dataResult.Message += rowParserResult.Message+ 
-                        MessageHolder.GetErrorMessage(MessageType.NewLine); ;
+                    dataResult.Message += rowParserResult.Message +
+                        MessageHolder.GetErrorMessage(MessageType.NewLine);
 
                     error.RowNmomer = j;
-                    dataResult.Success = false;
+                    dataResult = _dataNormalization.NormaliseTransliteSection(rowItems);
+                    //dataResult.Success = false;
 
                     return dataResult;
                 }
